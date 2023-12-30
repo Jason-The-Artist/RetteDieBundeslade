@@ -1,0 +1,99 @@
+body{
+    width: 95vw;
+    height: 95vh;
+    background: #000000;
+
+    font-family: "Arial";
+}
+
+p,h1,h2,h3{
+    color: #d9d9d9;
+}
+
+.text-color{
+    color: #d9d9d9;
+}
+
+.red{
+    color: #ff0000;
+}
+
+.on-bottom{
+    z-index: -9999;
+}
+
+.background-image{
+    width: 100%;
+    height: 100%;
+}
+
+.round-corner{
+    border-radius: 10px;
+}
+
+.absolute{
+    position: absolute;
+}
+
+.relative{
+    position: relative;
+}
+
+.full-size{
+    width: 95vw;
+    height: 95vh;
+}
+
+.max-width{
+    width: 100%;
+}
+
+.center-horizontal{
+    display: flex;
+    justify-content: center;
+}
+
+.center-vertical{
+    display: flex;
+    align-items: center;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left{
+    display: flex;
+    justify-content: start;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.scroll{
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 20px;
+    align-items: center;
+    justify-items: center;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
+.pointer{
+    cursor: pointer;
+}
