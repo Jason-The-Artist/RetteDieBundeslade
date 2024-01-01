@@ -1,18 +1,18 @@
 <template>
 
   <div class="center-horizontal" v-if="isHost">
-    <UIButton title="Raum schließen" @click="onClickRemove" color="prim-color-background"/>
+    <UIButton title="Raum schließen" @click="onClickRemove"/>
   </div>
 
     <div class="button-layout center-horizontal" v-if="!isHost">
-      <UIButton title="Raum verlassen" @click="onClickLeave" color="prim-color-background"/>
+      <UIButton title="Raum verlassen" @click="onClickLeave"/>
     </div>
 
 
   <div class="button-layout center-horizontal" v-if="isHost">
     <div>
       <div class="center-horizontal">
-        <UIButton title="Spiel starten" @click="onClickStart" color="prim-color-background"/>
+        <UIButton title="Spiel starten" @click="onClickStart"/>
       </div>
 
       <div class="center-horizontal center">
@@ -97,7 +97,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          console.log(message)
+          //console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
@@ -139,11 +139,11 @@ export default {
     methods: {
 
       startGame(){
-        window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
+        window.open(document.baseURI.split("/#/")[0] + "/#/overlay", '_self');
       },
 
       onClickStart(){
-        if(this.names.length > 1){
+        if(this.names.length > 0){
           if(this.$refs.input.value !== ""){
             let checker = Number(this.$refs.input.value)
             if(isNaN(checker)){
@@ -151,7 +151,6 @@ export default {
             }else if(checker < 1){
               this.errorText = "Du brauchst mindestes 1 Impostor"
             }else{
-              window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
               let dat = {
                 type: "engine",
                 func: "start",

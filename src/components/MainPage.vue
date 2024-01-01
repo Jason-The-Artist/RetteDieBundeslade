@@ -19,14 +19,14 @@
         </div>
         <div style="margin-top: 10px"/>
       <div class="center-horizontal">
-        <UIButton title="Spiel beitreten" @click="onClickJoin" color="third-color-background"/>
+        <UIButton title="Spiel beitreten" @click="onClickJoin"/>
       </div>
       <div class="center-horizontal">
-        <UIButton title="Spiel erstellen" @click="onClickRoom" color="fourth-color-background"/>
+        <UIButton title="Spiel erstellen" @click="onClickRoom"/>
       </div>
       <div style="height: 40px"></div>
       <div class="center-horizontal">
-        <UIButton title="Extrasteuerung" @click="onClickControl" color="sec-color"/>
+        <UIButton title="Extrasteuerung" @click="onClickControl"/>
       </div>
         <div class="center-horizontal">
           <h2 class="red">{{unableMessage}}</h2>
@@ -147,6 +147,10 @@ export default {
             }
           }
         },
+
+      onDecode (decodedString) {
+        console.log("decoded")
+      },
 
       addPlayer(){
         const message = {
