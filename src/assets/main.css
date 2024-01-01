@@ -64,6 +64,10 @@ p,h1,h2,h3{
     justify-content: center;
 }
 
+.text-center{
+    text-align: center;
+}
+
 .left{
     display: flex;
     justify-content: start;

@@ -1,5 +1,5 @@
 <template>
-
+  <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
   <div class="center-horizontal">
     <UIButton title="Emergency Meeting" @click="emergMeeting"/>
   </div>
@@ -31,15 +31,18 @@
 import EventBus from "./code/EventBusEvent";
 import {nextTick} from "vue";
 import UIButton from "@/components/views/UIButton.vue";
+import EmergencyPopup from "@/components/views/EmergencyPopup.vue";
 
 export default {
     name: "MainOverlayPage",
-    components: {UIButton},
+    components: {EmergencyPopup, UIButton},
     data() {
         return {
           qrText: "nothing",
           torchEnabled: false,
-          paused: false
+          paused: false,
+          emergVis: false,
+          emergCaller: "Jason"
         };
     },
 
@@ -61,6 +64,13 @@ export default {
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
 
+          let dat = {
+            type: "register",
+            func: "replaceClient",
+            player: this.getCookies("username")
+          };
+          this.send(dat);
+
         });
 
 
@@ -72,9 +82,11 @@ export default {
 
             console.error(message.text)
 
-          }else if(message.func === "allPlayers"){
-
-
+          }else if(message.func === "emergencyMeeting"){
+            this.emergCaller = message.player
+            this.emergVis = true
+          }else if(message.func === "startMeeting"){
+            this.$router.push('/meeting');
           }
         });
 
@@ -106,11 +118,24 @@ export default {
       },
 
       emergMeeting(){
-
+        let dat = {
+          type: "engine",
+          func: "emergencyMeeting",
+          args: [this.getCookies("username")]
+        };
+        this.send(dat);
       },
 
       openKarte(){
         this.$router.push('/karte');
+      },
+
+      startMeeting(){
+        let dat = {
+          type: "engine",
+          func: "startMeeting"
+        };
+        this.send(dat);
       },
 
 

@@ -119,8 +119,6 @@ export default {
               this.names = names1
             })
 
-            console.log(this.names)
-
           }else if(message.func === "start"){
             this.startGame()
 
@@ -139,7 +137,7 @@ export default {
     methods: {
 
       startGame(){
-        window.open(document.baseURI.split("/#/")[0] + "/#/overlay", '_self');
+        this.$router.push('/overlay');
       },
 
       onClickStart(){
@@ -181,7 +179,7 @@ export default {
 
       onClickLeave(){
         this.eventClose()
-        window.open(document.baseURI.split("/#/")[0], '_self');
+        this.$router.push('/');
       },
 
       onClickRemove(){

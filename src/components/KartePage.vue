@@ -122,6 +122,13 @@ export default {
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
 
+          let dat = {
+            type: "register",
+            func: "replaceClient",
+            player: this.getCookies("username")
+          };
+          this.send(dat);
+
         });
 
 

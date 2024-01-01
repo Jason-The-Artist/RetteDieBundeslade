@@ -1,6 +1,6 @@
 <template>
 
-  <button class="ui-button center-horizontal" :class="color" @click="click">
+  <button class="ui-button center-horizontal" @click="click">
     <p style="margin-top: 2px">{{title}}</p>
   </button>
   <button class="ui-button center-horizontal shadow absolute on-bottom" @click="click">
@@ -21,7 +21,6 @@ export default {
 
     props:{
         title: String,
-      color: String
     },
 
     created() {

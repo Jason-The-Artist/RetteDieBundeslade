@@ -4,6 +4,7 @@ import MainPage from "../components/MainPage.vue";
 import PlayerPage from "../components/PlayerPage.vue";
 import MainOverlayPage from "@/components/MainOverlayPage.vue";
 import KartePage from "@/components/KartePage.vue";
+import MeetingPage from "@/components/MeetingPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/karte',
     name: 'KartePage',
     component: KartePage
+  },
+  {
+    path: '/meeting',
+    name: 'MeetingPage',
+    component: MeetingPage
   },
 
 ]
