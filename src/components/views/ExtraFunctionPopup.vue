@@ -10,25 +10,22 @@
               <div>
 
 
-                <div style="height: 100px"></div>
+                <div style="height: 200px"></div>
 
                 <div class="center-horizontal">
-                  <img src="../../assets/emergency-icon.svg" style="width: 200px"/>
-                </div>
-                <div class="center-horizontal">
-                  <h1 class="red">Emergency Meeting</h1>
-                </div>
-                <div class="center-horizontal">
-                  <h1>von {{caller}}</h1>
+                  <UIButton title="Abbrechen" @click="onClose"/>
                 </div>
 
-                <div v-if="youCaller">
-                  <div class="center-horizontal">
-                    <UIButton title="Meeting starten" @click="onStart"/>
-                  </div>
-                  <div class="center-horizontal">
-                    <p>Warte bis alle Spieler sich versammelt haben und starte dann erst das Meeting</p>
-                  </div>
+                <div style="height: 40px"></div>
+
+                <div class="center-horizontal">
+                  <UIButton title="Leinwand" @click="onLeinwand"/>
+                </div>
+
+                <div style="height: 20px"></div>
+
+                <div class="center-horizontal">
+                  <UIButton title="PC Sabotage" @click="onPc"/>
                 </div>
 
               </div>
@@ -47,16 +44,14 @@
 import UIButton from "@/components/views/UIButton.vue";
 
 export default {
-  name: "EmergencyPopup",
+  name: "ExtraFunctionPopup",
   components: {UIButton},
 
   props: {
     show: Boolean,
-    caller: String,
   },
   data(){
     return{
-      youCaller: false
     }
   },
 
@@ -69,23 +64,17 @@ export default {
 
   },
 
-  updated() {
-    console.log(this.caller === this.getCookies("username"))
-    console.log("caller: " + this.caller + " username: " + this.getCookies("username"))
-    if(this.caller === this.getCookies("username")){
-      this.youCaller = true
-    }else{
-      this.youCaller = false
-    }
-  },
-
   methods: {
-    onStart(){
-      this.$emit("start")
+    onLeinwand(){
+      this.$emit("leinwand")
     },
 
-    onClickStart(){
+    onPc(){
+      this.$emit("pc")
+    },
 
+    onClose(){
+      this.$emit("close")
     },
 
     getCookies(key){

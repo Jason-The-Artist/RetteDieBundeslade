@@ -1,7 +1,13 @@
 <template>
   <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
-  <div class="center-horizontal">
+  <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
     <UIButton title="Emergency Meeting" @click="emergMeeting"/>
+  </div>
+  <div class="center-horizontal" v-if="killed === 'true'">
+    <h2 class="red">Du bist nun ein Geist</h2>
+  </div>
+  <div class="center-horizontal" v-else-if="hasMeetingsLeft === 'false'">
+    <h2 class="red">Du hast keine Meetings übrig</h2>
   </div>
   <div style="height: 20px"></div>
 
@@ -42,7 +48,9 @@ export default {
           torchEnabled: false,
           paused: false,
           emergVis: false,
-          emergCaller: "Jason"
+          emergCaller: "Jason",
+          killed: "false",
+          hasMeetingsLeft: "true"
         };
     },
 
@@ -50,6 +58,13 @@ export default {
 
     },
     mounted() {
+      if(this.getCookies("killed") !== null){
+        this.killed = this.getCookies("killed")
+      }
+      if(this.getCookies("hasMeetings") !== null){
+        this.killed = this.getCookies("killed")
+      }
+
       this.baseURI = document.baseURI.split("#")[0] + "#"
 
         if(this.getCookies("host") === "true"){
@@ -87,6 +102,9 @@ export default {
             this.emergVis = true
           }else if(message.func === "startMeeting"){
             this.$router.push('/meeting');
+          }else if(message.func === "noMeetingsLeft"){
+            this.hasMeetingsLeft = "false"
+            this.setCookies("meetingsLeft", "false")
           }
         });
 

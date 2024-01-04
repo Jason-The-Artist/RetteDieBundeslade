@@ -19,6 +19,15 @@
         <h2 class="white">Anzahl der Impostor</h2>
         <input ref="input" class="small-input text-color texture" value="1">
       </div>
+      <div class="center-horizontal">
+        <h2 class="white">Rausvoterolle sichtbar</h2>
+        <div style="width: 20px"></div>
+        <input type="checkbox" ref="rausvote" checked style="width: 25px">
+      </div>
+      <div class="center-horizontal center">
+        <h2 class="white">Emergency Meetings</h2>
+        <input ref="emerginput" class="small-input text-color texture" value="1">
+      </div>
       <h2 class="red">{{errorText}}</h2>
     </div>
   </div>
@@ -62,6 +71,7 @@ export default {
 
     },
     mounted() {
+      this.setCookies("killed", "false")
       this.baseURI = document.baseURI.split("#")[0] + "#"
 
         if(this.getCookies("host") === "true"){
@@ -142,26 +152,51 @@ export default {
 
       onClickStart(){
         if(this.names.length > 0){
-          if(this.$refs.input.value !== ""){
-            let checker = Number(this.$refs.input.value)
-            if(isNaN(checker)){
-              this.errorText = "Du musst eine Zahl eingeben"
-            }else if(checker < 1){
-              this.errorText = "Du brauchst mindestes 1 Impostor"
-            }else{
+          if(this.checkImposterInput()){
+            if(this.checkMeetingsInput()){
               let dat = {
                 type: "engine",
                 func: "start",
-                args: [this.$refs.input.value]
+                args: [this.$refs.input.value, this.$refs.rausvote.checked, this.$refs.emerginput.value]
               }
               this.send(dat);
             }
-          }else{
-            this.errorText = "Du musst die Anzahl der Impostors setzen"
           }
         }else{
           this.errorText = "Man braucht mindestens 4 Spieler"
         }
+      },
+
+      checkMeetingsInput(){
+        if(this.$refs.emerginput.value === ""){
+          this.errorText = "Du musst die Anzahl der Meetings setzen"
+          return false
+        }
+        let checker = Number(this.$refs.emerginput.value)
+        if(isNaN(checker)){
+          this.errorText = "Du musst bei Meetings eine Zahl eingeben"
+          return false
+        }else if(checker < 1){
+          this.errorText = "Du brauchst mindestes 1 Meeting"
+          return false
+        }
+        return true
+      },
+
+      checkImposterInput(){
+        if(this.$refs.input.value === ""){
+          this.errorText = "Du musst die Anzahl der Imposters setzen"
+          return false
+        }
+        let checker = Number(this.$refs.input.value)
+        if(isNaN(checker)){
+          this.errorText = "Du musst beim Imposter eine Zahl eingeben"
+          return false
+        }else if(checker < 1){
+          this.errorText = "Du brauchst mindestes 1 Impostor"
+          return false
+        }
+        return true
       },
 
       eventClose(){

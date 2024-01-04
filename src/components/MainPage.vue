@@ -1,4 +1,6 @@
 <template>
+  <ExtraFunctionPopup :show="extraShow" @leinwand="onLeinwand" @pc="onPc" @close="onExtraClose"/>
+
 <div class="center-horizontal full-size">
     <div>
       <div style="height: 100px"></div>
@@ -38,11 +40,12 @@
 
 
 <script>
-import UIButton from "@/components/views/UIButton.vue";
+import UIButton from "@/components/views/UIButton.vue"
+import ExtraFunctionPopup from "@/components/views/ExtraFunctionPopup.vue";
 
 export default {
     name: "Register",
-  components: {UIButton},
+  components: {ExtraFunctionPopup, UIButton},
     data() {
         return {
             username: "",
@@ -52,6 +55,7 @@ export default {
             unableMessage: "",
             clicked: false,
           isStarted: false,
+          extraShow: false,
         };
     },
 
@@ -152,6 +156,19 @@ export default {
         console.log("decoded")
       },
 
+      onLeinwand(){
+          this.onExtraClose()
+        this.$router.push('/leinwand');
+      },
+
+      onPc(){
+          this.onExtraClose()
+      },
+
+      onExtraClose(){
+          this.extraShow = false
+      },
+
       addPlayer(){
         const message = {
           type: "register",
@@ -222,7 +239,7 @@ export default {
       },
 
       onClickControl(){
-
+          this.extraShow = true
       },
 
       onClickRoom(){

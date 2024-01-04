@@ -32,7 +32,7 @@ export default {
           names: [],
           confirmShow: false,
           activeClickedPlayer: "Jason",
-          alreadyVoted: false
+          alreadyVoted: false,
         };
     },
 
@@ -113,6 +113,15 @@ export default {
             nextTick().then(() =>{
               this.names = names1
             })
+
+          }else if(message.func === "normalScreen"){
+
+            this.$router.push('/overlay');
+
+          }
+          else if(message.func === "killedByMeeting"){
+
+            this.setCookies("killed", "true")
 
           }
         });
