@@ -26,6 +26,11 @@
     max-width: 463px;
 }
 
+.role-image{
+    width: 90vw;
+    max-width: 700px;
+}
+
 .karte-leinwand{
     max-width: 463px;
     max-height: 90vh;
@@ -41,6 +46,10 @@
 
 .shadow-green{
     box-shadow: 0px 0px 20px #00ff00;
+}
+
+.shadow-blue{
+    box-shadow: 0px 0px 20px #00f2ff;
 }
 
 .voted-color{

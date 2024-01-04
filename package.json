@@ -17,6 +17,7 @@
     "axios": "^1.6.3",
     "qrcode-reader-vue3": "^3.1.2",
     "qrcode-vue3": "^1.6.8",
+    "sass": "^1.69.7",
     "vue": "^3.3.11",
     "vue-cookies": "^1.8.3",
     "vue-media-recorder": "^0.1.25",

@@ -72,6 +72,8 @@ export default {
     },
     mounted() {
       this.setCookies("killed", "false")
+      this.setCookies("meetingsLeft", "true")
+      this.setCookies("overlayMode", "1")
       this.baseURI = document.baseURI.split("#")[0] + "#"
 
         if(this.getCookies("host") === "true"){
@@ -130,6 +132,14 @@ export default {
             })
 
           }else if(message.func === "start"){
+            let imposters = message.imposters
+            let isImposter = "false"
+            for(let i = 0; i < imposters.length; i++){
+              if(imposters[i] === this.getCookies("username")){
+                isImposter = "true"
+              }
+            }
+            this.setCookies("imposter", isImposter)
             this.startGame()
 
           }else if(message.func === "removed"){

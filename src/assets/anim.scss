@@ -1,0 +1,26 @@
+.show-page{
+  animation: showPage 2s forwards;
+}
+
+.hide-page{
+  animation: hidePage 0.5s forwards;
+}
+
+
+@keyframes showPage {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hidePage {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -1,33 +1,43 @@
 <template>
-  <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
-  <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
-    <UIButton title="Emergency Meeting" @click="emergMeeting"/>
-  </div>
-  <div class="center-horizontal" v-if="killed === 'true'">
-    <h2 class="red">Du bist nun ein Geist</h2>
-  </div>
-  <div class="center-horizontal" v-else-if="hasMeetingsLeft === 'false'">
-    <h2 class="red">Du hast keine Meetings übrig</h2>
-  </div>
-  <div style="height: 20px"></div>
 
-  <div class="center-horizontal">
-    <div class="video" v-if="!paused">
-      <qrcode-stream @detect="onDetect" :paused="paused"></qrcode-stream>
+  <div v-if="mode === 1">
+    <div class="show-page center-horizontal">
+      <img src="../assets/imposter.png" class="role-image" v-if="imposter"/>
+      <img src="../assets/crewmate.png" class="role-image" v-else/>
     </div>
   </div>
 
-  <div style="height: 20px"></div>
+  <div v-if="mode === 2">
+    <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
+    <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
+      <UIButton title="Emergency Meeting" @click="emergMeeting"/>
+    </div>
+    <div class="center-horizontal" v-if="killed === 'true'">
+      <h2 class="red">Du bist nun ein Geist</h2>
+    </div>
+    <div class="center-horizontal" v-else-if="hasMeetingsLeft === 'false'">
+      <h2 class="red">Du hast keine Meetings übrig</h2>
+    </div>
+    <div style="height: 20px"></div>
 
-  <div class="center-horizontal">
-    <UIButton title="Karte" @click="openKarte"/>
+    <div class="center-horizontal">
+      <div class="video" v-if="!paused">
+        <qrcode-stream @detect="onDetect" :paused="paused" :class="imposter ? 'shadow-red' : 'shadow-blue'"></qrcode-stream>
+      </div>
+    </div>
+
+    <div style="height: 20px"></div>
+
+    <div class="center-horizontal">
+      <UIButton title="Karte" @click="openKarte"/>
+    </div>
+
+    <h2>Aufgaben:</h2>
+    <p>Fix Wiring</p>
+    <p>Empty Garbage</p>
+    <p>Clean Vent</p>
+    <p>Swipe Card</p>
   </div>
-
-  <h2>Aufgaben:</h2>
-  <p>Fix Wiring</p>
-  <p>Empty Garbage</p>
-  <p>Clean Vent</p>
-  <p>Swipe Card</p>
 
 
 </template>
@@ -50,7 +60,9 @@ export default {
           emergVis: false,
           emergCaller: "Jason",
           killed: "false",
-          hasMeetingsLeft: "true"
+          hasMeetingsLeft: "true",
+          mode: 0,
+          imposter: false
         };
     },
 
@@ -61,8 +73,29 @@ export default {
       if(this.getCookies("killed") !== null){
         this.killed = this.getCookies("killed")
       }
-      if(this.getCookies("hasMeetings") !== null){
-        this.killed = this.getCookies("killed")
+      if(this.getCookies("meetingsLeft") !== null){
+        this.hasMeetingsLeft = this.getCookies("meetingsLeft")
+      }
+      if(this.getCookies("imposter") === "true"){
+        this.imposter = true
+      }else{
+        this.imposter = false
+      }
+      if(this.getCookies("overlayMode") !== null){
+        let om = this.getCookies("overlayMode")
+        if(om === "1"){
+          this.mode = 1
+        }else if(om === "2"){
+          this.mode = 2
+        }
+      }else{
+        this.mode = 1
+      }
+      if(this.mode === 1){
+        setTimeout(() => {
+          this.mode = 2
+          this.setCookies("overlayMode", "2")
+        },4000)
       }
 
       this.baseURI = document.baseURI.split("#")[0] + "#"
@@ -92,7 +125,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)

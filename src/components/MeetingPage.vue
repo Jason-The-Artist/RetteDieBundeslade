@@ -64,7 +64,7 @@ export default {
 
           dat = {
             type: "ping",
-            func: "getPlayers"
+            func: "getPlayersAdvanced"
           };
           this.send(dat);
 
@@ -85,13 +85,15 @@ export default {
 
             let allPlayers = message.players
             for(let i = 0; i < allPlayers.length; i++){
-              let dat = {
-                name: allPlayers[i],
-                isVoted: false,
-                dead: false,
-                gaveVote: false
+              if(!allPlayers[i].dead){
+                let dat = {
+                  name: allPlayers[i].player,
+                  isVoted: false,
+                  dead: false,
+                  gaveVote: false
+                }
+                this.names.push(dat)
               }
-              this.names.push(dat)
             }
 
             let names1 = this.names

@@ -201,7 +201,7 @@ export default {
             this.mode = 2
             let dat = {
               type: "ping",
-              func: "getPlayersLeinwand"
+              func: "getPlayersAdvancedLeinwand"
             };
             this.send(dat);
           }else if(message.func === "allPlayers"){
@@ -211,8 +211,8 @@ export default {
             let allPlayers = message.players
             for(let i = 0; i < allPlayers.length; i++){
               let dat = {
-                name: allPlayers[i],
-                dead: false,
+                name: allPlayers[i].player,
+                dead: allPlayers[i].dead,
                 gaveVote: false,
                 votes: ""
               }
