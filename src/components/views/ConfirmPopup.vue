@@ -13,7 +13,7 @@
                 <div style="height: 200px"></div>
 
                 <div class="center-horizontal">
-                  <h2 class="text-center">Möchtest du wirklich {{vote}} wählen?</h2>
+                  <h2 class="text-center">{{text}}</h2>
                 </div>
 
                 <div class="center-horizontal">
@@ -54,12 +54,12 @@
 import UIButton from "@/components/views/UIButton.vue";
 
 export default {
-  name: "ConfirmVotePopup",
+  name: "ConfirmPopup",
   components: {UIButton},
 
   props: {
     show: Boolean,
-    vote: String,
+    text: String
   },
   data(){
     return{

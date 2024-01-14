@@ -1,4 +1,6 @@
 <template>
+  <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Möchtest du wirklich ein Meeting starten?"/>
+  <ConfirmPopup :show="confirmKilledShow" @yes="yesSelectedKill" @no="noSelected" text="Bist du wirklich gestorben?"/>
 
   <div v-if="mode === 1">
     <div class="show-page center-horizontal">
@@ -10,7 +12,8 @@
   <div v-if="mode === 2">
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
     <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
-      <UIButton title="Emergency Meeting" @click="emergMeeting"/>
+      <UIButton title="Sabotage" @click="onSabotage" v-if="imposter"/>
+      <UIButton title="Ich bin gestorben!" @click="onKilled" v-else/>
     </div>
     <div class="center-horizontal" v-if="killed === 'true'">
       <h2 class="red">Du bist nun ein Geist</h2>
@@ -20,9 +23,23 @@
     </div>
     <div style="height: 20px"></div>
 
-    <div class="center-horizontal">
+    <div class="center-horizontal" v-if="!killedQR">
       <div class="video" v-if="!paused">
         <qrcode-stream @detect="onDetect" :paused="paused" :class="imposter ? 'shadow-red' : 'shadow-blue'"></qrcode-stream>
+      </div>
+      <div class="video" v-else>
+      </div>
+    </div>
+    <div class="center-horizontal" v-else>
+      <div class="video center-horizontal">
+        <v-qrcode
+            :text="killedQRText"
+            :size="calculateQRCodeSize()"
+            :render="RenderOptions.CANVAS"
+            :correct-level="ErrorCorrectLevel.M"
+            color-dark="#000000"
+            color-light="#ffffff"
+        />
       </div>
     </div>
 
@@ -39,6 +56,30 @@
     <p>Swipe Card</p>
   </div>
 
+  <div v-if="mode === 3">
+    <div class="center-horizontal">
+      <h1 class="red">Die Imposters haben gewonnen!</h1>
+    </div>
+    <div class="center-horizontal" v-if="host">
+      <UIButton title="Neues Spiel" @click="newGame"/>
+    </div>
+    <div class="center-horizontal" v-else>
+      <p class="text-color">Warte auf den Host...</p>
+    </div>
+  </div>
+
+  <div v-if="mode === 4">
+    <div class="center-horizontal">
+      <h1 class="blue">Die Crewmates haben gewonnen!</h1>
+    </div>
+    <div class="center-horizontal" v-if="host">
+      <UIButton title="Neues Spiel" @click="newGame"/>
+    </div>
+    <div class="center-horizontal" v-else>
+      <p class="text-color">Warte auf den Host...</p>
+    </div>
+  </div>
+
 
 </template>
 
@@ -48,10 +89,21 @@ import EventBus from "./code/EventBusEvent";
 import {nextTick} from "vue";
 import UIButton from "@/components/views/UIButton.vue";
 import EmergencyPopup from "@/components/views/EmergencyPopup.vue";
+import {QRController} from "./code/QRController";
+import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
+import {ErrorCorrectLevel, RenderOptions} from "qrcode-vuejs";
 
 export default {
     name: "MainOverlayPage",
-    components: {EmergencyPopup, UIButton},
+  computed: {
+    ErrorCorrectLevel() {
+      return ErrorCorrectLevel
+    },
+    RenderOptions() {
+      return RenderOptions
+    }
+  },
+    components: {EmergencyPopup, UIButton, ConfirmPopup},
     data() {
         return {
           qrText: "nothing",
@@ -62,19 +114,47 @@ export default {
           killed: "false",
           hasMeetingsLeft: "true",
           mode: 0,
-          imposter: false
+          imposter: false,
+          qrc: null,
+          confirmShow: false,
+          confirmKilledShow: false,
+          killedQR: false,
+          killedQRText: "",
+          host: false
         };
     },
 
     created() {
+      this.qrc = new QRController()
+
+
+
+      EventBus.addEventListener('toMainOverlay', (event) => {
+        let data = JSON.parse(event.data)
+        if(data.func === "openMeeting"){
+          if(this.killed === "false" && this.hasMeetingsLeft === "true"){
+            this.confirmShow = true
+            this.paused = true
+          }
+        }
+      })
 
     },
     mounted() {
+      let killedDat = {
+        func: "killed",
+        player: this.getCookies("username")
+      }
+      this.killedQRText = JSON.stringify(killedDat)
+      this.paused = false
       if(this.getCookies("killed") !== null){
         this.killed = this.getCookies("killed")
       }
       if(this.getCookies("meetingsLeft") !== null){
         this.hasMeetingsLeft = this.getCookies("meetingsLeft")
+      }
+      if(this.getCookies("host") === "true"){
+        this.isHost = true
       }
       if(this.getCookies("imposter") === "true"){
         this.imposter = true
@@ -138,6 +218,10 @@ export default {
           }else if(message.func === "noMeetingsLeft"){
             this.hasMeetingsLeft = "false"
             this.setCookies("meetingsLeft", "false")
+          }else if(message.func === "impostersWon"){
+            this.mode = 3
+          }else if(message.func === "crewmatesWon"){
+            this.mode = 4
           }
         });
 
@@ -159,13 +243,10 @@ export default {
         try {
           const result = await resultPromise;
           this.qrText = result.content;
+          this.qrc.onQRScanned(this.qrText)
         } catch (error) {
           console.error('Fehler beim Decodieren des QR-Codes:', error);
         }
-        this.paused = true
-        setTimeout(() => {
-          this.paused = false
-        },500)
       },
 
       emergMeeting(){
@@ -175,6 +256,19 @@ export default {
           args: [this.getCookies("username")]
         };
         this.send(dat);
+      },
+
+      onKilled(){
+        this.confirmKilledShow = true
+      },
+
+      submitKilled(){
+        this.killedQR = true
+        let dat = {
+          type: "engine",
+          func: "gotKilled",
+          args: [this.getCookies("username")]
+        }
       },
 
       openKarte(){
@@ -187,6 +281,38 @@ export default {
           func: "startMeeting"
         };
         this.send(dat);
+      },
+
+      yesSelected(){
+        this.emergMeeting()
+        this.confirmShow = false
+      },
+
+      yesSelectedKill(){
+        this.submitKilled()
+        this.confirmKilledShow = false
+      },
+
+      noSelected(){
+        this.confirmShow = false
+        this.confirmKilledShow = false
+        this.paused = false
+      },
+
+      calculateQRCodeSize() {
+        const scaleFactor = 0.9;
+        const maxWidth = window.innerWidth * scaleFactor;
+        const maxHeight = window.innerHeight * scaleFactor;
+        let num = Math.min(maxWidth, maxHeight)
+        if(num > 500){
+          return 500
+        }else{
+          return num
+        }
+      },
+
+      newGame(){
+
       },
 
 

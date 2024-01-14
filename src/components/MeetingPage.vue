@@ -1,5 +1,5 @@
 <template>
-  <ConfirmVotePopup :show="confirmShow" @yes="yesSelected" @no="noSelected" :vote="activeClickedPlayer"/>
+  <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" :text="'Möchtest du wirklich ' + activeClickedPlayer + ' wählen?'"/>
 
   <div class="center-horizontal flex-wrap">
     <PlayerMeetingView
@@ -21,12 +21,12 @@
 import EventBus from "./code/EventBusEvent";
 import {nextTick} from "vue";
 import UIButton from "@/components/views/UIButton.vue";
-import ConfirmVotePopup from "@/components/views/ConfirmVotePopup.vue";
+import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
 import PlayerMeetingView from "@/components/views/PlayerMeetingView.vue";
 
 export default {
     name: "MeetingPage",
-    components: {PlayerMeetingView, ConfirmVotePopup},
+    components: {PlayerMeetingView, ConfirmPopup},
     data() {
         return {
           names: [],

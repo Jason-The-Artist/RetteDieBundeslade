@@ -6,6 +6,7 @@ import MainOverlayPage from "@/components/MainOverlayPage.vue";
 import KartePage from "@/components/KartePage.vue";
 import MeetingPage from "@/components/MeetingPage.vue";
 import LeinwandPage from "@/components/LeinwandPage.vue";
+import QRGenerator from "@/components/QRGenerator.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/leinwand',
     name: 'LeinwandPage',
     component: LeinwandPage
+  },
+  {
+    path: '/qr',
+    name: 'QRGenerator',
+    component: QRGenerator
   },
 
 ]

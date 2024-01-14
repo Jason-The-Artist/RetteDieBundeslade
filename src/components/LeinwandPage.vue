@@ -81,7 +81,22 @@
         <h1>Gleichstand! Keiner stirbt!</h1>
       </div>
     </div>
+  </div>
 
+  <div v-else-if="mode === 5" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal">
+        <h1 class="red">Die Imposters haben gewonnen!</h1>
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="mode === 6" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal">
+        <h1 class="blue">Die Crewmates haben gewonnen!</h1>
+      </div>
+    </div>
   </div>
 
 
@@ -271,6 +286,10 @@ export default {
           }else if(message.func === "tieScreen"){
             this.mode = 4
 
+          }else if(message.func === "impostersWon"){
+            this.mode = 5
+          }else if(message.func === "crewmatesWon"){
+            this.mode = 6
           }
         });
 
