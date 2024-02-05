@@ -13,7 +13,9 @@
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
     <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
       <UIButton title="Sabotage" @click="onSabotage" v-if="imposter"/>
-      <UIButton title="Ich bin gestorben!" @click="onKilled" v-else/>
+      <div v-else class="center-horizontal">
+        <UIButton title="Ich bin gestorben!" @click="onKilled" v-if="!killedQR"/>
+      </div>
     </div>
     <div class="center-horizontal" v-if="killed === 'true'">
       <h2 class="red">Du bist nun ein Geist</h2>
@@ -31,15 +33,18 @@
       </div>
     </div>
     <div class="center-horizontal" v-else>
-      <div class="video center-horizontal">
-        <v-qrcode
-            :text="killedQRText"
-            :size="calculateQRCodeSize()"
-            :render="RenderOptions.CANVAS"
-            :correct-level="ErrorCorrectLevel.M"
-            color-dark="#000000"
-            color-light="#ffffff"
-        />
+      <div class="video center">
+        <div>
+          <v-qrcode
+              style="border: solid 10px #969696"
+              :text="killedQRText"
+              :size="calculateQRCodeSize()"
+              :render="RenderOptions.CANVAS"
+              :correct-level="ErrorCorrectLevel.M"
+              color-dark="#000000"
+              color-light="#ffffff"
+          />
+        </div>
       </div>
     </div>
 
@@ -92,6 +97,7 @@ import EmergencyPopup from "@/components/views/EmergencyPopup.vue";
 import {QRController} from "./code/QRController";
 import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
 import {ErrorCorrectLevel, RenderOptions} from "qrcode-vuejs";
+import PlayerMeetingLeinwandView from "@/components/views/PlayerMeetingLeinwandView.vue";
 
 export default {
     name: "MainOverlayPage",
@@ -103,7 +109,7 @@ export default {
       return RenderOptions
     }
   },
-    components: {EmergencyPopup, UIButton, ConfirmPopup},
+    components: {PlayerMeetingLeinwandView, EmergencyPopup, UIButton, ConfirmPopup},
     data() {
         return {
           qrText: "nothing",
@@ -120,7 +126,7 @@ export default {
           confirmKilledShow: false,
           killedQR: false,
           killedQRText: "",
-          host: false
+          host: false,
         };
     },
 
@@ -154,7 +160,7 @@ export default {
         this.hasMeetingsLeft = this.getCookies("meetingsLeft")
       }
       if(this.getCookies("host") === "true"){
-        this.isHost = true
+        this.host = true
       }
       if(this.getCookies("imposter") === "true"){
         this.imposter = true
@@ -222,6 +228,8 @@ export default {
             this.mode = 3
           }else if(message.func === "crewmatesWon"){
             this.mode = 4
+          }else if(message.func === "gotKicked"){
+            this.$router.push("/")
           }
         });
 
@@ -312,7 +320,11 @@ export default {
       },
 
       newGame(){
-
+        let dat = {
+          type: "engine",
+          func: "clearGame"
+        }
+        this.send(dat)
       },
 
 

@@ -290,6 +290,8 @@ export default {
             this.mode = 5
           }else if(message.func === "crewmatesWon"){
             this.mode = 6
+          }else if(message.func === "gotKicked"){
+            this.$router.push("/")
           }
         });
 
@@ -298,9 +300,20 @@ export default {
     beforeUnmount() {
       window.removeEventListener('beforeunload', this.eventClose);
     },
+  unmounted() {
+      this.eventClose()
+  },
 
 
-    methods: {
+  methods: {
+
+      eventClose(){
+        let dat = {
+          type: "register",
+          func: "removeLeinwand"
+        }
+        this.send(dat)
+      },
 
       send(data){
         this.socket.send(JSON.stringify(data))

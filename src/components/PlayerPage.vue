@@ -16,6 +16,10 @@
       </div>
 
       <div class="center-horizontal center">
+        <h3 class="green" v-if="supportLeinwand">Leinwand wird unterstützt</h3>
+        <h3 class="red" v-else>Leinwand wird nicht unterstützt</h3>
+      </div>
+      <div class="center-horizontal center">
         <h2 class="white">Anzahl der Impostor</h2>
         <input ref="input" class="small-input text-color texture" value="1">
       </div>
@@ -64,6 +68,7 @@ export default {
             isHost: false,
             socket: null,
           errorText: "",
+          supportLeinwand: false
         };
     },
 
@@ -101,6 +106,12 @@ export default {
           };
           this.send(dat);
 
+          dat = {
+            type: "register",
+            func: "isLeinwand"
+          };
+          this.send(dat);
+
 
 
         });
@@ -109,7 +120,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
@@ -144,6 +155,9 @@ export default {
 
           }else if(message.func === "removed"){
             this.onClickLeave()
+          }else if(message.func === "leinwandStatus"){
+            let status = message.status
+            this.supportLeinwand = status
           }
         });
 

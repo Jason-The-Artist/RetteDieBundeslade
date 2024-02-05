@@ -1,7 +1,7 @@
 <template>
   <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" :text="'Möchtest du wirklich ' + activeClickedPlayer + ' wählen?'"/>
 
-  <div class="center-horizontal flex-wrap">
+  <div class="center-horizontal flex-wrap" v-if="mode === 0">
     <PlayerMeetingView
         v-for="(dat) in names"
         :name="dat.name"
@@ -11,6 +11,43 @@
         :dead="dat.dead"
         :gaveVote="dat.gaveVote"
     />
+  </div>
+
+  <div v-else-if="mode === 1">
+    <div class="center-horizontal flex-wrap">
+      <PlayerMeetingRevealView
+          v-for="(dat) in names"
+          :name="dat.name"
+          :dead="dat.dead"
+          :gaveVote="dat.gaveVote"
+          :votes="dat.votes"
+      />
+    </div>
+
+  </div>
+
+  <div v-else-if="mode === 2" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal flex-wrap">
+        <PlayerMeetingLeinwandView
+            :name="votedPlayer"
+            :dead="true"
+        />
+      </div>
+
+      <div class="center-horizontal">
+        <h1 v-if="role !== ''">Die Rolle war: {{role}}</h1>
+      </div>
+    </div>
+
+  </div>
+
+  <div v-else-if="mode === 3" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal">
+        <h1>Gleichstand! Keiner stirbt!</h1>
+      </div>
+    </div>
   </div>
 
 
@@ -23,16 +60,21 @@ import {nextTick} from "vue";
 import UIButton from "@/components/views/UIButton.vue";
 import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
 import PlayerMeetingView from "@/components/views/PlayerMeetingView.vue";
+import PlayerMeetingLeinwandView from "@/components/views/PlayerMeetingLeinwandView.vue";
+import PlayerMeetingRevealView from "@/components/views/PlayerMeetingRevealView.vue";
 
 export default {
     name: "MeetingPage",
-    components: {PlayerMeetingView, ConfirmPopup},
+    components: {PlayerMeetingRevealView, PlayerMeetingLeinwandView, PlayerMeetingView, ConfirmPopup},
     data() {
         return {
           names: [],
           confirmShow: false,
           activeClickedPlayer: "Jason",
           alreadyVoted: false,
+          mode: 0,
+          votedPlayer: "",
+          role: ""
         };
     },
 
@@ -124,6 +166,36 @@ export default {
           else if(message.func === "killedByMeeting"){
 
             this.setCookies("killed", "true")
+
+          }else if(message.func === "revealVotes"){
+            this.mode = 1
+            let playerData = message.data
+
+            for(let i = 0; i < this.names.length; i++){
+              for(let j = 0; j < playerData.length; j++){
+                let data = playerData[j]
+                if(this.names[i].name === data.player){
+                  this.names[i].votes = data.votes
+                }
+              }
+            }
+
+            let names1 = this.names
+            this.names = []
+            nextTick().then(() =>{
+              this.names = names1
+            })
+
+          }else if(message.func === "deadScreen"){
+            this.votedPlayer = message.player
+            let role = message.role
+            if(role !== "null"){
+              this.role = role
+            }
+            this.mode = 2
+
+          }else if(message.func === "tieScreen"){
+            this.mode = 3
 
           }
         });

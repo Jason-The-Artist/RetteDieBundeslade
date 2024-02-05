@@ -80,13 +80,13 @@ export default {
         this.socket.addEventListener('open', (event) => {
           this.unableMessage = ""
 
-          let dat = {
+          /*let dat = {
             type: "register",
             func: "removePlayer",
             player: this.getCookies("username"),
             pb: this.getCookies("pb")
           }
-          this.socket.send(JSON.stringify(dat));
+          this.socket.send(JSON.stringify(dat));*/
 
           const message = {
             type: "ping",
