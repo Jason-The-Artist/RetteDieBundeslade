@@ -1,0 +1,48 @@
+G0:
+
+t1: scanne für ein weiteren Ort
+t2: download (seniorenraum) 
+t3: start reactor (simon says)
+t4: nummern eingeben 1-10 
+t5: medbay: inspect sample mit zeit
+t6: empyt garbage (spot 1)
+t7: download (eingang)
+t8: matheaufgabe (2 setllig + 2 stellig)
+t9: drücke 10 mal auf einen Button
+t10: download (Garderobe)
+
+
+G1:
+
+t1: rechter engine uel engine
+t2: scanne für ein weiteren Ort
+t3: linker engine für fuel engine
+t4: download (kleiner saal)
+t5: schere stein papier gegen bot
+t6: empty garbage (spot 2)
+t7: donwload (flur)
+t8: fuel engine
+t9: würfel eine 6
+t10: upload
+t11: drehe dich 5 mal im Kreis
+t12: scan (medbay)
+s1: code eingeben für sabotage keine Meetings
+s2: code eingeben
+
+
+G2:
+
+t1: scanne für ein weiteren Ort
+t2: bait (20% wahrscheinlichkeit für task vollendet [404 Task not found])
+t3: reCapture (bilder anklicken)
+t4: download (flur)
+t5: repair shields
+t6: baue eine pyramide (6 Becher)
+t7: download (Pfadiraum)
+t8: download (12-15J)
+t9: löse das kleine 1 mal 1 (1-10 mal 1-10)
+t10: donwload (Kinderraum)
+t11: drücke 20 mal auf einen Button
+t12: lege dich für 10 sekunden auf die matratze
+t13: 5 Kniebeugen
+s1: text eingeben "reparieren" für sabotage keine Task
