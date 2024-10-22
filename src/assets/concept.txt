@@ -1,48 +1,59 @@
+Concept:
+Basis Among us,
+Unterschiede:
+Bibelkontext auf Basis 1. Samuel 4, 11. Die Bundeslade wurde von den Philister
+gestohlen und wir als Israeliten müssen die Bundeslade zurückholen.
+Die Philister sind die Imposter und versuche dies zu verhindern. 
+Bevor eine Task anfängt, gibt es immer ein start screen der die task erklärt und
+ein Start button hat sobald man bereit ist
+
+
+Tasks:
 G0:
 
-t1: scanne für ein weiteren Ort
-t2: download (seniorenraum) 
-t3: start reactor (simon says)
-t4: nummern eingeben 1-10 
-t5: medbay: inspect sample mit zeit
-t6: empyt garbage (spot 1)
-t7: download (eingang)
-t8: matheaufgabe (2 setllig + 2 stellig)
-t9: drücke 10 mal auf einen Button
-t10: download (Garderobe)
+t1: [enable power] scanne für ein weiteren Ort
+t2: [fix wiring] Israels Mauer reparieren (steine Richtig anordnen) (seniorenraum) 
+t3: [start reactor] Schriftrollen im Angebot (Es gibt ein Händler und er sagt dir welche Bücher der Bibel im Angebot sind und du musst das wiederholen)
+t4: [reactor numbers from 1-10] Bücher Reinfolge (Tippe die Bücher der Bibel in der Richtigen Reinfolge an)
+t5: [inspect sample] Schriftrollen untersuchen (du hast schriftrollen im wasser gefunden, lasse sie trocknen und komme in 1min wieder....welche der schriftrollen ist nicht biblisch (alles sind bibelzitate außer eine))
+t6: [empyt garbage (spot 1)] Götzen entfernen (du hast götzen im haus, schmeiße sie weg)
+t7: [download] nachricht an Samuel (Ein Israelit hat ein Brief für Samuel, überreiche Samuel den Brief (Treffpunkt: G1 t10))
+t8: preis Ausrechnen (du hast hunger und willst xLiter Wasser und xMänge brot kaufen, wie viel wird dich das kosten?)
+t9: Wand kaputt machen (diese Wand der Philister blokiert dir den weg, schlage 10 mal um sie kaputt zu machen)
+t10: [download (Garderobe)] (wie t7)
 
 
 G1:
 
-t1: rechter engine uel engine
-t2: scanne für ein weiteren Ort
-t3: linker engine für fuel engine
-t4: download (kleiner saal)
-t5: schere stein papier gegen bot
-t6: empty garbage (spot 2)
-t7: donwload (flur)
-t8: fuel engine
-t9: würfel eine 6
-t10: upload
-t11: drehe dich 5 mal im Kreis
-t12: scan (medbay)
+t1: [rechter fuel engine] Öl für Öllampe (die Öllampe hat kein Öl mehr, hole Öl für die Öllampe (Ölstation: t8))
+t2: [enable power] scanne für ein weiteren Ort
+t3: [linker fuel engine] (wie t1)
+t4: [download (kleiner saal)] (wie G0 t7)
+t5: schere stein papier gegen Anwohner (ein Anwohner lässt dich nicht weiter gehen außer du gewinnst gegen ihn)
+t6: [empty garbage (spot 2)] (wie: G0 t6)
+t7: [donwload (flur)] (wie G0 t7)
+t8: [fuel engine] Ölstation
+t9: würfel eine 6 (dir ist langweilig, deswegen versuchst du eine 6 zu würfeln)
+t10: [upload] Samuels Treffpunkt
+t11: Schweigegeld (ein Anwohner will dich an die Philister verpetzen, gebe ihm schweigegeld)
+t12: [scan (medbay)] Philister Check (Setze dich hin solange du gecheckt wirst ob du ein Philister bist für 10 sec. (Das ergebnis ist immer dass er kein Philister ist))
 s1: code eingeben für sabotage keine Meetings
 s2: code eingeben
 
 
 G2:
 
-t1: scanne für ein weiteren Ort
-t2: bait (20% wahrscheinlichkeit für task vollendet [404 Task not found])
-t3: reCapture (bilder anklicken)
-t4: download (flur)
-t5: repair shields
-t6: baue eine pyramide (6 Becher)
-t7: download (Pfadiraum)
-t8: download (12-15J)
-t9: löse das kleine 1 mal 1 (1-10 mal 1-10)
-t10: donwload (Kinderraum)
-t11: drücke 20 mal auf einen Button
-t12: lege dich für 10 sekunden auf die matratze
-t13: 5 Kniebeugen
+t1: [enable power] scanne für ein weiteren Ort
+t2: bait (20% wahrscheinlichkeit für task vollendet [404 Task not found]) (Ein <Tier> blockiert dir den Weg. SCanne diese Task nochmal ein)
+t3: reCapture (bilder anklicken) (Welche der Bilder stellt die Bundeslade dar)
+t4: [download (flur)] (wie G0 t7)
+t5: [repair shields] Gebet sprechen (du brauchst schutz und willst beten, vervollständige das Vater unser)
+t6: baue eine pyramide (6 Becher) (Baue eine Mauer um dich vor den Philister zu schützen)
+t7: [download (Pfadiraum)] (wie G0 t7)
+t8: [download (12-15J)] (wie G0 t7)
+t9: löse das kleine 1 mal 1 (1-10 mal 1-10) (Ein Kind will wissen wie gut du multiplizieren kannst)
+t10: donwload (Kinderraum) (wie G0 t7)
+t11: (wie G0 t9 aber mit 20 mal)
+t12: lege dich für 10 sekunden auf die matratze (du bist erschöpft, mache ein Powernap)
+t13: 5 Kniebeugen (du willst dich bei einem Kampf gegen die Philister vorbereiten, mache Sport)
 s1: text eingeben "reparieren" für sabotage keine Task
