@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@dargmuesli/vue-qrcode-reader": "^3.1.0-vue3-compatibility.12",
-    "@sh-ui/qrcode-reader": "^0.1.13",
     "axios": "^1.6.3",
     "qrcode-reader-vue3": "^3.1.2",
     "qrcode-vue3": "^1.6.8",
