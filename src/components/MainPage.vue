@@ -1,11 +1,11 @@
 <template>
   <ExtraFunctionPopup :show="extraShow" @leinwand="onLeinwand" @pc="onPc" @close="onExtraClose"/>
 
-<div class="center-horizontal full-size">
+<div class="center-horizontal max-width max-height">
     <div>
       <div style="height: 100px"></div>
         <div class="center-horizontal">
-          <img src="../assets/logo.png" style="width: 400px"/>
+          <img src="../assets/text_logo.png" style="width: 400px"/>
         </div>
       <div style="height: 20px"></div>
         <div class="center-horizontal">
@@ -97,7 +97,7 @@ export default {
         });
 
       this.socket.addEventListener('error', (event) => {
-        this.unableMessage = "Der AmongUsLive Server ist down"
+        this.unableMessage = "Der RDB Server ist down"
 
       });
 

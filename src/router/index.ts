@@ -7,42 +7,47 @@ import KartePage from "@/components/KartePage.vue";
 import MeetingPage from "@/components/MeetingPage.vue";
 import LeinwandPage from "@/components/LeinwandPage.vue";
 import QRGenerator from "@/components/QRGenerator.vue";
+import G0T1 from "@/components/game/g0/G0T1.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'MainPage',
     component: MainPage
   },
   {
     path: '/player',
-    name: 'PlayerPage',
     component: PlayerPage
   },
   {
     path: '/overlay',
-    name: 'MainOverlayPage',
     component: MainOverlayPage
   },
   {
     path: '/karte',
-    name: 'KartePage',
     component: KartePage
   },
   {
     path: '/meeting',
-    name: 'MeetingPage',
     component: MeetingPage
   },
   {
     path: '/leinwand',
-    name: 'LeinwandPage',
     component: LeinwandPage
   },
   {
     path: '/qr',
-    name: 'QRGenerator',
     component: QRGenerator
+  },
+
+
+
+
+
+
+
+  {
+    path: '/g0/t1',
+    component: G0T1
   },
 
 ]

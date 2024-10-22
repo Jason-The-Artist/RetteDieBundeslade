@@ -4,8 +4,8 @@
 
   <div v-if="mode === 1">
     <div class="show-page center-horizontal">
-      <img src="../assets/imposter.png" class="role-image" v-if="imposter"/>
-      <img src="../assets/crewmate.png" class="role-image" v-else/>
+      <img src="../assets/philister.png" class="role-image" v-if="imposter"/>
+      <img src="../assets/israelit.png" class="role-image" v-else/>
     </div>
   </div>
 
@@ -230,6 +230,8 @@ export default {
             this.mode = 4
           }else if(message.func === "gotKicked"){
             this.$router.push("/")
+          }else if(message.mode === "pass"){
+            this.qrc.onQRScanned(message)
           }
         });
 

@@ -8,26 +8,27 @@
     <h1>Erdgeschoss</h1>
   </div>
 
+
   <div class="relative center-horizontal">
-    <img src="../assets/karte/g0.png" class="karte absolute"/>
+    <img src="../assets/karte/g0.png" class="karte"/>
     <img
         v-for="(t) in tasksG0"
         :src="'https://jasonserver.de/karte/g0_tasks/' + t + '.png'" class="karte absolute"/>
   </div>
 
-  <div style="height: 400px"></div>
+  <div style="height: 20px"></div>
   <div class="center-horizontal">
     <h1>1. Geschoss</h1>
   </div>
 
   <div class="relative center-horizontal">
-    <img src="../assets/karte/g1.png" class="karte absolute"/>
+    <img src="../assets/karte/g1.png" class="karte"/>
     <img
         v-for="(t) in tasksG1"
         :src="'https://jasonserver.de/karte/g1_tasks/' + t + '.png'" class="karte absolute"/>
   </div>
 
-  <div style="height: 950px"></div>
+  <div style="height: 20px"></div>
 
   <div class="center-horizontal">
 
@@ -35,7 +36,7 @@
   </div>
 
   <div class="relative center-horizontal">
-    <img src="../assets/karte/g2.png" class="karte absolute"/>
+    <img src="../assets/karte/g2.png" class="karte"/>
     <img
         v-for="(t) in tasksG2"
         :src="'https://jasonserver.de/karte/g2_tasks/' + t + '.png'" class="karte absolute"/>
