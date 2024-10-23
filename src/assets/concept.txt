@@ -13,7 +13,7 @@ G0:
 
 t1: [enable power] scanne für ein weiteren Ort
 t2: [fix wiring] Israels Mauer reparieren (steine Richtig anordnen) (seniorenraum) 
-t3: [start reactor] Schriftrollen im Angebot (Es gibt ein Händler und er sagt dir welche Bücher der Bibel im Angebot sind und du musst das wiederholen)
+t3: [start reactor] Fragen beantworten (Ein ahnungsloser hat Fragen zur Bibel und du musst ihm sie beantworten)
 t4: [reactor numbers from 1-10] Bücher Reinfolge (Tippe die Bücher der Bibel in der Richtigen Reinfolge an)
 t5: [inspect sample] Schriftrollen untersuchen (du hast schriftrollen im wasser gefunden, lasse sie trocknen und komme in 1min wieder....welche der schriftrollen ist nicht biblisch (alles sind bibelzitate außer eine))
 t6: [empyt garbage (spot 1)] Götzen entfernen (du hast götzen im haus, schmeiße sie weg)

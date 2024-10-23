@@ -6,7 +6,7 @@
       <div class="modal-wrapper-saved">
         <div class="modal-container-saved" style="background: #00000022">
           <div style="justify-content: center">
-            <div class="center-horizontal" style="margin-top: 20px">
+            <div class="center-horizontal">
               <div>
 
                 <div class="center-horizontal full-size" style="background: #000000">
