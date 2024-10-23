@@ -8,6 +8,7 @@ import MeetingPage from "@/components/MeetingPage.vue";
 import LeinwandPage from "@/components/LeinwandPage.vue";
 import QRGenerator from "@/components/QRGenerator.vue";
 import G0T1 from "@/components/game/g0/G0T1.vue";
+import G0T2 from "@/components/game/g0/G0T2.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,6 +49,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/g0/t1',
     component: G0T1
+  },
+  {
+    path: '/g0/t2',
+    component: G0T2
   },
 
 ]

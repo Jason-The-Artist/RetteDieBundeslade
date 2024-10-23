@@ -20,11 +20,14 @@
     "sass": "^1.69.7",
     "vue": "^3.3.11",
     "vue-cookies": "^1.8.3",
+    "vue-easy-dnd": "^2.1.3",
     "vue-media-recorder": "^0.1.25",
     "vue-qrcode-reader": "^5.5.1",
     "vue-router": "^4.2.5",
     "vue-zxing-scanner": "^0.1.3-beta",
-    "vue3-barcode-qrcode-reader": "^1.0.16"
+    "vue3-barcode-qrcode-reader": "^1.0.16",
+    "vue3-moveable": "^0.28.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
