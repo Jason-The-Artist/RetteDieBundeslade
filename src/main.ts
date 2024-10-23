@@ -1,6 +1,8 @@
 import './assets/main.css'
 import './assets/view-design.css'
 import './assets/anim.scss'
+import './assets/trans.scss'
+
 import VueCookies from 'vue-cookies'
 import router from './router'
 

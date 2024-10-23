@@ -12,6 +12,7 @@ import G0T2 from "@/components/game/g0/G0T2.vue";
 import G0T3 from "@/components/game/g0/G0T3.vue";
 import G0T4 from "@/components/game/g0/G0T4.vue";
 import G0T5 from "@/components/game/g0/G0T5.vue";
+import G0T6 from "@/components/game/g0/G0T6.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -68,6 +69,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/g0/t5',
     component: G0T5
+  },
+  {
+    path: '/g0/t6',
+    component: G0T6
   },
 ]
 

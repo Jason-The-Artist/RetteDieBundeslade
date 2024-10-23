@@ -6,22 +6,17 @@
       <div class="modal-wrapper-saved">
         <div class="modal-container-saved" style="background: #00000022">
           <div style="justify-content: center">
-            <div class="center-horizontal">
+            <div class="center-horizontal full-size" style="background: #000000">
               <div>
+                <div class="center-horizontal">
+                  <h1>{{title}}</h1>
+                </div>
+                <div class="center-horizontal">
+                  <p class="white">{{text}}</p>
+                </div>
 
-                <div class="center-horizontal full-size" style="background: #000000">
-                  <div>
-                    <div class="center-horizontal">
-                      <h1>{{title}}</h1>
-                    </div>
-                    <div class="center-horizontal">
-                      <p class="white">{{text}}</p>
-                    </div>
-
-                    <div class="center-horizontal">
-                      <UIButton title="Verstanden" @clicked="onClicked"/>
-                    </div>
-                  </div>
+                <div class="center-horizontal">
+                  <UIButton title="Verstanden" @clicked="onClicked"/>
                 </div>
               </div>
             </div>

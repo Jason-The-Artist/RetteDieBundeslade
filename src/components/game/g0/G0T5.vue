@@ -1,25 +1,26 @@
 <style>
 .paper{
-  max-width: 200px;
-  width: 33vw;
+  width: 100%;
 }
 
 </style>
 
 <template>
 
-  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Schriftrollen trocknen" text="Du findest in einer Pfütze Schriftrollen. Aber eine Schriftrolle ist gefälscht. Trockne die Schriftrollen und erkenne die Fälschung."/>
+  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Schriftrollen trocknen" text="Du findest in einer Pfütze Schriftrollen vom Buch der Sprüche. Aber eine Schriftrolle ist gefälscht. Trockne die Schriftrollen und erkenne die Fälschung."/>
   <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
 
-  <p>Ziehe die Schriftrollen aus dem Wasser indem du den Knopf drückst</p>
+  <p>{{expText}}</p>
 
   <div class="relative">
     <div class="max-height center-horizontal">
-      <div class="grid3" v-if="time === 0">
-        <div class="relative center pointer" v-for="dat in founded" @click="onPaper(dat)">
+      <div v-if="time === -1" class="max-width">
+        <div class="relative center pointer max-width" v-for="dat in founded" @click="onPaper(dat)">
           <img src="../../../assets/tasks/schriftrolle_red.png" class="paper" v-if="dat === lightRed">
           <img src="../../../assets/tasks/schriftrolle.png" class="paper" v-else>
-          <p class="absolute">{{ dat }}</p>
+          <div style="width: 180px" class="absolute">
+            <p class="text-center" style="color: #0000ff">{{ dat }}</p>
+          </div>
         </div>
       </div>
       <div class="grid3" v-else>
@@ -28,16 +29,18 @@
         </div>
       </div>
     </div>
-    <div class="absolute" style="top: 0">
+    <div class="absolute max-width" style="top: 0">
       <transition name="water">
-        <div v-if="showWater">
-          <img src="../../../assets/tasks/water.gif" style="opacity: 0.5">
+        <div v-if="showWater" class="max-width center-horizontal">
+          <img src="../../../assets/tasks/water.gif" style="opacity: 0.3">
         </div>
       </transition>
     </div>
   </div>
 
-  <div class="max-width center-horizontal">
+  <div style="height: 200px"></div>
+
+  <div class="max-width center-horizontal" v-if="showButton">
     <UIButton title="Wasser entfernen" @clicked="onRemoveWater"/>
   </div>
 
@@ -75,7 +78,9 @@ export default {
           lightRed: "",
           founded: [],
           onTap: [],
-          time: 10,
+          time: 15,
+          showButton: true,
+          expText: "Ziehe die Schriftrollen aus dem Wasser indem du den Knopf drückst",
           showWater: true,
           taskShow: true,
           taskSuccess: false
@@ -98,16 +103,28 @@ export default {
 
       onRemoveWater(){
         this.showWater = false
+        this.showButton = false
+        this.startTimeCounter()
+      },
+
+      async startTimeCounter(){
+        let t = this.time
+        for(let i = t; i >= 0; i--){
+          await this.timeout(1000)
+          this.expText = "Lass die Schriftrollen noch " + this.time + " sec. trocknen."
+          this.time--
+        }
+        this.expText = "Welcher Vers im buch der Sprüche ist nicht echt?"
+      },
+
+      timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
       },
 
       onPaper(id){
-        if(this.order.includes(id)){
-          let firstOrder = this.order[0];
-          if(id === firstOrder){
-            this.order = this.order.slice(1, this.order.length);
-            if(this.order.length === 0){
-              this.onSuccess()
-            }
+        if(this.time === -1){
+          if(this.lies.includes(id)){
+            this.onSuccess()
           }else{
             this.lightRed = id
             setTimeout(() => {
@@ -129,6 +146,7 @@ export default {
 
       getRandomElement(array) {
         const randomIndex = Math.floor(Math.random() * array.length);
+        this.liePos = randomIndex
         return array[randomIndex];
       },
 
