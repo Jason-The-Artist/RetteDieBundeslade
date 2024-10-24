@@ -9,7 +9,7 @@
     </div>
 
     <div class="center-horizontal">
-      <UIButton title="Submit" @click="onSubmit"/>
+      <UIButton title="Submit" @clicked="onSubmit"/>
     </div>
 
     <div class="center-horizontal">
@@ -59,6 +59,7 @@ export default {
     methods: {
 
       onSubmit(){
+        console.log("click")
         this.text = this.$refs.qrinput.value
       },
 
