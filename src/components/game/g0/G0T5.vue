@@ -9,8 +9,14 @@
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Schriftrollen trocknen" text="Du findest in einer Pfütze Schriftrollen vom Buch der Sprüche. Aber eine Schriftrolle ist gefälscht. Trockne die Schriftrollen und erkenne die Fälschung."/>
   <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <div class="center-horizontal">
+    <UIButton title="Task schließen" @clicked="onClose"/>
+  </div>
+  <div style="height: 20px"></div>
 
-  <p>{{expText}}</p>
+  <div class="center-horizontal">
+    <p class="text-center">{{expText}}</p>
+  </div>
 
   <div class="relative">
     <div class="max-height center-horizontal">
@@ -172,6 +178,10 @@ export default {
 
       onSuccessClick(){
         this.taskSuccess = false
+        this.$router.push('/overlay')
+      },
+
+      onClose(){
         this.$router.push('/overlay')
       },
 

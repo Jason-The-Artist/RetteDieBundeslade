@@ -17,14 +17,20 @@
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Fragen beantworten" text="Du triffst auf deinem Weg ein Ahnungslosen, der Fragen zur Bibel hat. Beantworte ihm diese."/>
   <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <div class="center-horizontal">
+    <UIButton title="Task schließen" @clicked="onClose"/>
+  </div>
+  <div style="height: 20px"></div>
 
   <div class="max-width center-horizontal">
-    <div class="half-layout">
-      <img src="../../../assets/tasks/man_speaking.png" v-if="mouthOpen">
-      <img src="../../../assets/tasks/man_silent.png" v-else>
-    </div>
-    <div class="q-layout">
-      <p>{{q}}</p>
+    <div class="center-horizontal" style="width: 100%; max-width: 400px;">
+      <div class="half-layout">
+        <img src="../../../assets/tasks/man_speaking.png" v-if="mouthOpen">
+        <img src="../../../assets/tasks/man_silent.png" v-else>
+      </div>
+      <div class="q-layout">
+        <p>{{q}}</p>
+      </div>
     </div>
   </div>
 
@@ -176,6 +182,10 @@ export default {
 
       onSuccessClick(){
         this.taskSuccess = false
+        this.$router.push('/overlay')
+      },
+
+      onClose(){
         this.$router.push('/overlay')
       },
 

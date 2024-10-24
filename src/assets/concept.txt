@@ -25,9 +25,9 @@ t10: [download (Garderobe)] (wie t7)
 
 G1:
 
-t1: [rechter fuel engine] Öl für Öllampe (die Öllampe hat kein Öl mehr, hole Öl für die Öllampe (Ölstation: t8))
+t1: [rechter fuel engine] (erste anlaufstelle) Öl für Öllampe (die Öllampe hat kein Öl mehr, hole Öl für die Öllampe (Ölstation: t8))
 t2: [enable power] scanne für ein weiteren Ort
-t3: [linker fuel engine] (wie t1)
+t3: [linker fuel engine] (wie t1) (zweite anlaufstelle)
 t4: [download (kleiner saal)] (wie G0 t7)
 t5: schere stein papier gegen Anwohner (ein Anwohner lässt dich nicht weiter gehen außer du gewinnst gegen ihn)
 t6: [empty garbage (spot 2)] (wie: G0 t6)

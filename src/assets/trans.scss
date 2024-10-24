@@ -1,15 +1,3 @@
-.water-enter-from {
-  opacity: 0;
-  transform: translateY(-60px);
-}
-.water-enter-to {
-  opacity: 1;
-  transform: translateY(0px);
-}
-.water-enter-active {
-  transition: all 0.3s ease;
-}
-
 .water-leave-from {
   opacity: 1;
   transform: translateY(0px);
@@ -20,4 +8,87 @@
 }
 .water-leave-active {
   transition: all 1s linear;
+}
+
+
+
+.brief-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.brief-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.brief-leave-active {
+  transition: all 1s ease-out;
+}
+
+
+
+.givebrief-enter-from {
+  opacity: 0;
+  transform: translateY(50px);
+}
+.givebrief-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.givebrief-enter-active {
+  transition: all 1s ease-out;
+}
+
+
+
+
+.ssp-enter-from {
+  opacity: 0;
+  transform: translateY(60px);
+}
+.ssp-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.ssp-enter-active {
+  transition: all 1s ease-out;
+}
+
+.ssptop-enter-from {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+.ssptop-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.ssptop-enter-active {
+  transition: all 1s ease-out;
+}
+
+
+.coin-enter-from {
+  opacity: 1;
+  transform: translateY(60px);
+}
+.coin-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.coin-enter-active {
+  transition: all 0.5s ease-out;
+}
+
+
+
+
+.dice-enter-from {
+  opacity: 0;
+  transform: translateY(-200px);
+}
+.dice-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.dice-enter-active {
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }

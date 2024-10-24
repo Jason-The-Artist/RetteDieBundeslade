@@ -111,6 +111,20 @@ p,h1,h2,h3{
     justify-items: center;
 }
 
+.grid5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    justify-items: center;
+}
+
+.noselect {
+    user-select: none; /* Verhindert die Textmarkierung */
+    -webkit-user-select: none; /* Chrome, Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
 .flex{
     display: flex;
 }

@@ -30,7 +30,7 @@ import TaskDescriptionPopup from "@/components/views/TaskDescriptionPopup.vue";
 import RemoveFigures from "@/components/game/templates/RemoveFigures.vue";
 
 export default {
-    name: "G0T6",
+    name: "G1T6",
     components: {RemoveFigures, TaskDescriptionPopup, UIButton},
     data() {
         return {

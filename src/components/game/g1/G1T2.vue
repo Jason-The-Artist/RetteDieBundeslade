@@ -10,7 +10,7 @@ import ScanForLocation from "@/components/game/templates/ScanForLocation.vue";
 
 export default {
 
-    name: "G0T1",
+    name: "G1T2",
     components: {ScanForLocation, UIButton},
     data() {
         return {

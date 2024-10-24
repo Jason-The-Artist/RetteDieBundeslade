@@ -1,25 +1,18 @@
 <style>
-.item{
-  width: 100%;
-  max-width: 200px;
-}
 
-.hide{
-  opacity: 0;
-}
 
 </style>
 
 <template>
 
-  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Götze wegschmeißen" text="Du hast Götzen im Haus. Schmeiße sie alle weg."/>
+  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Brief für Samuel" text="Ein Israelit hat einen Brief für Samuel. Übergebe Samuel den Brief"/>
   <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>
   <div style="height: 20px"></div>
 
-  <RemoveFigures @finished="onSuccess()"/>
+  <MessageForSamuel/>
 
 </template>
 
@@ -27,11 +20,11 @@
 <script>
 import UIButton from "@/components/views/UIButton.vue";
 import TaskDescriptionPopup from "@/components/views/TaskDescriptionPopup.vue";
-import RemoveFigures from "@/components/game/templates/RemoveFigures.vue";
+import MessageForSamuel from "@/components/game/templates/MessageForSamuel.vue";
 
 export default {
-    name: "G0T6",
-    components: {RemoveFigures, TaskDescriptionPopup, UIButton},
+    name: "G1T7",
+    components: {MessageForSamuel, TaskDescriptionPopup, UIButton},
     data() {
         return {
           taskShow: true,

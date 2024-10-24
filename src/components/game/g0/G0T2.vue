@@ -79,6 +79,7 @@
 
 .brick{
   width: 25%;
+  max-width: 200px;
   object-fit: contain;
 }
 
@@ -88,6 +89,7 @@
 
 .brick-drag{
   width: 90%;
+  max-width: 200px;
   max-height: 10vw;
   object-fit: contain;
 }
@@ -101,10 +103,16 @@
 
 <template>
 
-  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Israels Mauer reparieren" text="Die Philister haben Stellen an der Mauer demoliert. Du musst jetzt die Mauer reparieren um die Israeliten zu schützen."/>
+  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Israels Mauer reparieren" text="Die Philister haben Stellen an der Mauer demoliert. Du musst jetzt die Mauer reparieren, um die Israeliten zu schützen."/>
   <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <div class="center-horizontal">
+    <UIButton title="Task schließen" @clicked="onClose"/>
+  </div>
+  <div style="height: 20px"></div>
 
-  <p>Ziehe die Steinklötze in die Mauer rein</p>
+  <div class="center-horizontal">
+    <p>Ziehe die Steinklötze in die Mauer rein</p>
+  </div>
 
   <div class="max-width center">
     <drag v-for="n in bricks" :key="n" class="brick-drag-layout center" :data="n" :type="typeof n"><img src="../../../assets/tasks/brick.png" class="brick-drag"></drag>
@@ -173,7 +181,6 @@ import { Drag, Drop } from "vue-easy-dnd";
 import TaskDescriptionPopup from "@/components/views/TaskDescriptionPopup.vue";
 
 export default {
-  //[fix wiring] Israels Mauer reparieren
     name: "G0T2",
     components: {TaskDescriptionPopup, UIButton, Drag, Drop},
     data() {
@@ -222,6 +229,10 @@ export default {
 
       onSuccessClick(){
         this.taskSuccess = false
+        this.$router.push('/overlay')
+      },
+
+      onClose(){
         this.$router.push('/overlay')
       },
 

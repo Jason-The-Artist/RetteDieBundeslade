@@ -1,17 +1,23 @@
 <style>
 .paper{
-  max-width: 200px;
   width: 33vw;
+  max-width: 200px;
 }
 
 </style>
 
 <template>
 
-  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Richtige Reihenfolge" text="Ein Israelit hat all seine biblischen Bücher durcheinander gemacht. Hilf ihm sie wieder zu sortieren"/>
+  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Richtige Reihenfolge" text="Ein Israelit hat all seine biblischen Bücher durcheinander gebracht. Hilf ihm sie wieder zu sortieren"/>
   <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <div class="center-horizontal">
+    <UIButton title="Task schließen" @clicked="onClose"/>
+  </div>
+  <div style="height: 20px"></div>
 
-  <p>Tippe die Bücher in der richtigen Reihenfolge an.</p>
+  <div class="text-center">
+    <p>Tippe die Bücher in der richtigen Reihenfolge an.</p>
+  </div>
 
   <div class="max-height center-horizontal">
     <div class="grid3">
@@ -33,7 +39,6 @@ import UIButton from "@/components/views/UIButton.vue";
 import TaskDescriptionPopup from "@/components/views/TaskDescriptionPopup.vue";
 
 export default {
-  //Richtige Reihenfolge
     name: "G0T4",
     components: {TaskDescriptionPopup, UIButton},
     data() {
@@ -96,6 +101,10 @@ export default {
 
       onSuccessClick(){
         this.taskSuccess = false
+        this.$router.push('/overlay')
+      },
+
+      onClose(){
         this.$router.push('/overlay')
       },
 
