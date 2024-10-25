@@ -1,7 +1,7 @@
 <template>
 
   <div class="center-horizontal">
-    <UIButton title="Karte schließen" @click="closeKarte"/>
+    <UIButton title="Karte schließen" @clicked="closeKarte"/>
   </div>
 
   <div class="center-horizontal">

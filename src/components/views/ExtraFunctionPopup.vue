@@ -13,19 +13,19 @@
                 <div style="height: 200px"></div>
 
                 <div class="center-horizontal">
-                  <UIButton title="Abbrechen" @click="onClose"/>
+                  <UIButton title="Abbrechen" @clicked="onClose"/>
                 </div>
 
                 <div style="height: 40px"></div>
 
                 <div class="center-horizontal">
-                  <UIButton title="Leinwand" @click="onLeinwand"/>
+                  <UIButton title="Leinwand" @clicked="onLeinwand"/>
                 </div>
 
                 <div style="height: 20px"></div>
 
                 <div class="center-horizontal">
-                  <UIButton title="PC Sabotage" @click="onPc"/>
+                  <UIButton title="PC Sabotage" @clicked="onPc"/>
                 </div>
 
               </div>

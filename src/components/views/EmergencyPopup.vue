@@ -24,7 +24,7 @@
 
                 <div v-if="youCaller">
                   <div class="center-horizontal">
-                    <UIButton title="Meeting starten" @click="onStart"/>
+                    <UIButton title="Meeting starten" @clicked="onStart"/>
                   </div>
                   <div class="center-horizontal">
                     <p>Warte bis alle Spieler sich versammelt haben und starte dann erst das Meeting</p>

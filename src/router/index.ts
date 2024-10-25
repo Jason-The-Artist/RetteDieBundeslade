@@ -31,6 +31,22 @@ import G1T9 from "@/components/game/g1/G1T9.vue";
 import G1T10 from "@/components/game/g1/G1T10.vue";
 import G1T11 from "@/components/game/g1/G1T11.vue";
 import G1T12 from "@/components/game/g1/G1T12.vue";
+import G1S1 from "@/components/game/g1/G1S1.vue";
+import G1S2 from "@/components/game/g1/G1S2.vue";
+
+import G2T1 from "@/components/game/g2/G2T1.vue";
+import G2T2 from "@/components/game/g2/G2T2.vue";
+import G2T3 from "@/components/game/g2/G2T3.vue";
+import G2T4 from "@/components/game/g2/G2T4.vue";
+import G2T5 from "@/components/game/g2/G2T5.vue";
+import G2T6 from "@/components/game/g2/G2T6.vue";
+import G2T7 from "@/components/game/g2/G2T7.vue";
+import G2T8 from "@/components/game/g2/G2T8.vue";
+import G2T9 from "@/components/game/g2/G2T9.vue";
+import G2T10 from "@/components/game/g2/G2T10.vue";
+import G2T11 from "@/components/game/g2/G2T11.vue";
+import G2T12 from "@/components/game/g2/G2T12.vue";
+import G2T13 from "@/components/game/g2/G2T13.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -158,6 +174,70 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/g1/t12',
     component: G1T12
+  },
+  {
+    path: '/g1/s1',
+    component: G1S1
+  },
+  {
+    path: '/g1/s2',
+    component: G1S2
+  },
+
+
+
+
+  {
+    path: '/g2/t1',
+    component: G2T1
+  },
+  {
+    path: '/g2/t2',
+    component: G2T2
+  },
+  {
+    path: '/g2/t3',
+    component: G2T3
+  },
+  {
+    path: '/g2/t4',
+    component: G2T4
+  },
+  {
+    path: '/g2/t5',
+    component: G2T5
+  },
+  {
+    path: '/g2/t6',
+    component: G2T6
+  },
+  {
+    path: '/g2/t7',
+    component: G2T7
+  },
+  {
+    path: '/g2/t8',
+    component: G2T8
+  },
+  {
+    path: '/g2/t9',
+    component: G2T9
+  },
+  {
+    path: '/g2/t10',
+    component: G2T10
+  },
+  {
+    path: '/g2/t11',
+    component: G2T11
+  },
+  {
+    path: '/g2/t12',
+    component: G2T12
+  },
+  {
+    path: '/g2/t13',
+    component: G2T13
   },
 ]
 

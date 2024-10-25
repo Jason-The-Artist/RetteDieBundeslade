@@ -53,7 +53,7 @@ t7: [download (Pfadiraum)] (wie G0 t7)
 t8: [download (12-15J)] (wie G0 t7)
 t9: löse das kleine 1 mal 1 (1-10 mal 1-10) (Ein Kind will wissen wie gut du multiplizieren kannst)
 t10: donwload (Kinderraum) (wie G0 t7)
-t11: (wie G0 t9 aber mit 20 mal)
+t11: (wie G0 t9 aber mit addieren (zahlen 0-29))
 t12: lege dich für 10 sekunden auf die matratze (du bist erschöpft, mache ein Powernap)
 t13: 5 Kniebeugen (du willst dich bei einem Kampf gegen die Philister vorbereiten, mache Sport)
 s1: text eingeben "reparieren" für sabotage keine Task

@@ -21,14 +21,14 @@
         </div>
         <div style="margin-top: 10px"/>
       <div class="center-horizontal">
-        <UIButton title="Spiel beitreten" @click="onClickJoin"/>
+        <UIButton title="Spiel beitreten" @clicked="onClickJoin"/>
       </div>
       <div class="center-horizontal">
-        <UIButton title="Spiel erstellen" @click="onClickRoom"/>
+        <UIButton title="Spiel erstellen" @clicked="onClickRoom"/>
       </div>
       <div style="height: 40px"></div>
       <div class="center-horizontal">
-        <UIButton title="Extrasteuerung" @click="onClickControl"/>
+        <UIButton title="Extrasteuerung" @clicked="onClickControl"/>
       </div>
         <div class="center-horizontal">
           <h2 class="red">{{unableMessage}}</h2>

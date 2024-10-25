@@ -1,18 +1,18 @@
 <template>
 
   <div class="center-horizontal" v-if="isHost">
-    <UIButton title="Raum schließen" @click="onClickRemove"/>
+    <UIButton title="Raum schließen" @clicked="onClickRemove"/>
   </div>
 
     <div class="button-layout center-horizontal" v-if="!isHost">
-      <UIButton title="Raum verlassen" @click="onClickLeave"/>
+      <UIButton title="Raum verlassen" @clicked="onClickLeave"/>
     </div>
 
 
   <div class="button-layout center-horizontal" v-if="isHost">
     <div>
       <div class="center-horizontal">
-        <UIButton title="Spiel starten" @click="onClickStart"/>
+        <UIButton title="Spiel starten" @clicked="onClickStart"/>
       </div>
 
       <div class="center-horizontal center">

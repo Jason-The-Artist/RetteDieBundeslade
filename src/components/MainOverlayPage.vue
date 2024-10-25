@@ -12,9 +12,9 @@
   <div v-if="mode === 2">
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
     <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
-      <UIButton title="Sabotage" @click="onSabotage" v-if="imposter"/>
+      <UIButton title="Sabotage" @clicked="onSabotage" v-if="imposter"/>
       <div v-else class="center-horizontal">
-        <UIButton title="Ich bin gestorben!" @click="onKilled" v-if="!killedQR"/>
+        <UIButton title="Ich bin gestorben!" @clicked="onKilled" v-if="!killedQR"/>
       </div>
     </div>
     <div class="center-horizontal" v-if="killed === 'true'">
@@ -51,7 +51,7 @@
     <div style="height: 20px"></div>
 
     <div class="center-horizontal">
-      <UIButton title="Karte" @click="openKarte"/>
+      <UIButton title="Karte" @clicked="openKarte"/>
     </div>
 
     <h2>Aufgaben:</h2>
@@ -66,7 +66,7 @@
       <h1 class="red">Die Imposters haben gewonnen!</h1>
     </div>
     <div class="center-horizontal" v-if="host">
-      <UIButton title="Neues Spiel" @click="newGame"/>
+      <UIButton title="Neues Spiel" @clicked="newGame"/>
     </div>
     <div class="center-horizontal" v-else>
       <p class="text-color">Warte auf den Host...</p>
@@ -78,7 +78,7 @@
       <h1 class="blue">Die Crewmates haben gewonnen!</h1>
     </div>
     <div class="center-horizontal" v-if="host">
-      <UIButton title="Neues Spiel" @click="newGame"/>
+      <UIButton title="Neues Spiel" @clicked="newGame"/>
     </div>
     <div class="center-horizontal" v-else>
       <p class="text-color">Warte auf den Host...</p>

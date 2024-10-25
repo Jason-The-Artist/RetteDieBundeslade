@@ -44,7 +44,7 @@ import TaskDescriptionPopup from "@/components/views/TaskDescriptionPopup.vue";
 import MessageForSamuel from "@/components/game/templates/MessageForSamuel.vue";
 
 export default {
-    name: "G1T11",
+    name: "G1T12",
     components: {TaskDescriptionPopup, UIButton},
     data() {
         return {
