@@ -18,7 +18,7 @@ t4: [reactor numbers from 1-10] Bücher Reinfolge (Tippe die Bücher der Bibel i
 t5: [inspect sample] Schriftrollen untersuchen (du hast schriftrollen im wasser gefunden, lasse sie trocknen. Welche der schriftrollen ist nicht biblisch (alles sind bibelzitate außer eine))
 t6: [empyt garbage (spot 1)] Götzen entfernen (du hast götzen im haus, schmeiße sie weg)
 t7: [download] nachricht an Samuel (Ein Israelit hat ein Brief für Samuel, überreiche Samuel den Brief (Treffpunkt: G1 t10))
-t8: preis Ausrechnen (du hast hunger und willst xLiter Wasser und xMänge brot kaufen, wie viel wird dich das kosten?)
+t8: preis Ausrechnen (du hast hunger und willst xLiter Wasser und xMenge brot kaufen, wie viel wird dich das kosten?)
 t9: Wand kaputt machen (diese Wand der Philister blokiert dir den weg, schlage 10 mal um sie kaputt zu machen)
 t10: [download (Garderobe)] (wie t7)
 
