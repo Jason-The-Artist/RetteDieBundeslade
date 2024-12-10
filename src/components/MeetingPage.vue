@@ -239,7 +239,8 @@ export default {
         let dat = {
           type: "engine",
           func: "playerGaveVote",
-          args: [this.getCookies("username"), this.activeClickedPlayer]
+          player: this.getCookies("username"),
+          activeClicked: this.activeClickedPlayer
         }
         this.send(dat)
       },

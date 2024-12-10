@@ -23,6 +23,10 @@
         <h2 class="white">Anzahl der Impostor</h2>
         <input ref="input" class="small-input text-color texture" value="1">
       </div>
+      <div class="center-horizontal center">
+        <h2 class="white">Anzahl der Tasks</h2>
+        <input ref="tasks" class="small-input text-color texture" value="1">
+      </div>
       <div class="center-horizontal">
         <h2 class="white">Rausvoterolle sichtbar</h2>
         <div style="width: 20px"></div>
@@ -181,7 +185,10 @@ export default {
               let dat = {
                 type: "engine",
                 func: "start",
-                args: [this.$refs.input.value, this.$refs.rausvote.checked, this.$refs.emerginput.value]
+                impostorCount: Number(this.$refs.input.value),
+                executeRoleVis: Number(this.$refs.rausvote.checked),
+                meetings: Number(this.$refs.emerginput.value),
+                taskCount: Number(this.$refs.tasks.value)
               }
               this.send(dat);
             }

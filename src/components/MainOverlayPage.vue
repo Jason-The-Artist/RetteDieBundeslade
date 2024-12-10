@@ -263,7 +263,7 @@ export default {
         let dat = {
           type: "engine",
           func: "emergencyMeeting",
-          args: [this.getCookies("username")]
+          player: this.getCookies("username")
         };
         this.send(dat);
       },
@@ -277,8 +277,9 @@ export default {
         let dat = {
           type: "engine",
           func: "gotKilled",
-          args: [this.getCookies("username")]
+          player: this.getCookies("username")
         }
+        this.send(dat)
       },
 
       openKarte(){
