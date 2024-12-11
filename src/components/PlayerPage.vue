@@ -25,7 +25,7 @@
       </div>
       <div class="center-horizontal center">
         <h2 class="white">Anzahl der Tasks</h2>
-        <input ref="tasks" class="small-input text-color texture" value="1">
+        <input ref="tasks" class="small-input text-color texture" value="4">
       </div>
       <div class="center-horizontal">
         <h2 class="white">Rausvoterolle sichtbar</h2>

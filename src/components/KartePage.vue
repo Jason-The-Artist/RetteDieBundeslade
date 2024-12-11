@@ -1,3 +1,15 @@
+<style>
+
+.yellow-dot{
+  filter: hue-rotate(210deg);
+}
+
+.green-dot{
+  filter: hue-rotate(240deg);
+}
+
+</style>
+
 <template>
 
   <div class="center-horizontal">
@@ -13,7 +25,7 @@
     <img src="../assets/karte/g0.png" class="karte"/>
     <img
         v-for="(t) in tasksG0"
-        :src="'https://jasonserver.de/karte/g0_tasks/' + t + '.png'" class="karte absolute"/>
+        :src="'https://jasonserver.de/karte/g0_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1]"/>
   </div>
 
   <div style="height: 20px"></div>
@@ -25,7 +37,7 @@
     <img src="../assets/karte/g1.png" class="karte"/>
     <img
         v-for="(t) in tasksG1"
-        :src="'https://jasonserver.de/karte/g1_tasks/' + t + '.png'" class="karte absolute"/>
+        :src="'https://jasonserver.de/karte/g1_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1]"/>
   </div>
 
   <div style="height: 20px"></div>
@@ -39,7 +51,7 @@
     <img src="../assets/karte/g2.png" class="karte"/>
     <img
         v-for="(t) in tasksG2"
-        :src="'https://jasonserver.de/karte/g2_tasks/' + t + '.png'" class="karte absolute"/>
+        :src="'https://jasonserver.de/karte/g2_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1]"/>
   </div>
 
 
@@ -61,6 +73,7 @@ export default {
           tasksG0: [],
           tasksG1: [],
           tasksG2: [],
+          tasks: [],
         };
     },
 
@@ -68,46 +81,22 @@ export default {
 
     },
     mounted() {
-      this.tasksG0.push("t1")
-      this.tasksG0.push("t2")
-      this.tasksG0.push("t3")
-      this.tasksG0.push("t4")
-      this.tasksG0.push("t5")
-      this.tasksG0.push("t6")
-      this.tasksG0.push("t7")
-      this.tasksG0.push("t8")
-      this.tasksG0.push("t9")
-      this.tasksG0.push("t10")
+      console.log(this.getCookies("tasks"))
+      this.tasks = this.getCookies("tasks").data
 
-      this.tasksG1.push("t1")
-      this.tasksG1.push("t2")
-      this.tasksG1.push("t3")
-      this.tasksG1.push("t4")
-      this.tasksG1.push("t5")
-      this.tasksG1.push("t6")
-      this.tasksG1.push("t7")
-      this.tasksG1.push("t8")
-      this.tasksG1.push("t9")
-      this.tasksG1.push("t10")
-      this.tasksG1.push("t11")
-      this.tasksG1.push("t12")
-      this.tasksG1.push("s1")
-      this.tasksG1.push("s2")
-
-      this.tasksG2.push("t1")
-      this.tasksG2.push("t2")
-      this.tasksG2.push("t3")
-      this.tasksG2.push("t4")
-      this.tasksG2.push("t5")
-      this.tasksG2.push("t6")
-      this.tasksG2.push("t7")
-      this.tasksG2.push("t8")
-      this.tasksG2.push("t9")
-      this.tasksG2.push("t10")
-      this.tasksG2.push("t11")
-      this.tasksG2.push("t12")
-      this.tasksG2.push("t13")
-      this.tasksG2.push("s1")
+      for(let i = 0; i < this.tasks.length; i++) {
+        let g = this.tasks[i].g
+        let t = this.tasks[i].t
+        let color = this.tasks[i].color
+        let arr = [t, color]
+        if(g === "g0"){
+          this.tasksG0.push(arr)
+        }else if(g === "g1"){
+          this.tasksG1.push(arr)
+        }else if(g === "g2"){
+          this.tasksG2.push(arr)
+        }
+      }
 
       this.baseURI = document.baseURI.split("#")[0] + "#"
 

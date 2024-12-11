@@ -1,3 +1,16 @@
+
+<style>
+
+.text-next{
+  color: #ffaa00;
+}
+
+.text-finished{
+  color: #29ac1a;
+}
+
+</style>
+
 <template>
   <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Möchtest du wirklich ein Meeting starten?"/>
   <ConfirmPopup :show="confirmKilledShow" @yes="yesSelectedKill" @no="noSelected" text="Bist du wirklich gestorben?"/>
@@ -55,10 +68,9 @@
     </div>
 
     <h2>Aufgaben:</h2>
-    <p>Fix Wiring</p>
-    <p>Empty Garbage</p>
-    <p>Clean Vent</p>
-    <p>Swipe Card</p>
+    <div v-for="dat in tasks">
+      <p :class="'text' + dat[3]">{{dat[2]}}</p>
+    </div>
   </div>
 
   <div v-if="mode === 3">
@@ -127,23 +139,12 @@ export default {
           killedQR: false,
           killedQRText: "",
           host: false,
+          tasks: []
         };
     },
 
     created() {
       this.qrc = new QRController()
-
-
-
-      EventBus.addEventListener('toMainOverlay', (event) => {
-        let data = JSON.parse(event.data)
-        if(data.func === "openMeeting"){
-          if(this.killed === "false" && this.hasMeetingsLeft === "true"){
-            this.confirmShow = true
-            this.paused = true
-          }
-        }
-      })
 
     },
     mounted() {
@@ -203,7 +204,14 @@ export default {
             func: "replaceClient",
             player: this.getCookies("username")
           };
-          this.send(dat);
+          this.send(dat)
+
+          dat = {
+            type: "engine",
+            func: "createTaskList",
+            player: this.getCookies("username")
+          };
+          this.send(dat)
 
         });
 
@@ -230,8 +238,37 @@ export default {
             this.mode = 4
           }else if(message.func === "gotKicked"){
             this.$router.push("/")
-          }else if(message.mode === "pass"){
-            this.qrc.onQRScanned(message)
+          }else if(message.type === "pass"){
+            if(message.player === this.getCookies("username")){
+              this.onQR(message)
+            }
+          }else if(message.func === "newTasks"){
+            this.tasks = message.tasks
+            let arr = []
+            for(let i = 0; i < this.tasks.length; i++){
+
+              let color = ""
+
+              if(this.tasks[i][3] === "normal"){
+                color = ""
+              }else if(this.tasks[i][3] === "next"){
+                color = "yellow-dot"
+              }else if(this.tasks[i][3] === "finished"){
+                color = "green-dot"
+              }
+
+              let dat = {
+                g: this.tasks[i][0],
+                t: this.tasks[i][1],
+                name: this.tasks[i][2],
+                color: color
+              }
+              arr.push(dat)
+            }
+            let dat = {
+              data: arr
+            }
+            this.setCookies("tasks", JSON.stringify(dat))
           }
         });
 
@@ -244,16 +281,35 @@ export default {
 
     methods: {
 
+      onQR(message){
+        if(message.func === "openMeeting"){
+          this.onMeeting()
+        }else if(message.func === "onTask"){
+          let dat = {
+            type: "engine",
+            func: "checkTask",
+            g: message.g,
+            t: message.t
+          }
+        }
+      },
+
+      onMeeting(){
+        if(this.killed === "false" && this.hasMeetingsLeft === "true"){
+          this.confirmShow = true
+          this.paused = true
+        }
+      },
+
       send(data){
         this.socket.send(JSON.stringify(data))
       },
 
       async onDetect(resultPromise) {
-        console.log("on detect")
         try {
           const result = await resultPromise;
           this.qrText = result.content;
-          this.qrc.onQRScanned(this.qrText)
+          this.onQR(JSON.parse(this.qrText))
         } catch (error) {
           console.error('Fehler beim Decodieren des QR-Codes:', error);
         }
