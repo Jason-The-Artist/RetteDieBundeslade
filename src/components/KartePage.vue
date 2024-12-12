@@ -25,7 +25,7 @@
     <img src="../assets/karte/g0.png" class="karte"/>
     <img
         v-for="(t) in tasksG0"
-        :src="'https://jasonserver.de/karte/g0_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1]"/>
+        :src="'https://jasonserver.de/karte/g0_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
   </div>
 
   <div style="height: 20px"></div>
@@ -37,7 +37,7 @@
     <img src="../assets/karte/g1.png" class="karte"/>
     <img
         v-for="(t) in tasksG1"
-        :src="'https://jasonserver.de/karte/g1_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1]"/>
+        :src="'https://jasonserver.de/karte/g1_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
   </div>
 
   <div style="height: 20px"></div>
@@ -51,7 +51,7 @@
     <img src="../assets/karte/g2.png" class="karte"/>
     <img
         v-for="(t) in tasksG2"
-        :src="'https://jasonserver.de/karte/g2_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1]"/>
+        :src="'https://jasonserver.de/karte/g2_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
   </div>
 
 
@@ -85,9 +85,9 @@ export default {
       this.tasks = this.getCookies("tasks").data
 
       for(let i = 0; i < this.tasks.length; i++) {
-        let g = this.tasks[i].g
-        let t = this.tasks[i].t
-        let color = this.tasks[i].color
+        let g = this.tasks[i][0]
+        let t = this.tasks[i][1]
+        let color = this.tasks[i][3]
         let arr = [t, color]
         if(g === "g0"){
           this.tasksG0.push(arr)

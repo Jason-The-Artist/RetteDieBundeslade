@@ -104,7 +104,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Israels Mauer reparieren" text="Die Philister haben Stellen an der Mauer demoliert. Du musst jetzt die Mauer reparieren, um die Israeliten zu schützen."/>
-  <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>

@@ -10,7 +10,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Antike Polizei" text="Du wirst von der antiken Polizei angehalten. Du wirst gescannt werden, um zu sehen, ob du ein Philister bist."/>
-  <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>

@@ -10,7 +10,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Eine Pause" text="Es ist mühsam die Bundeslade zu finden. Deswegen willst du eine Pause machen."/>
-  <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>

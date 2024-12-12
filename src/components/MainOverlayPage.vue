@@ -24,16 +24,16 @@
 
   <div v-if="mode === 2">
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
-    <div class="center-horizontal" v-if="killed === 'false' && hasMeetingsLeft === 'true'">
+    <div class="center-horizontal" v-if="!killed && hasMeetingsLeft">
       <UIButton title="Sabotage" @clicked="onSabotage" v-if="imposter"/>
       <div v-else class="center-horizontal">
         <UIButton title="Ich bin gestorben!" @clicked="onKilled" v-if="!killedQR"/>
       </div>
     </div>
-    <div class="center-horizontal" v-if="killed === 'true'">
+    <div class="center-horizontal" v-if="killed">
       <h2 class="red">Du bist nun ein Geist</h2>
     </div>
-    <div class="center-horizontal" v-else-if="hasMeetingsLeft === 'false'">
+    <div class="center-horizontal" v-else-if="!hasMeetingsLeft">
       <h2 class="red">Du hast keine Meetings übrig</h2>
     </div>
     <div style="height: 20px"></div>
@@ -59,6 +59,10 @@
           />
         </div>
       </div>
+    </div>
+
+    <div class="center-horizontal">
+      <h3 class="red" style="margin: 0px">{{errorText}}</h3>
     </div>
 
     <div style="height: 20px"></div>
@@ -124,13 +128,14 @@ export default {
     components: {PlayerMeetingLeinwandView, EmergencyPopup, UIButton, ConfirmPopup},
     data() {
         return {
+          errorText: "",
           qrText: "nothing",
           torchEnabled: false,
           paused: false,
           emergVis: false,
           emergCaller: "Jason",
-          killed: "false",
-          hasMeetingsLeft: "true",
+          killed: false,
+          hasMeetingsLeft: true,
           mode: 0,
           imposter: false,
           qrc: null,
@@ -148,138 +153,95 @@ export default {
 
     },
     mounted() {
+      this.paused = false
+
       let killedDat = {
         func: "killed",
         player: this.getCookies("username")
       }
       this.killedQRText = JSON.stringify(killedDat)
-      this.paused = false
-      if(this.getCookies("killed") !== null){
-        this.killed = this.getCookies("killed")
-      }
-      if(this.getCookies("meetingsLeft") !== null){
-        this.hasMeetingsLeft = this.getCookies("meetingsLeft")
-      }
-      if(this.getCookies("host") === "true"){
-        this.host = true
-      }
-      if(this.getCookies("imposter") === "true"){
-        this.imposter = true
-      }else{
-        this.imposter = false
-      }
-      if(this.getCookies("overlayMode") !== null){
-        let om = this.getCookies("overlayMode")
-        if(om === "1"){
-          this.mode = 1
-        }else if(om === "2"){
-          this.mode = 2
-        }
-      }else{
-        this.mode = 1
-      }
-      if(this.mode === 1){
-        setTimeout(() => {
-          this.mode = 2
-          this.setCookies("overlayMode", "2")
-        },4000)
-      }
 
-      this.baseURI = document.baseURI.split("#")[0] + "#"
+      this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
-        if(this.getCookies("host") === "true"){
-            this.isHost = true
-        }
+      this.socket.addEventListener('open', (event) => {
+        console.log("socket connected")
 
-        window.addEventListener('beforeunload', this.eventClose);
+        let dat = {
+          type: "register",
+          func: "replaceClient",
+          player: this.getCookies("username")
+        };
+        this.send(dat)
 
+        dat = {
+          type: "engine",
+          func: "getPlayerData",
+          player: this.getCookies("username")
+        };
+        this.send(dat)
 
-        this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+      });
 
-        this.socket.addEventListener('open', (event) => {
-          console.log("socket connected")
+      this.socket.addEventListener('message', (event) => {
+        const message = JSON.parse(event.data)
+        console.log(message)
+        if(message.func === "error"){
 
-          let dat = {
-            type: "register",
-            func: "replaceClient",
-            player: this.getCookies("username")
-          };
-          this.send(dat)
+          console.error(message.text)
 
-          dat = {
-            type: "engine",
-            func: "createTaskList",
-            player: this.getCookies("username")
-          };
-          this.send(dat)
-
-        });
-
-
-
-        this.socket.addEventListener('message', (event) => {
-          const message = JSON.parse(event.data)
-          console.log(message)
-          if(message.func === "error"){
-
-            console.error(message.text)
-
-          }else if(message.func === "emergencyMeeting"){
-            this.emergCaller = message.player
-            this.emergVis = true
-          }else if(message.func === "startMeeting"){
-            this.$router.push('/meeting');
-          }else if(message.func === "noMeetingsLeft"){
-            this.hasMeetingsLeft = "false"
-            this.setCookies("meetingsLeft", "false")
-          }else if(message.func === "impostersWon"){
-            this.mode = 3
-          }else if(message.func === "crewmatesWon"){
-            this.mode = 4
-          }else if(message.func === "gotKicked"){
-            this.$router.push("/")
-          }else if(message.type === "pass"){
-            if(message.player === this.getCookies("username")){
-              this.onQR(message)
-            }
-          }else if(message.func === "newTasks"){
-            this.tasks = message.tasks
-            let arr = []
-            for(let i = 0; i < this.tasks.length; i++){
-
-              let color = ""
-
-              if(this.tasks[i][3] === "normal"){
-                color = ""
-              }else if(this.tasks[i][3] === "next"){
-                color = "yellow-dot"
-              }else if(this.tasks[i][3] === "finished"){
-                color = "green-dot"
-              }
-
-              let dat = {
-                g: this.tasks[i][0],
-                t: this.tasks[i][1],
-                name: this.tasks[i][2],
-                color: color
-              }
-              arr.push(dat)
-            }
-            let dat = {
-              data: arr
-            }
-            this.setCookies("tasks", JSON.stringify(dat))
+        }else if(message.func === "playerData"){
+          this.setPlayerData(message)
+        }else if(message.func === "emergencyMeeting"){
+          this.emergCaller = message.player
+          this.emergVis = true
+        }else if(message.func === "startMeeting"){
+          this.$router.push('/meeting');
+        }else if(message.func === "noMeetingsLeft"){
+          this.hasMeetingsLeft = false
+          this.setCookies("meetingsLeft", "false")
+        }else if(message.func === "impostersWon"){
+          this.mode = 3
+        }else if(message.func === "crewmatesWon"){
+          this.mode = 4
+        }else if(message.func === "gotKicked"){
+          this.$router.push("/")
+        }else if(message.type === "pass"){
+          if(message.player === this.getCookies("username")){
+            this.onQR(message)
           }
-        });
+        }else if(message.func === "checkTask"){
+          let approved = message.approved
+          if(approved){
+            let g = message.g
+            let t = message.t
+            this.errorText = ""
+            let path = "/" + g + "/" + t
+            this.$router.push(path)
+          }else{
+            this.errorText = "Diese Task gehört nicht zu dir"
+          }
+        }
+      });
 
     },
 
-    beforeUnmount() {
-      window.removeEventListener('beforeunload', this.eventClose);
-    },
 
 
     methods: {
+
+      setPlayerData(data){
+        this.killed = data.defeat
+        this.hasMeetingsLeft = data.meetings > 0
+        this.host = data.isHost
+        this.imposter = data.imposter
+        this.mode = data.overlayMode
+        this.tasks = data.tasks
+
+        let dat = {
+          data: this.tasks
+        }
+        this.setCookies("tasks", JSON.stringify(dat))
+      },
 
       onQR(message){
         if(message.func === "openMeeting"){
@@ -289,13 +251,15 @@ export default {
             type: "engine",
             func: "checkTask",
             g: message.g,
-            t: message.t
+            t: message.t,
+            player: this.getCookies("username")
           }
+          this.send(dat)
         }
       },
 
       onMeeting(){
-        if(this.killed === "false" && this.hasMeetingsLeft === "true"){
+        if(!this.killed && this.hasMeetingsLeft === "true"){
           this.confirmShow = true
           this.paused = true
         }

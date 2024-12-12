@@ -20,7 +20,7 @@
         <h3 class="red" v-else>Leinwand wird nicht unterstützt</h3>
       </div>
       <div class="center-horizontal center">
-        <h2 class="white">Anzahl der Impostor</h2>
+        <h2 class="white">Anzahl der Philister</h2>
         <input ref="input" class="small-input text-color texture" value="1">
       </div>
       <div class="center-horizontal center">
@@ -185,10 +185,11 @@ export default {
               let dat = {
                 type: "engine",
                 func: "start",
-                impostorCount: Number(this.$refs.input.value),
+                imposterCount: Number(this.$refs.input.value),
                 executeRoleVis: Number(this.$refs.rausvote.checked),
                 meetings: Number(this.$refs.emerginput.value),
-                taskCount: Number(this.$refs.tasks.value)
+                taskCount: Number(this.$refs.tasks.value),
+                host: this.getCookies("username")
               }
               this.send(dat);
             }
@@ -224,7 +225,7 @@ export default {
           this.errorText = "Du musst beim Imposter eine Zahl eingeben"
           return false
         }else if(checker < 1){
-          this.errorText = "Du brauchst mindestes 1 Impostor"
+          this.errorText = "Du brauchst mindestes 1 Philister"
           return false
         }
         return true

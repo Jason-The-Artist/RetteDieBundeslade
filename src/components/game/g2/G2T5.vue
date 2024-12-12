@@ -19,7 +19,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Das Vaterunser" text="Die Philister sind dir auf der Spur. Du betest zu Gott, um Schutz zu erhhalten. Vevollständige dafür das Vaterunser."/>
-  <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>

@@ -1,5 +1,6 @@
 <template>
   <ExtraFunctionPopup :show="extraShow" @leinwand="onLeinwand" @pc="onPc" @close="onExtraClose"/>
+  <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Ein Nutzer existiert bereits mit diesem Nutzernamen. Möchtest du ihn ersetzen?"/>
 
 <div class="center-horizontal max-width max-height">
     <div>
@@ -42,10 +43,11 @@
 <script>
 import UIButton from "@/components/views/UIButton.vue"
 import ExtraFunctionPopup from "@/components/views/ExtraFunctionPopup.vue";
+import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
 
 export default {
     name: "Register",
-  components: {ExtraFunctionPopup, UIButton},
+  components: {ConfirmPopup, ExtraFunctionPopup, UIButton},
     data() {
         return {
             username: "",
@@ -56,6 +58,7 @@ export default {
             clicked: false,
           isStarted: false,
           extraShow: false,
+          confirmShow: false,
         };
     },
 
@@ -88,12 +91,6 @@ export default {
           }
           this.socket.send(JSON.stringify(dat));*/
 
-          const message = {
-            type: "ping",
-            func: "isStarted"
-          };
-          this.socket.send(JSON.stringify(message));
-
         });
 
       this.socket.addEventListener('error', (event) => {
@@ -119,8 +116,10 @@ export default {
             this.$router.push('/player');
           }else if(message.func === "yesCreate"){
             this.$router.push('/player');
+          }else if(message.func === "yesInGame"){
+            this.$router.push('/overlay');
           }else if(message.func === "clientAlreadyExist"){
-            this.unableMessage = "Der Nutzer existiert bereits"
+            this.confirmShow = true
           }else if(message.func === "roomNotExist"){
             this.unableMessage = "Es wurde kein Raum erstellt"
           }else if(message.func === "roomAlreadyExist"){
@@ -134,21 +133,27 @@ export default {
 
     methods: {
 
+      yesSelected(){
+        this.confirmShow = false
+        let dat = {
+          type: "register",
+          func: "replaceJoin",
+          player: this.getCookies("username")
+        }
+        this.send(dat)
+      },
+
+      noSelected(){
+        this.confirmShow = false
+      },
+
         onClickJoin(){
           let username = this.$refs.usernameinput.value
           this.setCookies("username", username)
 
-            this.clicked = true
-          if(this.isStarted === true){
-            this.joinUnable()
-            this.clicked = false
-          }else{
-            if(this.clicked){
-              if(this.checkUsername()){
-                this.setCookies("host", "false")
-                this.join()
-              }
-            }
+          if(this.checkUsername()){
+            this.setCookies("host", "false")
+            this.join()
           }
         },
 
@@ -175,7 +180,7 @@ export default {
           func: "addPlayer",
           player: this.getCookies("username")
         };
-        this.socket.send(JSON.stringify(message));
+        this.send(message)
       },
 
       hostPlayer(){
@@ -184,7 +189,7 @@ export default {
           func: "addPlayerCreator",
           player: this.getCookies("username")
         };
-        this.socket.send(JSON.stringify(message));
+        this.send(message)
       },
 
         join(){
@@ -228,18 +233,12 @@ export default {
             this.socket.close()
         },
 
-      getRandomNumbers() {
-        const min = 10000000;
-        const max = 99999999;
-
-        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-
-        return randomNumber + "";
-        //return "123456"
-      },
-
       onClickControl(){
           this.extraShow = true
+      },
+
+      send(message){
+        this.socket.send(JSON.stringify(message));
       },
 
       onClickRoom(){

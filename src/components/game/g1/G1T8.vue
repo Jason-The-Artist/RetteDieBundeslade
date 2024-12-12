@@ -7,7 +7,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Ölbasis" text="Die Öllampen brauchen neues Öl. Fülle deine Flasche auf um Öl nachzugießen."/>
-  <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>

@@ -47,10 +47,20 @@ export default {
   props: {
     show: Boolean,
     title: String,
-    text: String
+    text: String,
+    isResolved: Boolean,
   },
   data(){
     return{
+      socket: null,
+      oneTime: true
+    }
+  },
+
+  updated() {
+    if(this.show && this.oneTime){
+      this.oneTime = false
+      this.taskFinished()
     }
   },
 
@@ -60,13 +70,54 @@ export default {
   },
 
   mounted() {
+    if(this.isResolved){
+      this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
+      this.socket.addEventListener('open', (event) => {
+        let dat = {
+          type: "register",
+          func: "replaceClient",
+          player: this.getCookies("username")
+        };
+        this.send(dat)
+
+      });
+
+      this.socket.addEventListener('message', (event) => {
+        const message = JSON.parse(event.data)
+        console.log(message)
+        if(message.func === "error"){
+
+        }
+      });
+    }
   },
 
   methods: {
 
     onClicked(){
       this.$emit("clicked")
+    },
+
+    taskFinished(){
+      let arr = this.$route.fullPath.split("/")
+      let g = arr[1]
+      let t = arr[2]
+
+      let dat = {
+        type: "engine",
+        func: "taskFinished",
+        player: this.getCookies("username"),
+        g: g,
+        t: t
+      }
+
+      this.send(dat)
+
+    },
+
+    send(dat){
+      this.socket.send(JSON.stringify(dat))
     },
 
     getCookies(key){

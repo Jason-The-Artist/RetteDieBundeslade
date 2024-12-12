@@ -11,7 +11,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Passwort eingeben" text="Die Philister haben zur Sicherheit ihr Zugangspasswort geändert. Gebe es hier ein um deine Tasks weiterzumachen."/>
-  <TaskDescriptionPopup :show="taskSuccess" @clicked="onSuccessClick" title="Anderer Ort" text="Du musst das Passwort nochmal an einem anderen Ort eingeben. Du siehst auf der Karte einen roten Punk wo er sich befindet."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Anderer Ort" text="Du musst das Passwort nochmal an einem anderen Ort eingeben. Du siehst auf der Karte einen roten Punk wo er sich befindet."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>
