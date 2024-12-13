@@ -106,7 +106,7 @@ export default {
           right: "o3"
         },
         {
-          p: "<p>Wie sauch wir vergeben unseren <span>________</span>.</p>",
+          p: "<p>Wie auch wir vergeben unseren <span>________</span>.</p>",
           o1: "Geschwister",
           o2: "Eltern",
           o3: "Schuldigen",

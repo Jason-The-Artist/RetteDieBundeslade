@@ -3,7 +3,7 @@
 <div class="player-card-dead center-horizontal" v-if="dead">
     <div>
         <div class="center-horizontal" style="margin-top: -10px">
-            <h3 class="dead-color">{{name}}</h3>
+            <h3 :class="currentDead ? 'current-dead-color' : 'dead-color'">{{name}}</h3>
         </div>
     </div>
 </div>
@@ -34,6 +34,7 @@ export default {
       voted: Boolean,
       dead: Boolean,
       gaveVote: Boolean,
+      currentDead: Boolean
     },
 
   created() {

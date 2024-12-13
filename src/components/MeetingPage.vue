@@ -7,9 +7,10 @@
         :name="dat.name"
         @click="clickedPlayer(dat.name)"
         class="pointer"
-        :voted="dat.isVoted"
-        :dead="dat.dead"
-        :gaveVote="dat.gaveVote"
+        :voted="myVote === dat.name"
+        :dead="dat.defeat"
+        :gaveVote="dat.givenVote"
+        :currentDead="dat.currentDead"
     />
   </div>
 
@@ -18,9 +19,9 @@
       <PlayerMeetingRevealView
           v-for="(dat) in names"
           :name="dat.name"
-          :dead="dat.dead"
-          :gaveVote="dat.gaveVote"
-          :votes="dat.votes"
+          :dead="dat.defeat"
+          :gaveVote="dat.givenVote !== null"
+          :votes="dat.receivedVotes + ''"
       />
     </div>
 
@@ -74,7 +75,9 @@ export default {
           alreadyVoted: false,
           mode: 0,
           votedPlayer: "",
-          role: ""
+          role: "",
+          myVote: "",
+          selfDead: false
         };
     },
 
@@ -105,8 +108,8 @@ export default {
           this.send(dat);
 
           dat = {
-            type: "ping",
-            func: "getPlayersAdvanced"
+            type: "engine",
+            func: "getAllPlayerData"
           };
           this.send(dat);
 
@@ -116,76 +119,27 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
 
-          }else if(message.func === "allPlayers"){
-
-            this.names = []
-
-            let allPlayers = message.players
-            for(let i = 0; i < allPlayers.length; i++){
-              if(!allPlayers[i].dead){
-                let dat = {
-                  name: allPlayers[i].player,
-                  isVoted: false,
-                  dead: false,
-                  gaveVote: false
-                }
-                this.names.push(dat)
-              }
-            }
-
-            let names1 = this.names
-            this.names = []
-            nextTick().then(() =>{
-              this.names = names1
-            })
-
-          }else if(message.func === "playerGaveVote"){
+          }else if(message.func === "allPlayerData"){
+            this.names = message.data
 
             for(let i = 0; i < this.names.length; i++){
-              if(this.names[i].name === message.player){
-                this.names[i].gaveVote = true
+              if(this.names[i].name === this.getCookies("username")){
+                this.myVote = this.names[i].givenVote
+                this.selfDead = this.defeat
               }
             }
-
-            let names1 = this.names
-            this.names = []
-            nextTick().then(() =>{
-              this.names = names1
-            })
 
           }else if(message.func === "normalScreen"){
 
             this.$router.push('/overlay');
 
-          }
-          else if(message.func === "killedByMeeting"){
-
-            this.setCookies("killed", "true")
-
-          }else if(message.func === "revealVotes"){
+          } else if(message.func === "revealVotes"){
             this.mode = 1
-            let playerData = message.data
-
-            for(let i = 0; i < this.names.length; i++){
-              for(let j = 0; j < playerData.length; j++){
-                let data = playerData[j]
-                if(this.names[i].name === data.player){
-                  this.names[i].votes = data.votes
-                }
-              }
-            }
-
-            let names1 = this.names
-            this.names = []
-            nextTick().then(() =>{
-              this.names = names1
-            })
-
           }else if(message.func === "deadScreen"){
             this.votedPlayer = message.player
             let role = message.role
@@ -215,9 +169,24 @@ export default {
 
       clickedPlayer(player){
         if(!this.alreadyVoted){
-          this.activeClickedPlayer = player
-          this.confirmShow = true
+          if(!this.selfDead){
+            if(!this.isSelectedDead(player)){
+              this.activeClickedPlayer = player
+              this.confirmShow = true
+            }
+          }
         }
+      },
+
+      isSelectedDead(player){
+        for(let i = 0; i < this.names.length; i++){
+          if(this.names[i].name === player){
+            if(this.names[i].defeat){
+              return true
+            }
+          }
+        }
+        return false
       },
 
       yesSelected(){

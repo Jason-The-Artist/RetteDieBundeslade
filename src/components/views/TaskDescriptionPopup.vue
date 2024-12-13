@@ -86,9 +86,6 @@ export default {
       this.socket.addEventListener('message', (event) => {
         const message = JSON.parse(event.data)
         console.log(message)
-        if(message.func === "error"){
-
-        }
       });
     }
   },
@@ -117,7 +114,15 @@ export default {
     },
 
     send(dat){
-      this.socket.send(JSON.stringify(dat))
+      try{
+        this.socket.send(JSON.stringify(dat))
+      }catch (e){
+        console.log(e)
+        setTimeout(() => {
+          this.send(dat)
+        },500)
+      }
+
     },
 
     getCookies(key){

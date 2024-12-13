@@ -20,6 +20,7 @@ export default {
     components: {UIButton},
     data() {
         return {
+          socket: null
         };
     },
 
@@ -28,6 +29,36 @@ export default {
     },
     mounted() {
 
+      this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+      this.socket.addEventListener('open', (event) => {
+        let dat = {
+          type: "register",
+          func: "replaceClient",
+          player: this.getCookies("username")
+        };
+        this.send(dat)
+
+        let arr = this.$route.fullPath.split("/")
+        let g = arr[1]
+        let t = arr[2]
+
+        dat = {
+          type: "engine",
+          func: "nextTask",
+          g: g,
+          t: t,
+          player: this.getCookies("username")
+        }
+
+        this.send(dat)
+
+      });
+
+      this.socket.addEventListener('message', (event) => {
+        const message = JSON.parse(event.data)
+        console.log(message)
+      });
 
     },
 
@@ -36,6 +67,10 @@ export default {
 
       onClick() {
         this.$emit("clicked")
+      },
+
+      send(dat){
+        this.socket.send(JSON.stringify(dat))
       },
 
       getCookies(key){

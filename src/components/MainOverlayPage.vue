@@ -73,13 +73,13 @@
 
     <h2>Aufgaben:</h2>
     <div v-for="dat in tasks">
-      <p :class="'text' + dat[3]">{{dat[2]}}</p>
+      <p :class="'text-' + dat[3]">{{dat[2]}}</p>
     </div>
   </div>
 
   <div v-if="mode === 3">
     <div class="center-horizontal">
-      <h1 class="red">Die Imposters haben gewonnen!</h1>
+      <h1 class="red">Die Philister haben gewonnen!</h1>
     </div>
     <div class="center-horizontal" v-if="host">
       <UIButton title="Neues Spiel" @clicked="newGame"/>
@@ -91,7 +91,7 @@
 
   <div v-if="mode === 4">
     <div class="center-horizontal">
-      <h1 class="blue">Die Crewmates haben gewonnen!</h1>
+      <h1 class="blue">Die Israeliten haben gewonnen!</h1>
     </div>
     <div class="center-horizontal" v-if="host">
       <UIButton title="Neues Spiel" @clicked="newGame"/>
@@ -157,7 +157,7 @@ export default {
 
       let killedDat = {
         func: "killed",
-        player: this.getCookies("username")
+        deadPlayer: this.getCookies("username")
       }
       this.killedQRText = JSON.stringify(killedDat)
 
@@ -218,7 +218,7 @@ export default {
             let path = "/" + g + "/" + t
             this.$router.push(path)
           }else{
-            this.errorText = "Diese Task gehört nicht zu dir"
+            this.errorText = message.error
           }
         }
       });
@@ -255,11 +255,20 @@ export default {
             player: this.getCookies("username")
           }
           this.send(dat)
+        }else if(message.func === "killed"){
+          let player = message.deadPlayer
+          let dat = {
+            type: "engine",
+            func: "foundDead",
+            player: this.getCookies("username"),
+            deadPlayer: player
+          }
+          this.send(dat)
         }
       },
 
       onMeeting(){
-        if(!this.killed && this.hasMeetingsLeft === "true"){
+        if(!this.killed && this.hasMeetingsLeft === true){
           this.confirmShow = true
           this.paused = true
         }

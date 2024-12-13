@@ -182,21 +182,36 @@ export default {
         if(this.names.length > 0){
           if(this.checkImposterInput()){
             if(this.checkMeetingsInput()){
-              let dat = {
-                type: "engine",
-                func: "start",
-                imposterCount: Number(this.$refs.input.value),
-                executeRoleVis: Number(this.$refs.rausvote.checked),
-                meetings: Number(this.$refs.emerginput.value),
-                taskCount: Number(this.$refs.tasks.value),
-                host: this.getCookies("username")
+              if(this.checkTaskInput()){
+                let dat = {
+                  type: "engine",
+                  func: "start",
+                  imposterCount: Number(this.$refs.input.value),
+                  executeRoleVis: Number(this.$refs.rausvote.checked),
+                  meetings: Number(this.$refs.emerginput.value),
+                  taskCount: Number(this.$refs.tasks.value),
+                  player: this.getCookies("username")
+                }
+                this.send(dat);
               }
-              this.send(dat);
             }
           }
         }else{
           this.errorText = "Man braucht mindestens 4 Spieler"
         }
+      },
+
+      checkTaskInput(){
+        let count = Number(this.$refs.tasks.value)
+        if(count < 1){
+          this.errorText = "Du brauchst mindestens 1 Task"
+          return false
+        }
+        if(count > 20){
+          this.errorText = "Du darfst nicht mehr als 20 Tasks haben"
+          return false
+        }
+        return true
       },
 
       checkMeetingsInput(){

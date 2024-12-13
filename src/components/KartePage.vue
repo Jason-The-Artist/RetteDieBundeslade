@@ -1,10 +1,10 @@
 <style>
 
-.yellow-dot{
+.next-dot{
   filter: hue-rotate(210deg);
 }
 
-.green-dot{
+.finished-dot{
   filter: hue-rotate(240deg);
 }
 
