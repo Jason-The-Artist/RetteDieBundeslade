@@ -4,7 +4,7 @@
     <div class="center-horizontal">
       <input
           ref="qrinput"
-          placeholder="Nutzername"
+          placeholder="JSON"
           class="username-input shadow text-color"/>
     </div>
 

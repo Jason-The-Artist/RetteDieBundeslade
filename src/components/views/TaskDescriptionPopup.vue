@@ -13,7 +13,7 @@
                   <div class="center-horizontal" style="width: 90%">
                     <div>
                       <div class="center-horizontal">
-                        <h1>{{title}}</h1>
+                        <h1 class="text-center">{{title}}</h1>
                       </div>
                       <div class="center-horizontal">
                         <p class="white text-center">{{text}}</p>

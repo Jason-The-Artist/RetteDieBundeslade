@@ -38,7 +38,7 @@
     <div class="absolute max-width" style="top: 0">
       <transition name="water">
         <div v-if="showWater" class="max-width center-horizontal">
-          <img src="../../../assets/tasks/water.gif" style="opacity: 0.3">
+          <img src="../../../assets/tasks/water.gif" class="max-width" style="opacity: 0.3">
         </div>
       </transition>
     </div>
@@ -86,7 +86,7 @@ export default {
           onTap: [],
           time: 15,
           showButton: true,
-          expText: "Ziehe die Schriftrollen aus dem Wasser indem du den Knopf drückst",
+          expText: "Ziehe die Schriftrollen aus dem Wasser, indem du den Knopf drückst",
           showWater: true,
           taskShow: true,
           taskSuccess: false
@@ -117,7 +117,7 @@ export default {
         let t = this.time
         for(let i = t; i >= 0; i--){
           await this.timeout(1000)
-          this.expText = "Lass die Schriftrollen noch " + this.time + " sec. trocknen."
+          this.expText = "Lasse die Schriftrollen noch " + this.time + " sec. trocknen."
           this.time--
         }
         this.expText = "Welcher Vers im buch der Sprüche ist nicht echt?"
