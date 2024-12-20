@@ -48,12 +48,26 @@
 
   <div v-else-if="mode === 2">
     <div class="center-horizontal flex-wrap">
-      <PlayerMeetingLeinwandView
+      <PlayerMeetingView
           v-for="(dat) in names"
           :name="dat.name"
-          :dead="dat.dead"
-          :gaveVote="dat.gaveVote"
-          :votes="dat.votes"
+          :voted="myVote === dat.name"
+          :dead="dat.defeat"
+          :gaveVote="dat.givenVote"
+          :currentDead="dat.currentDead"
+      />
+    </div>
+
+  </div>
+
+  <div v-else-if="mode === 7">
+    <div class="center-horizontal flex-wrap">
+      <PlayerMeetingRevealView
+          v-for="(dat) in names"
+          :name="dat.name"
+          :dead="dat.defeat"
+          :gaveVote="dat.givenVote !== null"
+          :votes="dat.receivedVotes + ''"
       />
     </div>
 
@@ -86,7 +100,7 @@
   <div v-else-if="mode === 5" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1 class="red">Die Imposters haben gewonnen!</h1>
+        <h1 class="red">Die Philister haben gewonnen!</h1>
       </div>
     </div>
   </div>
@@ -94,7 +108,7 @@
   <div v-else-if="mode === 6" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1 class="blue">Die Crewmates haben gewonnen!</h1>
+        <h1 class="blue">Die Israeliten haben gewonnen!</h1>
       </div>
     </div>
   </div>
@@ -108,14 +122,16 @@ import EventBus from "./code/EventBusEvent";
 import {nextTick} from "vue";
 import UIButton from "@/components/views/UIButton.vue";
 import PlayerMeetingLeinwandView from "@/components/views/PlayerMeetingLeinwandView.vue";
+import PlayerMeetingView from "@/components/views/PlayerMeetingView.vue";
+import PlayerMeetingRevealView from "@/components/views/PlayerMeetingRevealView.vue";
 
 export default {
     name: "LeinwandPage",
-  components: {PlayerMeetingLeinwandView},
+  components: {PlayerMeetingRevealView, PlayerMeetingView, PlayerMeetingLeinwandView},
     data() {
         return {
           multiplier: 15,
-          current: 50,
+          current: 0,
           tasksG0: [],
           tasksG1: [],
           tasksG2: [],
@@ -132,7 +148,7 @@ export default {
     },
     mounted() {
 
-      this.tasksG0.push("t1")
+      /*this.tasksG0.push("t1")
       this.tasksG0.push("t2")
       this.tasksG0.push("t3")
       this.tasksG0.push("t4")
@@ -171,7 +187,7 @@ export default {
       this.tasksG2.push("t11")
       this.tasksG2.push("t12")
       this.tasksG2.push("t13")
-      this.tasksG2.push("s1")
+      this.tasksG2.push("s1")*/
 
 
 
@@ -204,7 +220,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
@@ -219,26 +235,15 @@ export default {
               func: "getPlayersAdvancedLeinwand"
             };
             this.send(dat);
-          }else if(message.func === "allPlayers"){
+          }else if(message.func === "allPlayerData"){
+            this.names = message.data
 
-            this.names = []
-
-            let allPlayers = message.players
-            for(let i = 0; i < allPlayers.length; i++){
-              let dat = {
-                name: allPlayers[i].player,
-                dead: allPlayers[i].dead,
-                gaveVote: false,
-                votes: ""
+            for(let i = 0; i < this.names.length; i++){
+              if(this.names[i].name === this.getCookies("username")){
+                this.myVote = this.names[i].givenVote
+                this.selfDead = this.defeat
               }
-              this.names.push(dat)
             }
-
-            let names1 = this.names
-            this.names = []
-            nextTick().then(() =>{
-              this.names = names1
-            })
 
           }else if(message.func === "playerGaveVote"){
 
@@ -254,24 +259,17 @@ export default {
               this.names = names1
             })
 
+          }else if(message.func === "normalScreen"){
+            this.mode = 0
+
+          }else if(message.func === "impostersWon"){
+            this.mode = 5
+          }else if(message.func === "crewmatesWon"){
+            this.mode = 6
+          }else if(message.func === "gotKicked"){
+            this.$router.push("/")
           }else if(message.func === "revealVotes"){
-            let playerData = message.data
-
-            for(let i = 0; i < this.names.length; i++){
-              for(let j = 0; j < playerData.length; j++){
-                let data = playerData[j]
-                if(this.names[i].name === data.player){
-                  this.names[i].votes = data.votes
-                }
-              }
-            }
-
-            let names1 = this.names
-            this.names = []
-            nextTick().then(() =>{
-              this.names = names1
-            })
-
+            this.mode = 7
           }else if(message.func === "deadScreen"){
             this.votedPlayer = message.player
             let role = message.role
@@ -280,18 +278,48 @@ export default {
             }
             this.mode = 3
 
-          }else if(message.func === "normalScreen"){
-            this.mode = 0
-
           }else if(message.func === "tieScreen"){
             this.mode = 4
-
-          }else if(message.func === "impostersWon"){
-            this.mode = 5
-          }else if(message.func === "crewmatesWon"){
-            this.mode = 6
-          }else if(message.func === "gotKicked"){
-            this.$router.push("/")
+          }else if(message.func === "onTask"){
+            let g = message.g
+            let t = message.t
+            if(g === "g0"){
+              this.tasksG0.push(t)
+            }else if(g === "g1"){
+              this.tasksG1.push(t)
+            }else if(g === "g2"){
+              this.tasksG2.push(t)
+            }
+            setTimeout(() => {
+              if(g === "g0"){
+                let update = []
+                for(let i = 0; i < this.tasksG0.length; i++){
+                  if(this.tasksG0[i] !== t){
+                    update.push(this.tasksG0[i])
+                  }
+                }
+                this.tasksG0 = update
+              }else if(g === "g1"){
+                let update = []
+                for(let i = 0; i < this.tasksG1.length; i++){
+                  if(this.tasksG1[i] !== t){
+                    update.push(this.tasksG1[i])
+                  }
+                }
+                this.tasksG1 = update
+              }else if(g === "g2"){
+                let update = []
+                for(let i = 0; i < this.tasksG2.length; i++){
+                  if(this.tasksG2[i] !== t){
+                    update.push(this.tasksG2[i])
+                  }
+                }
+                this.tasksG2 = update
+              }
+            },5000)
+          }else if(message.func === "onProgress"){
+            let factor = message.progress * this.multiplier
+            this.$refs.progress.style.width = factor + "px"
           }
         });
 
