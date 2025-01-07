@@ -28,6 +28,12 @@
                   <UIButton title="PC Sabotage" @clicked="onPc"/>
                 </div>
 
+                <div style="height: 20px"></div>
+
+                <div class="center-horizontal">
+                  <UIButton title="Kamera" @clicked="onCam"/>
+                </div>
+
               </div>
             </div>
           </div>
@@ -71,6 +77,10 @@ export default {
 
     onPc(){
       this.$emit("pc")
+    },
+
+    onCam(){
+      this.$emit("cam")
     },
 
     onClose(){

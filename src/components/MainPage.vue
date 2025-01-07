@@ -168,6 +168,7 @@ export default {
 
       onPc(){
           this.onExtraClose()
+        this.$router.push('/pc');
       },
 
       onExtraClose(){

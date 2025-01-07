@@ -56,18 +56,6 @@
   content: "TWOs";
 }
 
-.drop-allowed {
-  background-color: rgba(0, 255, 0, 0.2);
-}
-
-.drop-forbidden {
-  background-color: rgba(255, 0, 0, 0.2);
-}
-
-.drop-in {
-  box-shadow: 0 0 5px rgba(0, 0, 255, 0.4);
-}
-
 .list-enter,
 .list-leave-to {
   opacity: 0;
@@ -99,6 +87,20 @@
   max-width: 1200px;
 }
 
+</style>
+
+<style scoped>
+.drop-allowed {
+  background-color: rgba(0, 255, 0, 0.2);
+}
+
+.drop-forbidden {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.drop-in {
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.4);
+}
 </style>
 
 <template>

@@ -37,7 +37,7 @@ t9: würfel eine 6 (dir ist langweilig, deswegen versuchst du eine 6 zu würfeln
 t10: [upload] Samuels Treffpunkt
 t11: Schweigegeld (ein Anwohner will dich an die Philister verpetzen, gebe ihm schweigegeld)
 t12: [scan (medbay)] Philister Check (Setze dich hin solange du gecheckt wirst ob du ein Philister bist für 10 sec. (Das ergebnis ist immer dass er kein Philister ist))
-s1: code eingeben für sabotage keine Meetings
+s1: code eingeben für sabotage keine Tasks
 s2: code eingeben
 
 
@@ -56,4 +56,4 @@ t10: donwload (Kinderraum) (wie G0 t7)
 t11: Rechnen (summe von 2 Zahlen max: 29)
 t12: lege dich für 10 sekunden auf die matratze (du bist erschöpft, mache ein Powernap)
 t13: 5 Kniebeugen (du willst dich bei einem Kampf gegen die Philister vorbereiten, mache Sport)
-s1: text eingeben "reparieren" für sabotage keine Task
+s1: feuer löschen task für sabotage feuer löschen (wie: reactor meltdown)

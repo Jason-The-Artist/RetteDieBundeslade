@@ -264,6 +264,19 @@ export default {
             deadPlayer: player
           }
           this.send(dat)
+        }else if(message.func === "sabotageCam"){
+          if(this.imposter){
+            let dat = {
+              type: "engine",
+              func: "sabotageCam",
+            }
+            this.send(dat)
+          }else{
+            this.errorText = "Nur ein Philister kann diesen QR-Code einscannen."
+            setTimeout(() => {
+              this.errorText = ""
+            },5000)
+          }
         }
       },
 

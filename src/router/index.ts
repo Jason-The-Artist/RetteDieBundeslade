@@ -47,6 +47,8 @@ import G2T10 from "@/components/game/g2/G2T10.vue";
 import G2T11 from "@/components/game/g2/G2T11.vue";
 import G2T12 from "@/components/game/g2/G2T12.vue";
 import G2T13 from "@/components/game/g2/G2T13.vue";
+import G2S1 from "@/components/game/g2/G2S1.vue";
+import PCPage from "@/components/PCPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -76,6 +78,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/qr',
     component: QRGenerator
+  },
+  {
+    path: '/pc',
+    component: PCPage
   },
 
 
@@ -238,6 +244,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/g2/t13',
     component: G2T13
+  },
+  {
+    path: '/g2/s1',
+    component: G2S1
   },
 ]
 

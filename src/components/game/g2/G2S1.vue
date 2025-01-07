@@ -1,7 +1,14 @@
 <style>
 
-.wall-brick{
-  max-width: 200px;
+.fire{
+  max-width: 150px;
+  object-fit: contain;
+}
+
+.bucket-drag{
+  width: 90%;
+  max-width: 150px;
+  max-height: 10vw;
   object-fit: contain;
 }
 
@@ -9,7 +16,7 @@
 
 <style scoped>
 .drop-allowed {
-  background-color: rgba(0, 255, 0, 0.2);
+  background-color: rgba(0, 255, 0, 0);
 }
 
 .drop-forbidden {
@@ -23,28 +30,25 @@
 
 <template>
 
-  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Mauer bauen" text="Die Philister möchten dich angreifen. Baue eine Mauer um dich zu schützen."/>
+  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Feuer löschen" text="Die Philister haben ein Feuer gelegt. Lösche es bevor es zu spät ist"/>
   <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
-  <div class="center-horizontal">
-    <UIButton title="Task schließen" @clicked="onClose"/>
-  </div>
   <div style="height: 20px"></div>
 
   <div class="center-horizontal">
-    <p>Ziehe die Steinklötze in die Mauer rein</p>
+    <p>Ziehe den Wassereimer zu den Flammen.</p>
   </div>
 
   <div class="max-width center">
-    <drag  class="brick-drag-layout center"><img src="../../../assets/tasks/brick.png" class="brick-drag"></drag>
+    <drag class="bucket-drag-layout center"><img src="../../../assets/tasks/water_bucket.png" class="bucket-drag"></drag>
   </div>
 
   <div style="height: 100px"></div>
 
   <div class="max-width center-horizontal">
     <div class="grid5 max-width">
-      <drop class="wall-brick" v-for="(dat, index) in bricks" @drop="onDrop(index)">
-        <img src="../../../assets/tasks/brick_transparent.png" class="max-width" v-if="!dat">
-        <img src="../../../assets/tasks/brick.png" class="max-width" v-else>
+      <drop class="fire" v-for="(dat, index) in bricks" @drop="onDrop(index)">
+        <img src="../../../assets/tasks/fire.gif" class="max-width" v-if="!dat">
+        <img src="../../../assets/tasks/fire.gif" style="opacity: 0" class="max-width" v-else>
       </drop>
     </div>
   </div>
@@ -58,7 +62,7 @@ import { Drag, Drop } from "vue-easy-dnd";
 import TaskDescriptionPopup from "@/components/views/TaskDescriptionPopup.vue";
 
 export default {
-    name: "G2T6",
+    name: "G2S1",
     components: {TaskDescriptionPopup, UIButton, Drag, Drop},
     data() {
         return {
@@ -78,11 +82,38 @@ export default {
       }
     },
     mounted() {
-
+      this.spreadFire()
     },
 
 
     methods: {
+
+      spreadFire(){
+        let sleep = (this.getRandom(3) + 1) * 3000
+        let trueList = this.getAllTrue()
+        let randomListIndex = this.getRandom(trueList.length)
+        let randomPos = trueList[randomListIndex]
+        this.bricks[randomPos] = false
+        setTimeout(() => {
+          if(this.getAllTrue().length !== this.bricks.length){
+            this.spreadFire()
+          }
+        }, sleep)
+      },
+
+      getAllTrue(){
+        let list = []
+        for(let i = 0; i < this.bricks.length; i++){
+          if(this.bricks[i]){
+            list.push(i)
+          }
+        }
+        return list
+      },
+
+      getRandom(max) {
+        return Math.floor(Math.random() * max);
+      },
 
       onClicked(){
         this.taskShow = false
@@ -114,7 +145,7 @@ export default {
       },
 
       onClose(){
-        this.$router.push('/overlay')
+        //this.$router.push('/overlay')
       },
 
       getCookies(key){
