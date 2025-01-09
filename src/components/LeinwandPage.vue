@@ -227,7 +227,7 @@ export default {
 
           }else if(message.func === "emergencyMeeting"){
             this.mode = 1
-            this.caller = message.player
+            this.caller = message.caller
           }else if(message.func === "startMeeting"){
             this.mode = 2
             let dat = {

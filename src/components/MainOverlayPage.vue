@@ -9,6 +9,13 @@
   color: #29ac1a;
 }
 
+.video {
+  width: 90vw;
+  height: 90vw;
+  max-width: 500px;
+  max-height: 500px;
+}
+
 </style>
 
 <template>
@@ -90,6 +97,9 @@
   </div>
 
   <div v-if="mode === 4">
+
+
+
     <div class="center-horizontal">
       <h1 class="blue">Die Israeliten haben gewonnen!</h1>
     </div>
@@ -192,7 +202,7 @@ export default {
         }else if(message.func === "playerData"){
           this.setPlayerData(message)
         }else if(message.func === "emergencyMeeting"){
-          this.emergCaller = message.player
+          this.emergCaller = message.caller
           this.emergVis = true
         }else if(message.func === "startMeeting"){
           this.$router.push('/meeting');
@@ -205,10 +215,6 @@ export default {
           this.mode = 4
         }else if(message.func === "gotKicked"){
           this.$router.push("/")
-        }else if(message.type === "pass"){
-          if(message.player === this.getCookies("username")){
-            this.onQR(message)
-          }
         }else if(message.func === "checkTask"){
           let approved = message.approved
           if(approved){
@@ -220,6 +226,12 @@ export default {
           }else{
             this.errorText = message.error
           }
+        }
+
+
+
+        else if(message.type === "pass"){
+          this.onQR(message)
         }
       });
 
@@ -384,12 +396,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.video {
-  width: 90vw;
-  height: 90vw;
-  max-width: 500px;
-  max-height: 500px;
-}
-</style>

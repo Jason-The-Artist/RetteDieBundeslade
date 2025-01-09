@@ -1,11 +1,12 @@
 <script>
 
 import MainPage from "@/components/MainPage.vue";
+import ControlPopup from "@/components/views/ControlPopup.vue";
 
 export default {
   //npm run dev | npm run build
   name: "App",
-  components: {MainPage, WebSocket},
+  components: {ControlPopup, MainPage, WebSocket},
 
   created() {
   },
@@ -30,6 +31,8 @@ export default {
 
 <template>
   <notifications />
+
+  <ControlPopup :show="true"/>
 
   <main>
     <router-view />

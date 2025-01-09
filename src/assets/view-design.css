@@ -9,6 +9,17 @@
     background: #383838;
 }
 
+.standart-input{
+    width: 100%;
+    height: 30px;
+    font-size: 20px;
+    border: solid;
+    border-radius: 10px;
+    border-color: transparent;
+    padding-left: 10px;
+    background: #383838;
+}
+
 .small-input{
     margin-left: 20px;
     width: 20px;

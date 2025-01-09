@@ -1,19 +1,51 @@
+
+<style scoped>
+
+.repair-button{
+  background: #2b2b2b;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 5px;
+}
+
+.repair-button:hover{
+  border: 1px solid #ffffff;
+}
+
+</style>
+
 <template>
 
-  <div class="center-horizontal">
-    <p>Scanne diesen QR-Code (wenn du Philister bist), um die Kamera zu sabotieren</p>
+  <div v-if="mode === 0">
+    <div class="center-horizontal">
+      <p>Scanne diesen QR-Code (wenn du Philister bist), um die Kamera zu sabotieren</p>
+    </div>
+
+    <div class="center-horizontal">
+      <v-qrcode
+          style="border: solid 10px #969696"
+          :text="camSabotageQR"
+          :size="calculateQRCodeSize()"
+          :render="RenderOptions.CANVAS"
+          :correct-level="ErrorCorrectLevel.M"
+          color-dark="#000000"
+          color-light="#ffffff"
+      />
+    </div>
   </div>
 
-  <div class="center-horizontal">
-    <v-qrcode
-        style="border: solid 10px #969696"
-        :text="camSabotageQR"
-        :size="calculateQRCodeSize()"
-        :render="RenderOptions.CANVAS"
-        :correct-level="ErrorCorrectLevel.M"
-        color-dark="#000000"
-        color-light="#ffffff"
-    />
+  <div v-else-if="mode === 1">
+    <div class="center full-size">
+      <div>
+        <div class="center-horizontal">
+          <h3>Die Kamera wurde sabotiert. Repariere sie.</h3>
+        </div>
+        <div class="center-horizontal repair-button pointer" @click="onRepair">
+          <img src="../assets/repair_icon.png" style="width: 40px">
+          <h1 style="margin: 0">Kamera reparieren</h1>
+        </div>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -28,7 +60,9 @@ export default {
   components: {UIButton},
     data() {
         return {
-          camSabotageQR: ""
+          camSabotageQR: "",
+          mode: 0,
+          socket: null
         };
     },
 
@@ -83,8 +117,10 @@ export default {
 
           const message = JSON.parse(event.data)
           console.log(message)
-          if(message.func === "error"){
-            console.error(message.text)
+          if(message.func === "camIsSabotage"){
+            this.mode = 1
+          }else if(message.func === "camIsRepaired"){
+            this.mode = 0
           }
         });
 
@@ -103,6 +139,14 @@ export default {
         }else{
           return num
         }
+      },
+
+      onRepair(){
+        let dat = {
+          type: "engine",
+          func: "repairCam"
+        }
+        this.send(dat)
       },
 
 

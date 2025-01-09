@@ -49,6 +49,7 @@ import G2T12 from "@/components/game/g2/G2T12.vue";
 import G2T13 from "@/components/game/g2/G2T13.vue";
 import G2S1 from "@/components/game/g2/G2S1.vue";
 import PCPage from "@/components/PCPage.vue";
+import CamPage from "@/components/CamPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -82,6 +83,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/pc',
     component: PCPage
+  },
+  {
+    path: '/cam',
+    component: CamPage
   },
 
 
