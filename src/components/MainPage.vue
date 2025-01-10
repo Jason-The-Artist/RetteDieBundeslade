@@ -103,7 +103,7 @@ export default {
 
           const message = JSON.parse(event.data)
 
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
             console.error(message.text)
           }else if(message.func === "isStarted"){

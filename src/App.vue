@@ -12,10 +12,15 @@ export default {
   },
 
   mounted() {
-
+    let dat = this.$cookies.get("control")
+    if(dat === "true"){
+      this.controlIcon = true
+    }
   },
   data() {
     return {
+      showControl: false,
+      controlIcon: false
     }
   },
 
@@ -23,8 +28,14 @@ export default {
   },
 
   methods: {
+    close(){
 
+      this.showControl = false
+    },
 
+    open(){
+      this.showControl = true
+    }
   }
 }
 </script>
@@ -32,7 +43,11 @@ export default {
 <template>
   <notifications />
 
-  <ControlPopup :show="true"/>
+  <ControlPopup :show="showControl" @close="close"/>
+
+  <div class="absolute" style="top: 0" v-if="controlIcon">
+    <img src="./assets/repair_icon.png" style="width: 30px; opacity: 0.5" @click="open">
+  </div>
 
   <main>
     <router-view />

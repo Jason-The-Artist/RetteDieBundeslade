@@ -9,7 +9,7 @@
             <div class="center-horizontal">
               <div class="scroll-y overflow-x-hidden" style="height: 90vh">
 
-                <UIButton title="Exit" @clic="exit"/>
+                <UIButton title="Exit" @clicked="exit"/>
                 <div style="height: 10px"></div>
                 <UIButton title="Go back" v-if="mode !== 0" @clicked="goBack"/>
 
@@ -87,6 +87,7 @@ export default {
       mode: 0,
       socket: null,
       everyone: true,
+      customPlayer: "",
 
       data: {
         mode1: {
@@ -269,18 +270,11 @@ export default {
     this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
     this.socket.addEventListener('open', (event) => {
-      console.log("socket connected")
+      console.log("socket for control connected")
 
     });
 
     this.socket.addEventListener('message', (event) => {
-      const message = JSON.parse(event.data)
-      console.log(message)
-      if(message.func === "error"){
-
-        console.error(message.text)
-
-      }
     });
   },
 
@@ -326,7 +320,7 @@ export default {
 
 
     exit(){
-
+      this.$emit("close")
     },
 
     goBack(){
@@ -355,15 +349,21 @@ export default {
         }
       }
 
-      if(mode === 1){
+      if(this.mode === 1){
         dat.type = "engine"
-      }else if(mode === 2){
+      }else if(this.mode === 2){
         dat.type = "register"
       }else{
         dat.type = "pass"
       }
 
       console.log(dat)
+
+      if(this.everyone){
+        dat.type = "passAll"
+      }else{
+        dat.player = this.customPlayer
+      }
 
       this.send(dat)
 
