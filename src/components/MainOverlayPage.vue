@@ -230,7 +230,7 @@ export default {
 
 
 
-        else if(message.type === "pass"){
+        else if(message.type === "pass" || message.type === "passAll"){
           this.onQR(message)
         }
       });
