@@ -7,18 +7,13 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Ölbasis" text="Die Öllampen brauchen neues Öl. Fülle deine Flasche auf um Öl nachzugießen."/>
-  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
+  <TaskDescriptionPopup :show="finished" :isResolved="true" @clicked="onSuccessClick" title="Mache weiter!" text="Auf der Karte ist jetzt ein gelber Punkt erschienen wo du als nächstes hin musst. Du kannst die Task jetzt schließen."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>
   <div style="height: 20px"></div>
 
-  <FillFuelBase @finished="onFull" v-if="!finished"/>
-  <div v-else>
-    <div class="center-horizontal">
-      <p class="text-center">Auf der Karte ist jetzt ein gelber Punkt erschienen wo du als nächstes hin musst. Du kannst die Task jetzt schließen.</p>
-    </div>
-  </div>
+  <FillFuelBase @finished="onFull"/>
 
 </template>
 

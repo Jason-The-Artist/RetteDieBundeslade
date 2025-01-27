@@ -58,7 +58,9 @@ export default {
   },
 
   updated() {
+    console.log("in updated: " + this.show + " " + this.oneTime)
     if(this.show && this.oneTime){
+      console.log("in one time")
       this.oneTime = false
       this.taskFinished()
     }
@@ -70,7 +72,9 @@ export default {
   },
 
   mounted() {
+    console.log("in mounted")
     if(this.isResolved){
+      console.log("in resolved")
       this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
       this.socket.addEventListener('open', (event) => {
@@ -97,19 +101,33 @@ export default {
     },
 
     taskFinished(){
+      console.log("in task finished")
       let arr = this.$route.fullPath.split("/")
       let g = arr[1]
       let t = arr[2]
 
-      let dat = {
-        type: "engine",
-        func: "taskFinished",
-        player: this.getCookies("username"),
-        g: g,
-        t: t
-      }
+      if(g === "g1" && t === "t8" ||
+        g === "g1" && t === "t1"){
+        let dat = {
+          type: "engine",
+          func: "nextTask",
+          player: this.getCookies("username"),
+          g: g,
+          t: t
+        }
 
-      this.send(dat)
+        this.send(dat)
+      }else{
+        let dat = {
+          type: "engine",
+          func: "taskFinished",
+          player: this.getCookies("username"),
+          g: g,
+          t: t
+        }
+
+        this.send(dat)
+      }
 
     },
 
