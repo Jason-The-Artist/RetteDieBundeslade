@@ -139,7 +139,7 @@ export default {
             for(let i = 0; i < this.names.length; i++){
               if(this.names[i].name === this.getCookies("username")){
                 this.myVote = this.names[i].givenVote
-                this.selfDead = this.defeat
+                this.selfDead = this.names[i].defeat
               }
             }
 

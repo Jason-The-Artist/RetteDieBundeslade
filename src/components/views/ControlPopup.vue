@@ -36,6 +36,10 @@
                   <UIButton title="PCPage" @clicked="onPCPage"/>
                   <div style="height: 10px"></div>
                   <UIButton title="CamPage" @clicked="onCamPage"/>
+                  <div style="height: 30px"></div>
+
+                  <h3>Extra:</h3>
+                  <UIButton title="Reset Server" @clicked="onReset"/>
                   <div style="height: 10px"></div>
                 </div>
 
@@ -314,6 +318,14 @@ export default {
 
     onCamPage(){
       this.mode = 9
+    },
+
+    onReset(){
+      let dat = {
+        type: "root",
+        func: "resetServer"
+      }
+      this.send(dat)
     },
 
 

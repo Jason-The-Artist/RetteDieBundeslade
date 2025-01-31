@@ -34,11 +34,11 @@
     <div class="center-horizontal" v-if="!killed">
       <UIButton title="Sabotage" @clicked="onSabotage" v-if="imposter"/>
       <div v-else class="center-horizontal">
-        <UIButton title="Ich bin gestorben!" @clicked="onKilled" v-if="!killedQR"/>
+        <UIButton title="Ich wurde gefangen!" @clicked="onKilled" v-if="!killedQR"/>
       </div>
     </div>
     <div class="center-horizontal" v-if="killed">
-      <h2 class="red">Du bist nun ein Geist</h2>
+      <h2 class="red">Du bist nun gefangen</h2>
     </div>
     <div style="height: 20px"></div>
 
