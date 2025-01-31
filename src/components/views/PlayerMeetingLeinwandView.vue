@@ -2,8 +2,8 @@
 
 <div class="player-card-dead player-card-leinwandg center-horizontal" v-if="dead">
     <div>
-        <div class="center-horizontal" style="margin-top: -10px">
-            <h1 class="dead-color">{{name}}</h1>
+        <div class="center">
+            <h1 class="dead-color" style="margin: 0px">{{name}}</h1>
         </div>
     </div>
 </div>

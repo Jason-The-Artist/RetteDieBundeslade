@@ -1,9 +1,40 @@
+
+<style scoped>
+
+.emergency-color{
+  animation: 1s;
+  animation-name: emergency;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes emergency {
+  0% {
+    color: #ffa600;
+  }
+  20% {
+    color: #ff0000;
+  }
+  50% {
+    color: #ff0000;
+  }
+  70% {
+    color: #ffa600;
+  }
+  100% {
+    color: #ffa600;
+  }
+}
+
+</style>
+
 <template>
 
   <div v-if="mode === 0">
     <div class="center-horizontal">
       <div :style="'width: ' + this.multiplier * 100 + 'px; background: #282828'">
-        <div ref="progress" style="height: 50px; background: #42b983"></div>
+        <div :style="'height: 50px; background: #42b983; width: ' + current + 'px'"></div>
       </div>
     </div>
 
@@ -51,10 +82,10 @@
       <PlayerMeetingView
           v-for="(dat) in names"
           :name="dat.name"
-          :voted="myVote === dat.name"
           :dead="dat.defeat"
           :gaveVote="dat.givenVote"
           :currentDead="dat.currentDead"
+          :dummy="dat.isDummy"
       />
     </div>
 
@@ -68,6 +99,7 @@
           :dead="dat.defeat"
           :gaveVote="dat.givenVote !== null"
           :votes="dat.receivedVotes + ''"
+          :dummy="dat.isDummy"
       />
     </div>
 
@@ -109,6 +141,22 @@
     <div>
       <div class="center-horizontal">
         <h1 class="blue">Die Israeliten haben gewonnen!</h1>
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="mode === 9" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal">
+        <h1>Keiner wurde gevotet! Keiner stirbt!</h1>
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="mode === 8" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal">
+        <h1 class="emergency-color">Die Verbindung zu Gott wurde sabotiert!</h1>
       </div>
     </div>
   </div>
@@ -188,17 +236,6 @@ export default {
       this.tasksG2.push("t12")
       this.tasksG2.push("t13")
       this.tasksG2.push("s1")*/
-
-
-
-
-
-
-
-
-
-      let fac = this.current * this.multiplier
-      this.$refs.progress.style.width = fac + "px"
 
         window.addEventListener('beforeunload', this.eventClose);
 
@@ -318,8 +355,19 @@ export default {
               }
             },5000)
           }else if(message.func === "onProgress"){
-            let factor = message.progress * this.multiplier
-            this.$refs.progress.style.width = factor + "px"
+            this.current = message.progress * this.multiplier
+          }else if(message.func === "camIsSabotage"){
+            this.mode = 8
+          }else if(message.func === "camIsRepaired"){
+            this.mode = 0
+          }else if(message.func === "registered"){
+            let dat = {
+              type: "engine",
+              func: "currentProgress"
+            }
+            this.send(dat)
+          }else if(message.func === "dummyScreen"){
+            this.mode = 9
           }
         });
 
@@ -359,10 +407,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.video {
-  width: 90vw;
-  height: 90vw;
-}
-</style>

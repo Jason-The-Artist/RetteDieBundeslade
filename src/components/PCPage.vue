@@ -18,7 +18,7 @@
 
   <div v-if="mode === 0">
     <div class="center-horizontal">
-      <p>Scanne diesen QR-Code (wenn du Philister bist), um die Kamera zu sabotieren</p>
+      <p>Scanne diesen QR-Code (wenn du Philister bist), um die Verbindung zu Gott zu sabotieren.</p>
     </div>
 
     <div class="center-horizontal">
@@ -38,11 +38,11 @@
     <div class="center full-size">
       <div>
         <div class="center-horizontal">
-          <h3>Die Kamera wurde sabotiert. Repariere sie.</h3>
+          <h3>Die Verbindung zu Gott wurde sabotiert.</h3>
         </div>
         <div class="center-horizontal repair-button pointer" @click="onRepair">
           <img src="../assets/repair_icon.png" style="width: 40px">
-          <h1 style="margin: 0">Kamera reparieren</h1>
+          <h1 style="margin: 0">Verbindung wiederherstellen</h1>
         </div>
       </div>
     </div>

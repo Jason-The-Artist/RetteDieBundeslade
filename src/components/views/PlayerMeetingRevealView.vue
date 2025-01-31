@@ -8,7 +8,7 @@
     </div>
 </div>
 
-  <div class="player-card-meeting center-horizontal" v-else>
+  <div class="player-card-meeting center-horizontal" :class="dummy ? 'dummy-card-background' : 'player-card-background'" v-else>
     <div class="flex max-width">
       <div style="width: 10px"></div>
       <div class="left" style="margin-top: -10px">
@@ -16,7 +16,7 @@
       </div>
       <div class="center-horizontal max-width">
         <div class="center-horizontal" style="margin-top: -10px">
-          <h3>{{name}}</h3>
+          <h3>{{dummy ? 'Keinen voten' : name}}</h3>
         </div>
       </div>
     </div>
@@ -37,7 +37,8 @@ export default {
       name: String,
       dead: Boolean,
       gaveVote: Boolean,
-      votes: String
+      votes: String,
+      dummy: Boolean
     },
 
   created() {

@@ -1,5 +1,5 @@
 <template>
-  <ExtraFunctionPopup :show="extraShow" @leinwand="onLeinwand" @pc="onPc" @close="onExtraClose"/>
+  <ExtraFunctionPopup :show="extraShow" @leinwand="onLeinwand" @pc="onPc" @cam="onCam" @close="onExtraClose"/>
   <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Ein Nutzer existiert bereits mit diesem Nutzernamen. Möchtest du ihn ersetzen?"/>
 
 <div class="center-horizontal max-width max-height">
@@ -171,6 +171,11 @@ export default {
         this.$router.push('/pc');
       },
 
+      onCam(){
+        this.onExtraClose()
+        this.$router.push('/cam');
+      },
+
       onExtraClose(){
           this.extraShow = false
       },
@@ -212,8 +217,12 @@ export default {
       },
 
       checkUsername(){
-        if(this.$refs.usernameinput.value !== ""){
+        if(this.$refs.usernameinput.value.trim() !== ""){
           return true
+        }else if(this.$refs.usernameinput.value === "dummy" || this.$refs.usernameinput.value === "-tie-"){
+          this.unableMessage = "Dieser Nutzername ist unzulässig"
+        }else if(this.$refs.usernameinput.value.length > 20){
+          this.unableMessage = "Die Maximallänge für einen Nutzername sind 20 Zeichen"
         }else{
           this.unableMessage = "Du musst ein Nutzername vergeben"
         }

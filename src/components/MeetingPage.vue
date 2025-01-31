@@ -1,5 +1,5 @@
 <template>
-  <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" :text="'Möchtest du wirklich ' + activeClickedPlayer + ' wählen?'"/>
+  <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" :text="'Möchtest du wirklich ' + (activeClickedPlayer === 'dummy' ? 'niemanden' : activeClickedPlayer) + ' wählen?'"/>
 
   <div class="center-horizontal flex-wrap" v-if="mode === 0">
     <PlayerMeetingView
@@ -11,6 +11,7 @@
         :dead="dat.defeat"
         :gaveVote="dat.givenVote"
         :currentDead="dat.currentDead"
+        :dummy="dat.isDummy"
     />
   </div>
 
@@ -47,6 +48,14 @@
     <div>
       <div class="center-horizontal">
         <h1>Gleichstand! Keiner stirbt!</h1>
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="mode === 4" class="center" style="height: 80vh">
+    <div>
+      <div class="center-horizontal">
+        <h1>Keiner wurde gevotet! Keiner stirbt!</h1>
       </div>
     </div>
   </div>
@@ -109,7 +118,7 @@ export default {
 
           dat = {
             type: "engine",
-            func: "getAllPlayerData"
+            func: "getAllPlayerDataVoting"
           };
           this.send(dat);
 
@@ -150,7 +159,8 @@ export default {
 
           }else if(message.func === "tieScreen"){
             this.mode = 3
-
+          }else if(message.func === "dummyScreen"){
+            this.mode = 4
           }
         });
 

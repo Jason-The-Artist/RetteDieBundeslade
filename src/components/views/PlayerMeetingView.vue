@@ -8,11 +8,11 @@
     </div>
 </div>
 
-  <div class="player-card-meeting center-horizontal" v-else>
+  <div class="player-card-meeting center-horizontal" :class="dummy ? 'dummy-card-background' : 'player-card-background'" v-else>
     <div>
       <div class="center-horizontal" style="margin-top: -10px">
-        <h3 v-if="voted" class="voted-color">{{name}}</h3>
-        <h3 v-else>{{name}}</h3>
+        <h3 v-if="voted" class="voted-color">{{dummy ? 'Keinen voten' : name}}</h3>
+        <h3 v-else>{{dummy ? 'Keinen voten' : name}}</h3>
         <img src="../../assets/haken_icon.png" style="width: 30px; height: 30px; margin-top: 12px; margin-left: 20px" v-if="gaveVote"/>
       </div>
     </div>
@@ -34,7 +34,8 @@ export default {
       voted: Boolean,
       dead: Boolean,
       gaveVote: Boolean,
-      currentDead: Boolean
+      currentDead: Boolean,
+      dummy: Boolean
     },
 
   created() {

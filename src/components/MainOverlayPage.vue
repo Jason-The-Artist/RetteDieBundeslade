@@ -31,7 +31,7 @@
 
   <div v-if="mode === 2">
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
-    <div class="center-horizontal" v-if="!killed && hasMeetingsLeft">
+    <div class="center-horizontal" v-if="!killed">
       <UIButton title="Sabotage" @clicked="onSabotage" v-if="imposter"/>
       <div v-else class="center-horizontal">
         <UIButton title="Ich bin gestorben!" @clicked="onKilled" v-if="!killedQR"/>
@@ -39,9 +39,6 @@
     </div>
     <div class="center-horizontal" v-if="killed">
       <h2 class="red">Du bist nun ein Geist</h2>
-    </div>
-    <div class="center-horizontal" v-else-if="!hasMeetingsLeft">
-      <h2 class="red">Du hast keine Meetings übrig</h2>
     </div>
     <div style="height: 20px"></div>
 
@@ -154,7 +151,8 @@ export default {
           killedQR: false,
           killedQRText: "",
           host: false,
-          tasks: []
+          tasks: [],
+          timeout: null
         };
     },
 
@@ -226,6 +224,8 @@ export default {
           }else{
             this.errorText = message.error
           }
+        }else if(message.func === "unexpectedError"){
+          this.$router.push("/")
         }
 
 
@@ -248,6 +248,10 @@ export default {
         this.imposter = data.imposter
         this.mode = data.overlayMode
         this.tasks = data.tasks
+
+        if(this.mode === -2){
+          this.$router.push("/meeting")
+        }
 
         let dat = {
           data: this.tasks
@@ -285,10 +289,17 @@ export default {
             this.send(dat)
           }else{
             this.errorText = "Nur ein Philister kann diesen QR-Code einscannen."
-            setTimeout(() => {
+            this.clearTO()
+            this.timeout = setTimeout(() => {
               this.errorText = ""
             },5000)
           }
+        }
+      },
+
+      clearTO(){
+        if(this.timeout !== null){
+          clearTimeout(this.timeout)
         }
       },
 
@@ -296,6 +307,12 @@ export default {
         if(!this.killed && this.hasMeetingsLeft === true){
           this.confirmShow = true
           this.paused = true
+        }else{
+          this.errorText = "Du hast keine Meetings mehr übrig."
+          this.clearTO()
+          this.timeout = setTimeout(() => {
+            this.errorText = ""
+          },5000)
         }
       },
 
@@ -378,7 +395,7 @@ export default {
 
       newGame(){
         let dat = {
-          type: "engine",
+          type: "root",
           func: "clearGame"
         }
         this.send(dat)

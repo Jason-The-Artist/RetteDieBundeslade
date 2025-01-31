@@ -48,7 +48,7 @@
                   </div>
 
                   <div v-if="!everyone">
-                    <input class="standart-input" v-model="customPlayer" placeholder="Player name">
+                    <input class="standart-input text-color" v-model="customPlayer" placeholder="Player name">
                   </div>
 
                   <div v-for="dat in getAllFunc('mode' + mode)">
