@@ -120,7 +120,7 @@ export default {
           this.expText = "Lasse die Schriftrollen noch " + this.time + " sec. trocknen."
           this.time--
         }
-        this.expText = "Welcher Vers im buch der Sprüche ist nicht echt?"
+        this.expText = "Welcher Vers im Buch der Sprüche ist nicht echt?"
       },
 
       timeout(ms) {
