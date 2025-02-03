@@ -14,7 +14,7 @@
 
 <template>
 
-  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Echter Israelit" text="Die Israeliten zweifeln an, ob du die Bundeslade überhaubt erkennst. Zige den Israeliten, dass du weißt, wie die Bundelsade aussieht."/>
+  <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Echter Israelit" text="Die Israeliten zweifeln an, ob du die Bundeslade überhaubt erkennst. Zeige den Israeliten, dass du weißt, wie die Bundelsade aussieht."/>
   <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Task geschafft!" text="Du hast diese Task erfolgreich geschaft, weil du wurdest nicht als Philister erkannt. Mache jetzt weitere Tasks oder beobachte die anderen Israeliten."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>

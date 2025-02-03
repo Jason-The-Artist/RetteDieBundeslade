@@ -135,10 +135,12 @@ export default {
       try{
         this.socket.send(JSON.stringify(dat))
       }catch (e){
-        console.log(e)
-        setTimeout(() => {
-          this.send(dat)
-        },500)
+        if(this.socket !== undefined){
+          console.log(e)
+          setTimeout(() => {
+            this.send(dat)
+          },500)
+        }
       }
 
     },

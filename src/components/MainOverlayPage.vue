@@ -20,7 +20,8 @@
 
 <template>
   <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Möchtest du wirklich ein Meeting starten?"/>
-  <ConfirmPopup :show="confirmKilledShow" @yes="yesSelectedKill" @no="noSelected" text="Bist du wirklich gestorben?"/>
+  <ConfirmPopup :show="confirmKilledShow" @yes="yesSelectedKill" @no="noSelected" text="Bist du wirklich gefangen worden?"/>
+  <AdvancedFunctionsPopup :show="advancedShow" :imposter="imposter" @onCancel="onAdvancedCancel" @onKilled="onKilled" @onSabotageFire="onSabotageFire" @onSabotagePassword="onSabotagePassword"/>
 
   <div v-if="mode === 1">
     <div class="show-page center-horizontal">
@@ -31,20 +32,24 @@
 
   <div v-if="mode === 2">
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
-    <div class="center-horizontal" v-if="!killed">
-      <UIButton title="Sabotage" @clicked="onSabotage" v-if="imposter"/>
-      <div v-else class="center-horizontal">
-        <UIButton title="Ich wurde gefangen!" @clicked="onKilled" v-if="!killedQR"/>
-      </div>
+    <div v-if="!killed" class="center-horizontal">
+      <UIButton title="Weitere Funktionen" @clicked="showAdvanced" v-if="!killedQR"/>
     </div>
     <div class="center-horizontal" v-if="killed">
-      <h2 class="red">Du bist nun gefangen</h2>
+      <div>
+        <div class="center-horizontal">
+          <h2 class="red">Du bist nun gefangen</h2>
+        </div>
+        <div class="center-horizontal" v-if="!imposter">
+          <p class="text-center" style="margin: 0px">Klicke bei den Aufgaben auf die Texte, um die Aufgaben zu beenden.</p>
+        </div>
+      </div>
     </div>
     <div style="height: 20px"></div>
 
     <div class="center-horizontal" v-if="!killedQR">
       <div class="video" v-if="!paused">
-        <qrcode-stream @detect="onDetect" :paused="paused" :class="imposter ? 'shadow-red' : 'shadow-blue'"></qrcode-stream>
+        <qrcode-stream @detect="onDetect" :paused="paused" class="shadow"></qrcode-stream>
       </div>
       <div class="video" v-else>
       </div>
@@ -69,6 +74,17 @@
       <h3 class="red" style="margin: 0px">{{errorText}}</h3>
     </div>
 
+    <div class="center-horizontal">
+      <div>
+        <div class="center-horizontal">
+          <h3 class="emergency-color" style="margin-bottom: 0px; margin-top: 5px">Ein Feuer wurde gelegt. Lösche es!</h3>
+        </div>
+        <div class="center-horizontal">
+          <p class="white text-center" style="margin: 0px">Auf der Karte findest du eine rote Aufgabe. Löse sie um die Sabotage zu beseitigen.</p>
+        </div>
+      </div>
+    </div>
+
     <div style="height: 20px"></div>
 
     <div class="center-horizontal">
@@ -76,20 +92,35 @@
     </div>
 
     <h2>Aufgaben:</h2>
-    <div v-for="dat in tasks">
-      <p :class="'text-' + dat[3]">{{dat[2]}}</p>
+    <div v-if="!killed">
+      <div v-for="dat in tasks">
+        <p :class="'text-' + dat[3]">{{dat[2]}}</p>
+      </div>
     </div>
+    <div v-else>
+      <div v-for="dat in tasks">
+        <p class="pointer" :class="'text-' + dat[3]" @click="onTaskClicked(dat[0], dat[1])">{{dat[2]}}</p>
+      </div>
+    </div>
+
+    <div style="height: 20px"></div>
+
+    <div class="center-horizontal">
+      <a @click="switchRoleVis" class="link pointer" v-if="showRole">{{imposter ? 'Philister' : 'Israelit'}}</a>
+      <a @click="switchRoleVis" class="link pointer" v-else>Rolle einblenden</a>
+    </div>
+
   </div>
 
   <div v-if="mode === 3">
     <div class="center-horizontal">
-      <h1 class="red">Die Philister haben gewonnen!</h1>
+      <h1 class="red text-center">Die Philister haben gewonnen!</h1>
     </div>
     <div class="center-horizontal" v-if="host">
       <UIButton title="Neues Spiel" @clicked="newGame"/>
     </div>
     <div class="center-horizontal" v-else>
-      <p class="text-color">Warte auf den Host...</p>
+      <p class="text-color text-center">Warte auf den Host...</p>
     </div>
   </div>
 
@@ -98,13 +129,13 @@
 
 
     <div class="center-horizontal">
-      <h1 class="blue">Die Israeliten haben gewonnen!</h1>
+      <h1 class="blue text-center">Die Israeliten haben gewonnen!</h1>
     </div>
     <div class="center-horizontal" v-if="host">
       <UIButton title="Neues Spiel" @clicked="newGame"/>
     </div>
     <div class="center-horizontal" v-else>
-      <p class="text-color">Warte auf den Host...</p>
+      <p class="text-color text-center">Warte auf den Host...</p>
     </div>
   </div>
 
@@ -121,6 +152,7 @@ import {QRController} from "./code/QRController";
 import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
 import {ErrorCorrectLevel, RenderOptions} from "qrcode-vuejs";
 import PlayerMeetingLeinwandView from "@/components/views/PlayerMeetingLeinwandView.vue";
+import AdvancedFunctionsPopup from "@/components/views/AdvancedFunctionsPopup.vue";
 
 export default {
     name: "MainOverlayPage",
@@ -132,7 +164,7 @@ export default {
       return RenderOptions
     }
   },
-    components: {PlayerMeetingLeinwandView, EmergencyPopup, UIButton, ConfirmPopup},
+    components: {AdvancedFunctionsPopup, PlayerMeetingLeinwandView, EmergencyPopup, UIButton, ConfirmPopup},
     data() {
         return {
           errorText: "",
@@ -152,7 +184,9 @@ export default {
           killedQRText: "",
           host: false,
           tasks: [],
-          timeout: null
+          timeout: null,
+          showRole: false,
+          advancedShow: false,
         };
     },
 
@@ -259,6 +293,37 @@ export default {
         this.setCookies("tasks", JSON.stringify(dat))
       },
 
+      onSabotageFire(){
+        this.advancedShow = false;
+        let dat = {
+          func: "sabotageFire"
+        }
+        this.send(dat)
+      },
+
+      onSabotagePassword(){
+        this.advancedShow = false
+      },
+
+      showAdvanced(){
+        this.advancedShow = true
+      },
+
+      onAdvancedCancel(){
+        this.advancedShow = false
+      },
+
+      onTaskClicked(g, t){
+        let dat = {
+          type: "engine",
+          func: "checkTask",
+          g: g,
+          t: t,
+          player: this.getCookies("username")
+        }
+        this.send(dat)
+      },
+
       onQR(message){
         if(message.func === "openMeeting"){
           this.onMeeting()
@@ -339,7 +404,12 @@ export default {
         this.send(dat);
       },
 
+      switchRoleVis(){
+        this.showRole = !this.showRole;
+      },
+
       onKilled(){
+        this.advancedShow = false
         this.confirmKilledShow = true
       },
 

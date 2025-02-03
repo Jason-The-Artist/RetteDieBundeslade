@@ -1,30 +1,8 @@
 
 <style scoped>
 
-.emergency-color{
-  animation: 1s;
-  animation-name: emergency;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-
-@keyframes emergency {
-  0% {
-    color: #ffa600;
-  }
-  20% {
-    color: #ff0000;
-  }
-  50% {
-    color: #ff0000;
-  }
-  70% {
-    color: #ffa600;
-  }
-  100% {
-    color: #ffa600;
-  }
+.huge-font{
+  font-size: 60px
 }
 
 </style>
@@ -69,7 +47,7 @@
       <img src="../assets/emergency-icon.svg" style="width: 500px"/>
     </div>
     <div class="center-horizontal">
-      <h1 class="red" style="font-size: 60px">Emergency Meeting</h1>
+      <h1 class="red huge-font">Emergency Meeting</h1>
     </div>
     <div class="center-horizontal">
       <h1 style="font-size: 60px">von {{caller}}</h1>
@@ -86,6 +64,7 @@
           :gaveVote="dat.givenVote"
           :currentDead="dat.currentDead"
           :dummy="dat.isDummy"
+          :leinwand="true"
       />
     </div>
 
@@ -124,7 +103,7 @@
   <div v-else-if="mode === 4" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1>Gleichstand! Keiner stirbt!</h1>
+        <h1 class="huge-font">Gleichstand! Keiner stirbt!</h1>
       </div>
     </div>
   </div>
@@ -132,7 +111,7 @@
   <div v-else-if="mode === 5" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1 class="red">Die Philister haben gewonnen!</h1>
+        <h1 class="red huge-font">Die Philister haben gewonnen!</h1>
       </div>
     </div>
   </div>
@@ -140,7 +119,7 @@
   <div v-else-if="mode === 6" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1 class="blue">Die Israeliten haben gewonnen!</h1>
+        <h1 class="blue huge-font">Die Israeliten haben gewonnen!</h1>
       </div>
     </div>
   </div>
@@ -148,7 +127,7 @@
   <div v-else-if="mode === 9" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1>Keiner wurde gevotet! Keiner stirbt!</h1>
+        <h1 class="huge-font">Keiner wurde gevotet! Keiner stirbt!</h1>
       </div>
     </div>
   </div>
@@ -156,7 +135,7 @@
   <div v-else-if="mode === 8" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal">
-        <h1 class="emergency-color">Die Verbindung zu Gott wurde sabotiert!</h1>
+        <h1 class="emergency-color huge-font">Die Verbindung zu Gott wurde sabotiert!</h1>
       </div>
     </div>
   </div>
@@ -183,7 +162,7 @@ export default {
           tasksG0: [],
           tasksG1: [],
           tasksG2: [],
-          mode: 0,
+          mode: 2,
           caller: "",
           names: [],
           votedPlayer: "",

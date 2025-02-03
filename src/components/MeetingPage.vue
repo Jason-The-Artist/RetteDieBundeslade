@@ -12,6 +12,7 @@
         :gaveVote="dat.givenVote"
         :currentDead="dat.currentDead"
         :dummy="dat.isDummy"
+        :leinwand="false"
     />
   </div>
 

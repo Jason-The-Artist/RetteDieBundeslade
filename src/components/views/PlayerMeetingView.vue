@@ -8,12 +8,12 @@
     </div>
 </div>
 
-  <div class="player-card-meeting center-horizontal" :class="dummy ? 'dummy-card-background' : 'player-card-background'" v-else>
+  <div class="player-card-meeting center-horizontal" :class="getCustomCss()" v-else>
     <div>
-      <div class="center-horizontal" style="margin-top: -10px">
-        <h3 v-if="voted" class="voted-color">{{dummy ? 'Keinen voten' : name}}</h3>
-        <h3 v-else>{{dummy ? 'Keinen voten' : name}}</h3>
-        <img src="../../assets/haken_icon.png" style="width: 30px; height: 30px; margin-top: 12px; margin-left: 20px" v-if="gaveVote"/>
+      <div class="center">
+        <h3 v-if="voted" class="voted-color" style="margin: 0px">{{dummy ? 'Keinen voten' : name}}</h3>
+        <h3 v-else-if="gaveVote" class="green" style="margin: 0px">{{dummy ? 'Keinen voten' : name}}</h3>
+        <h3 v-else style="margin: 0px">{{dummy ? 'Keinen voten' : name}}</h3>
       </div>
     </div>
   </div>
@@ -35,7 +35,8 @@ export default {
       dead: Boolean,
       gaveVote: Boolean,
       currentDead: Boolean,
-      dummy: Boolean
+      dummy: Boolean,
+      leinwand: Boolean
     },
 
   created() {
@@ -45,6 +46,22 @@ export default {
 
     },
     methods: {
+
+      getCustomCss(){
+        let str = ""
+        if(this.dummy){
+          str = "dummy-card-background"
+        }else{
+          str = "player-card-background"
+        }
+
+        if(this.leinwand){
+          str = str + " leinwand-card-size"
+        }else{
+          str = str + " normal-card-size"
+        }
+        return str
+      },
 
 
         getCookies(key){

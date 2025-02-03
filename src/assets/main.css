@@ -24,6 +24,37 @@ p,h1,h2,h3{
     color: #00ff00;
 }
 
+.link{
+    color: #9146ff;
+    text-decoration: underline;
+}
+
+.emergency-color{
+    animation: 1s;
+    animation-name: emergency;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes emergency {
+    0% {
+        color: #ffa600;
+    }
+    20% {
+        color: #ff0000;
+    }
+    50% {
+        color: #ff0000;
+    }
+    70% {
+        color: #ffa600;
+    }
+    100% {
+        color: #ffa600;
+    }
+}
+
 .on-bottom{
     z-index: -9999;
 }
