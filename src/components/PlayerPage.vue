@@ -32,6 +32,11 @@
         <div style="width: 20px"></div>
         <input type="checkbox" ref="rausvote" checked style="width: 25px">
       </div>
+      <div class="center-horizontal">
+        <h2 class="white">Mit Taschenlampe</h2>
+        <div style="width: 20px"></div>
+        <input type="checkbox" ref="light" checked style="width: 25px">
+      </div>
       <div class="center-horizontal center">
         <h2 class="white">Emergency Meetings</h2>
         <input ref="emerginput" class="small-input text-color texture" value="1">
@@ -187,9 +192,10 @@ export default {
                   type: "engine",
                   func: "start",
                   imposterCount: Number(this.$refs.input.value),
-                  executeRoleVis: Number(this.$refs.rausvote.checked),
+                  executeRoleVis: this.$refs.rausvote.checked,
                   meetings: Number(this.$refs.emerginput.value),
                   taskCount: Number(this.$refs.tasks.value),
+                  allowTorch: this.$refs.light.checked,
                   player: this.getCookies("username")
                 }
                 this.send(dat);

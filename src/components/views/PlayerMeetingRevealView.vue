@@ -1,23 +1,21 @@
 <template>
 
-<div class="player-card-dead center-horizontal" v-if="dead">
-    <div>
-        <div class="center">
-            <h1 class="dead-color" style="margin: 0px">{{name}}</h1>
-        </div>
-    </div>
-</div>
-
-  <div class="player-card-meeting center-horizontal" :class="dummy ? 'dummy-card-background' : 'player-card-background'" v-else>
-    <div class="flex max-width">
-      <div style="width: 10px"></div>
-      <div class="left center-vertical">
-        <h3 style="margin: 0px">{{votes}}</h3>
+  <div class="player-card-meeting dead-card-background center-horizontal" :class="getDeadCss()" v-if="dead">
+    <div class="center">
+      <div class="center">
+        <h3 class="dead-color">{{name}}</h3>
       </div>
-      <div class="center-horizontal max-width">
-        <div class="center-horizontal" style="margin-top: -10px">
-          <h3>{{dummy ? 'Keinen voten' : name}}</h3>
+    </div>
+  </div>
+
+  <div class="player-card-meeting center-horizontal" :class="getCustomCss()" v-else>
+    <div class="center">
+      <div class="center">
+        <div class="left center-vertical">
+          <h3 style="margin: 0px; color: yellow">{{votes}}</h3>
         </div>
+        <div style="width: 20px"></div>
+        <h3 style="margin: 0px">{{dummy ? 'Keinen voten' : name}}</h3>
       </div>
     </div>
   </div>
@@ -38,7 +36,8 @@ export default {
       dead: Boolean,
       gaveVote: Boolean,
       votes: String,
-      dummy: Boolean
+      dummy: Boolean,
+      leinwand: Boolean
     },
 
   created() {
@@ -48,6 +47,32 @@ export default {
 
     },
     methods: {
+
+      getCustomCss(){
+        let str = ""
+        if(this.dummy){
+          str = "dummy-card-background"
+        }else{
+          str = "player-card-background"
+        }
+
+        if(this.leinwand){
+          str = str + " leinwand-card-size"
+        }else{
+          str = str + " normal-card-size"
+        }
+        return str
+      },
+
+      getDeadCss(){
+        let str = ""
+        if(this.leinwand){
+          str = str + " leinwand-card-size"
+        }else{
+          str = str + " normal-card-size"
+        }
+        return str
+      },
 
 
         getCookies(key){

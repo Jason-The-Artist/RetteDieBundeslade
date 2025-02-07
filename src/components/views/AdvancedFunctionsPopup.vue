@@ -28,6 +28,12 @@
                   <div class="center-horizontal">
                     <UIButton title="Password ändern" @clicked="onPassword"/>
                   </div>
+
+                  <div style="height: 20px"></div>
+
+                  <div class="center-horizontal">
+                    <UIButton title="Dunkelheit hervorrufen" @clicked="onLight"/>
+                  </div>
                 </div>
 
                 <div v-else>
@@ -84,6 +90,10 @@ export default {
 
     onPassword(){
       this.$emit("onSabotagePassword")
+    },
+
+    onLight(){
+      this.$emit("onSabotageLight")
     },
 
     onKilled(){

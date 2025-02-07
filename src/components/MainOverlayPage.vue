@@ -21,7 +21,7 @@
 <template>
   <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Möchtest du wirklich ein Meeting starten?"/>
   <ConfirmPopup :show="confirmKilledShow" @yes="yesSelectedKill" @no="noSelected" text="Bist du wirklich gefangen worden?"/>
-  <AdvancedFunctionsPopup :show="advancedShow" :imposter="imposter" @onCancel="onAdvancedCancel" @onKilled="onKilled" @onSabotageFire="onSabotageFire" @onSabotagePassword="onSabotagePassword"/>
+  <AdvancedFunctionsPopup :show="advancedShow" :imposter="imposter" @onCancel="onAdvancedCancel" @onKilled="onKilled" @onSabotageFire="onSabotageFire" @onSabotageLight="onSabotageLight" @onSabotagePassword="onSabotagePassword"/>
 
   <div v-if="mode === 1">
     <div class="show-page center-horizontal">
@@ -74,13 +74,35 @@
       <h3 class="red" style="margin: 0px">{{errorText}}</h3>
     </div>
 
-    <div class="center-horizontal">
+    <div class="center-horizontal" v-if="sabotageMode === 1">
       <div>
         <div class="center-horizontal">
           <h3 class="emergency-color" style="margin-bottom: 0px; margin-top: 5px">Ein Feuer wurde gelegt. Lösche es!</h3>
         </div>
         <div class="center-horizontal">
-          <p class="white text-center" style="margin: 0px">Auf der Karte findest du eine rote Aufgabe. Löse sie um die Sabotage zu beseitigen.</p>
+          <p class="white text-center" style="margin: 0px">Auf der Karte findest du eine rote Aufgabe. Löse sie, um die Sabotage zu beseitigen.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-horizontal" v-else-if="sabotageMode === 2">
+      <div>
+        <div class="center-horizontal">
+          <h3 class="emergency-color" style="margin-bottom: 0px; margin-top: 5px">Die Philister haben das Password geändert!</h3>
+        </div>
+        <div class="center-horizontal">
+          <p class="white text-center" style="margin: 0px">Auf der Karte findest du eine rote Aufgabe. Löse sie, um die Sabotage zu beseitigen.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-horizontal" v-else-if="sabotageMode === 3">
+      <div>
+        <div class="center-horizontal">
+          <h3 class="emergency-color" style="margin-bottom: 0px; margin-top: 5px">Es herrscht Dunkelheit!</h3>
+        </div>
+        <div class="center-horizontal">
+          <p class="white text-center" style="margin: 0px">Auf der Karte findest du eine rote Aufgabe. Löse sie, um die Sabotage zu beseitigen.</p>
         </div>
       </div>
     </div>
@@ -187,6 +209,7 @@ export default {
           timeout: null,
           showRole: false,
           advancedShow: false,
+          sabotageMode: 0
         };
     },
 
@@ -257,6 +280,10 @@ export default {
             this.$router.push(path)
           }else{
             this.errorText = message.error
+            this.clearTO()
+            this.timeout = setTimeout(() => {
+              this.errorText = ""
+            },5000)
           }
         }else if(message.func === "unexpectedError"){
           this.$router.push("/")
@@ -282,6 +309,8 @@ export default {
         this.imposter = data.imposter
         this.mode = data.overlayMode
         this.tasks = data.tasks
+        this.sabotageMode = data.sabotageMode
+        this.toggleTorch(data.torchEnabled)
 
         if(this.mode === -2){
           this.$router.push("/meeting")
@@ -296,13 +325,28 @@ export default {
       onSabotageFire(){
         this.advancedShow = false;
         let dat = {
+          type: "engine",
           func: "sabotageFire"
+        }
+        this.send(dat)
+      },
+
+      onSabotageLight(){
+        this.advancedShow = false;
+        let dat = {
+          type: "engine",
+          func: "sabotageLight"
         }
         this.send(dat)
       },
 
       onSabotagePassword(){
         this.advancedShow = false
+        let dat = {
+          type: "engine",
+          func: "sabotagePassword"
+        }
+        this.send(dat)
       },
 
       showAdvanced(){
@@ -370,8 +414,16 @@ export default {
 
       onMeeting(){
         if(!this.killed && this.hasMeetingsLeft === true){
-          this.confirmShow = true
-          this.paused = true
+          if(this.sabotageMode > 0){
+            this.errorText = "Eine Sabotage blockiert das Meeting."
+            this.clearTO()
+            this.timeout = setTimeout(() => {
+              this.errorText = ""
+            },5000)
+          }else{
+            this.confirmShow = true
+            this.paused = true
+          }
         }else{
           this.errorText = "Du hast keine Meetings mehr übrig."
           this.clearTO()
@@ -469,6 +521,39 @@ export default {
           func: "clearGame"
         }
         this.send(dat)
+      },
+
+      toggleTorch(isEnable) {
+        navigator.mediaDevices.enumerateDevices().then(devices => {
+
+          const cameras = devices.filter((device) => device.kind === 'videoinput');
+
+          if (cameras.length === 0) {
+            console.log('No camera found on this device.')
+          }
+          const camera = cameras[cameras.length - 1];
+
+          // Create stream and get video track
+          navigator.mediaDevices.getUserMedia({
+            video: {
+              deviceId: camera.deviceId,
+              facingMode: ['user', 'environment'],
+              height: {ideal: 1080},
+              width: {ideal: 1920}
+            }
+          }).then(stream => {
+            const track = stream.getVideoTracks()[0];
+
+            //Create image capture object and get camera capabilities
+            const imageCapture = new ImageCapture(track)
+            const photoCapabilities = imageCapture.getPhotoCapabilities().then(() => {
+
+              track.applyConstraints({
+                advanced: [{torch: isEnable}]
+              });
+            });
+          });
+        });
       },
 
 

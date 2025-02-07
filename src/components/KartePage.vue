@@ -119,20 +119,36 @@ export default {
           };
           this.send(dat);
 
+          let dat1 = {
+            type: "engine",
+            func: "currentSabotage",
+          };
+          this.send(dat1);
+
         });
 
 
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
 
-          }else if(message.func === "allPlayers"){
-
-
+          }else if(message.func === "currentSabotage"){
+            if(message.sabotage === "fire"){
+              this.tasksG2.push(["s1", "normal"])
+            }else if(message.sabotage === "password"){
+              if(!message.s1){
+                this.tasksG1.push(["s1", "normal"])
+              }
+              if(!message.s2){
+                this.tasksG1.push(["s2", "normal"])
+              }
+            }else if(message.sabotage === "light"){
+              this.tasksG2.push(["s1", "normal"])
+            }
           }
         });
 

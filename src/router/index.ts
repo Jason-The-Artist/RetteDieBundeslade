@@ -51,6 +51,7 @@ import G2S1 from "@/components/game/g2/G2S1.vue";
 import PCPage from "@/components/PCPage.vue";
 import CamPage from "@/components/CamPage.vue";
 import EnablingPage from "@/components/EnablingPage.vue";
+import AllTaskDebug from "@/components/AllTaskDebug.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -92,6 +93,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/control',
     component: EnablingPage
+  },
+  {
+    path: '/alltask',
+    component: AllTaskDebug
   },
 
 

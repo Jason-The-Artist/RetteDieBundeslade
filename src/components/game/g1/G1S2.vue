@@ -5,7 +5,7 @@
 <template>
 
   <TaskDescriptionPopup :show="taskShow" @clicked="onClicked" title="Passwort eingeben" text="Die Philister haben zur Sicherheit ihr Zugangspasswort geändert. Gebe es hier ein um deine Tasks weiterzumachen."/>
-  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Geschafft!" text="Das Passwort war richtig. Du kannst deine Tasks wieder absolvieren."/>
+  <TaskDescriptionPopup :show="taskSuccess" :isResolved="true" @clicked="onSuccessClick" title="Sabotage 2 absolviert" text="Du hast Sabotage Nummer 2 absolviert."/>
   <div class="center-horizontal">
     <UIButton title="Task schließen" @clicked="onClose"/>
   </div>

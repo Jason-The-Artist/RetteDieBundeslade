@@ -10,6 +10,13 @@
 <template>
 
   <div v-if="mode === 0">
+
+    <div class="center-horizontal">
+      <h1 style="margin: 0px" class="emergency-color huge-font" v-if="currentSabotage === 'fire'">Ein Feuer wurde gelegt!</h1>
+      <h1 style="margin: 0px" class="emergency-color huge-font" v-else-if="currentSabotage === 'password'">Die Philister haben das Password geändert!</h1>
+      <h1 style="margin: 0px" class="emergency-color huge-font" v-else-if="currentSabotage === 'light'">Es herrscht Dunkelheit!</h1>
+    </div>
+
     <div class="center-horizontal">
       <div :style="'width: ' + this.multiplier * 100 + 'px; background: #282828'">
         <div :style="'height: 50px; background: #42b983; width: ' + current + 'px'"></div>
@@ -34,9 +41,7 @@
 
       <div class="relative right">
         <img src="../assets/karte/g2.png" class="karte-leinwand absolute"/>
-        <img
-            v-for="(t) in tasksG2"
-            :src="'https://jasonserver.de/karte/g2_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
+        <img  v-for="(t) in tasksG2" :src="'https://jasonserver.de/karte/g2_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
       </div>
     </div>
   </div>
@@ -79,6 +84,7 @@
           :gaveVote="dat.givenVote !== null"
           :votes="dat.receivedVotes + ''"
           :dummy="dat.isDummy"
+          :leinwand="true"
       />
     </div>
 
@@ -87,14 +93,15 @@
   <div v-else-if="mode === 3" class="center" style="height: 80vh">
     <div>
       <div class="center-horizontal flex-wrap">
-        <PlayerMeetingLeinwandView
-            :name="votedPlayer"
+        <PlayerMeetingView
+            :name="'Jason'"
             :dead="true"
+            :leinwand="true"
         />
       </div>
 
       <div class="center-horizontal">
-        <h1 v-if="role !== ''">Die Rolle war: {{role}}</h1>
+        <h1 style="font-size: 60px" v-if="role !== ''">Die Rolle war: <span style="color: yellow">{{role}}</span></h1>
       </div>
     </div>
 
@@ -154,7 +161,7 @@ import PlayerMeetingRevealView from "@/components/views/PlayerMeetingRevealView.
 
 export default {
     name: "LeinwandPage",
-  components: {PlayerMeetingRevealView, PlayerMeetingView, PlayerMeetingLeinwandView},
+  components: {PlayerMeetingRevealView, PlayerMeetingView},
     data() {
         return {
           multiplier: 15,
@@ -162,20 +169,80 @@ export default {
           tasksG0: [],
           tasksG1: [],
           tasksG2: [],
-          mode: 2,
+          mode: 0,
           caller: "",
           names: [],
           votedPlayer: "",
-          role: ""
+          role: "",
+          currentSabotage: "null"
         };
     },
 
     created() {
-
+      /*this.names.push({
+        currentDead: false,
+        defeat: false,
+        givenVote: null,
+        isDummy: true,
+        name: "dummy",
+        receivedVotes: 1
+      });
+      this.names.push({
+        defeat: false,
+        func: "playerData",
+        givenVote: "Jason",
+        imposter: true,
+        isDummy: false,
+        isHost: true,
+        meetings: "0",
+        name: "Jason",
+        overlayMode: -2,
+        receivedVotes: 2,
+        sabotageMode: 0
+      });
+      this.names.push({
+        defeat: false,
+        func: "playerData",
+        givenVote: "Jason",
+        imposter: false,
+        isDummy: false,
+        isHost: false,
+        meetings: "0",
+        name: "Chrome",
+        overlayMode: -2,
+        receivedVotes: 0,
+        sabotageMode: 0
+      });
+      this.names.push({
+        defeat: true,
+        func: "playerData",
+        givenVote: null,
+        imposter: false,
+        isDummy: false,
+        isHost: false,
+        meetings: 1,
+        name: "Firefox",
+        overlayMode: -2,
+        receivedVotes: 0,
+        sabotageMode: 0
+      });
+      this.names.push({
+        defeat: false,
+        func: "playerData",
+        givenVote: "dummy",
+        imposter: false,
+        isDummy: false,
+        isHost: false,
+        meetings: "0",
+        name: "Phone",
+        overlayMode: -2,
+        receivedVotes: 0,
+        sabotageMode: 0
+      });*/
     },
     mounted() {
-
-      /*this.tasksG0.push("t1")
+/*
+      this.tasksG0.push("t1")
       this.tasksG0.push("t2")
       this.tasksG0.push("t3")
       this.tasksG0.push("t4")
@@ -214,8 +281,8 @@ export default {
       this.tasksG2.push("t11")
       this.tasksG2.push("t12")
       this.tasksG2.push("t13")
-      this.tasksG2.push("s1")*/
-
+      this.tasksG2.push("s1")
+*/
         window.addEventListener('beforeunload', this.eventClose);
 
 
@@ -347,6 +414,14 @@ export default {
             this.send(dat)
           }else if(message.func === "dummyScreen"){
             this.mode = 9
+          }else if(message.func === "noSabotage"){
+            this.currentSabotage = "null"
+          }else if(message.func === "sabotageFire"){
+            this.currentSabotage = "fire"
+          }else if(message.func === "sabotagePassword"){
+            this.currentSabotage = "password"
+          }else if(message.func === "sabotageLight"){
+            this.currentSabotage = "light"
           }
         });
 

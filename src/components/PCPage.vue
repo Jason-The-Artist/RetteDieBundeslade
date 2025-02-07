@@ -48,6 +48,20 @@
     </div>
   </div>
 
+  <div v-else-if="mode === 2">
+    <div class="center full-size">
+      <div>
+        <div class="center-horizontal">
+          <h3>Es herrscht Dunkelheit.</h3>
+        </div>
+        <div class="center-horizontal repair-button pointer" @click="onRepairLight">
+          <img src="../assets/repair_icon.png" style="width: 40px">
+          <h1 style="margin: 0">Dunkelheit entfernen</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 
@@ -121,6 +135,10 @@ export default {
             this.mode = 1
           }else if(message.func === "camIsRepaired"){
             this.mode = 0
+          }else if(message.func === "lightIsSabotage"){
+            this.mode = 2
+          }else if(message.func === "lightIsRepaired"){
+            this.mode = 0
           }
         });
 
@@ -145,6 +163,14 @@ export default {
         let dat = {
           type: "engine",
           func: "repairCam"
+        }
+        this.send(dat)
+      },
+
+      onRepairLight(){
+        let dat = {
+          type: "engine",
+          func: "repairLight"
         }
         this.send(dat)
       },

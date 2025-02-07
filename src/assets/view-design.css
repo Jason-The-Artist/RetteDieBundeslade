@@ -146,10 +146,12 @@
     background: #122e55;
 }
 
+.dead-card-background{
+    background: #410000;
+}
+
 .player-card-dead{
     margin: 10px;
-
-    background: rgb(65, 0, 0);
     width: 90vw;
     max-width: 450px;
     height: 40px;
