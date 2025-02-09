@@ -94,7 +94,7 @@
     <div>
       <div class="center-horizontal flex-wrap">
         <PlayerMeetingView
-            :name="'Jason'"
+            :name="votedPlayer"
             :dead="true"
             :leinwand="true"
         />
