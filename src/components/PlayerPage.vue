@@ -35,7 +35,12 @@
       <div class="center-horizontal">
         <h2 class="white">Mit Taschenlampe</h2>
         <div style="width: 20px"></div>
-        <input type="checkbox" ref="light" checked style="width: 25px">
+        <input type="checkbox" ref="light" style="width: 25px">
+      </div>
+      <div class="center-horizontal">
+        <h2 class="white">Bundeslade finden</h2>
+        <div style="width: 20px"></div>
+        <input type="checkbox" ref="bundeslade" checked style="width: 25px">
       </div>
       <div class="center-horizontal center">
         <h2 class="white">Emergency Meetings</h2>
@@ -196,6 +201,7 @@ export default {
                   meetings: Number(this.$refs.emerginput.value),
                   taskCount: Number(this.$refs.tasks.value),
                   allowTorch: this.$refs.light.checked,
+                  collectBundeslade: this.$refs.bundeslade.checked,
                   player: this.getCookies("username")
                 }
                 this.send(dat);

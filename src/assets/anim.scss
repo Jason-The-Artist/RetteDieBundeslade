@@ -1,3 +1,35 @@
+.bundeslade-enter-from {
+  opacity: 0;
+  transform: translateY(-500px);
+  background: rgba(0, 0, 0, 0);
+}
+.bundeslade-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+  background: rgba(0, 0, 0, 0.5);
+}
+.bundeslade-enter-active {
+  transition: all 5s ease;
+}
+
+.bundeslade-leave-from {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+}
+.bundeslade-leave-to {
+  opacity: 0;
+  background: rgba(0, 0, 0, 0);
+}
+.bundeslade-leave-active {
+  transition: all 2s linear;
+}
+
+
+
+
+
+
+
 .show-page{
   animation: showPage 2s forwards;
 }

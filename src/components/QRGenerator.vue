@@ -3,7 +3,7 @@
   <div class="full-size" style="background: #aaaaaa">
     <div class="center-horizontal">
       <input
-          ref="qrinput"
+          v-model="text"
           placeholder="JSON"
           class="username-input shadow text-color"/>
     </div>
@@ -45,7 +45,7 @@ export default {
   components: {UIButton},
     data() {
         return {
-          text: "test"
+          text: "{\"func\":\"onTask\",\"g\": \"g1\",\"t\":\"t1\"}"
         };
     },
 
@@ -59,8 +59,6 @@ export default {
     methods: {
 
       onSubmit(){
-        console.log("click")
-        this.text = this.$refs.qrinput.value
       },
 
 

@@ -16,6 +16,28 @@
   max-height: 500px;
 }
 
+.b-image{
+  width: 200px;
+  border-radius: 20px;
+}
+
+.dark-background{
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.rotate {
+  animation: rotation 60s linear infinite;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
 
 <template>
@@ -31,6 +53,18 @@
   </div>
 
   <div v-if="mode === 2">
+
+    <transition name="bundeslade">
+      <div class="absolute full-size center" style="top: 0; z-index: 999" v-if="isBundeslade">
+        <div>
+          <h2 class="text-center">Teil {{bundesladePiece}} der Bundeslade gefunden</h2>
+          <div class="relative center">
+            <img src="../assets/glow.png" class="rotate">
+            <img src="../assets/bundeslade.png" class="b-image absolute">
+          </div>
+        </div>
+      </div>
+    </transition>
     <EmergencyPopup :show="emergVis" :caller="emergCaller" @start="startMeeting"/>
     <div v-if="!killed" class="center-horizontal">
       <UIButton title="Weitere Funktionen" @clicked="showAdvanced" v-if="!killedQR"/>
@@ -116,7 +150,7 @@
     <h2>Aufgaben:</h2>
     <div v-if="!killed">
       <div v-for="dat in tasks">
-        <p :class="'text-' + dat[3]">{{dat[2]}}</p>
+        <p :class="'text-' + dat[3]">[{{dat[0] + ',' + dat[1] + '] ' + dat[2]}}</p>
       </div>
     </div>
     <div v-else>
@@ -209,7 +243,9 @@ export default {
           timeout: null,
           showRole: false,
           advancedShow: false,
-          sabotageMode: 0
+          sabotageMode: 0,
+          isBundeslade: false,
+          bundesladePiece: 0
         };
     },
 
@@ -218,6 +254,7 @@ export default {
 
     },
     mounted() {
+
       this.paused = false
 
       let killedDat = {
@@ -287,6 +324,14 @@ export default {
           }
         }else if(message.func === "unexpectedError"){
           this.$router.push("/")
+        }else if(message.func === "bundesladeFound"){
+          this.paused = true
+          this.bundesladePiece = message.piece
+          this.isBundeslade = true;
+          setTimeout(() => {
+            this.isBundeslade = false
+            this.paused = false
+          },5000)
         }
 
 
