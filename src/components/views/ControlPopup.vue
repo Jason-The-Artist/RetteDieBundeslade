@@ -209,6 +209,8 @@ export default {
             g: "String",
             t: "String"
           },
+          hideBundeslade: {
+          },
           killed: {
             deadPlayer: "String"
           },

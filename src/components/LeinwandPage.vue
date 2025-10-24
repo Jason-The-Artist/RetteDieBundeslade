@@ -29,19 +29,19 @@
         <img src="../assets/karte/g0.png" class="karte-leinwand absolute"/>
         <img
             v-for="(t) in tasksG0"
-            :src="'https://jasonserver.de/karte/g0_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
+            :src="'../../src/assets/karte/g0_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
       </div>
 
       <div class="relative center-horizontal">
         <img src="../assets/karte/g1.png" class="karte-leinwand absolute"/>
         <img
             v-for="(t) in tasksG1"
-            :src="'https://jasonserver.de/karte/g1_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
+            :src="'../../src/assets/karte/g1_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
       </div>
 
       <div class="relative right">
         <img src="../assets/karte/g2.png" class="karte-leinwand absolute"/>
-        <img  v-for="(t) in tasksG2" :src="'https://jasonserver.de/karte/g2_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
+        <img  v-for="(t) in tasksG2" :src="'../../src/assets/karte/g2_tasks/' + t + '.png'" class="karte-leinwand absolute"/>
       </div>
     </div>
   </div>

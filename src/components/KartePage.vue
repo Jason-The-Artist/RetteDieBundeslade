@@ -25,7 +25,7 @@
     <img src="../assets/karte/g0.png" class="karte"/>
     <img
         v-for="(t) in tasksG0"
-        :src="'https://jasonserver.de/karte/g0_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
+        :src="'../../src/assets/karte/g0_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
   </div>
 
   <div style="height: 20px"></div>
@@ -37,7 +37,7 @@
     <img src="../assets/karte/g1.png" class="karte"/>
     <img
         v-for="(t) in tasksG1"
-        :src="'https://jasonserver.de/karte/g1_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
+        :src="'../../src/assets/karte/g1_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
   </div>
 
   <div style="height: 20px"></div>
@@ -51,7 +51,7 @@
     <img src="../assets/karte/g2.png" class="karte"/>
     <img
         v-for="(t) in tasksG2"
-        :src="'https://jasonserver.de/karte/g2_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
+        :src="'../../src/assets/karte/g2_tasks/' + t[0] + '.png'" class="karte absolute" :class="t[1] + '-dot'"/>
   </div>
 
 

@@ -107,6 +107,9 @@
     <div class="center-horizontal">
       <h3 class="red" style="margin: 0px">{{errorText}}</h3>
     </div>
+    <div class="center-horizontal" v-if="isHiding">
+      <h3 style="margin: 0px">Verstecke innerhalb von {{hideTime}} sec.</h3>
+    </div>
 
     <div class="center-horizontal" v-if="sabotageMode === 1">
       <div>
@@ -150,7 +153,7 @@
     <h2>Aufgaben:</h2>
     <div v-if="!killed">
       <div v-for="dat in tasks">
-        <p :class="'text-' + dat[3]">[{{dat[0] + ',' + dat[1] + '] ' + dat[2]}}</p>
+        <p :class="'text-' + dat[3]"><span style="color: gray">[{{dat[0] + ',' + dat[1] + ']'}}</span> {{dat[2]}}</p>
       </div>
     </div>
     <div v-else>
@@ -209,6 +212,7 @@ import ConfirmPopup from "@/components/views/ConfirmPopup.vue";
 import {ErrorCorrectLevel, RenderOptions} from "qrcode-vuejs";
 import PlayerMeetingLeinwandView from "@/components/views/PlayerMeetingLeinwandView.vue";
 import AdvancedFunctionsPopup from "@/components/views/AdvancedFunctionsPopup.vue";
+import HideBundeslade from "@/components/views/HideBundeslade.vue";
 
 export default {
     name: "MainOverlayPage",
@@ -220,7 +224,9 @@ export default {
       return RenderOptions
     }
   },
-    components: {AdvancedFunctionsPopup, PlayerMeetingLeinwandView, EmergencyPopup, UIButton, ConfirmPopup},
+    components: {
+      HideBundeslade,
+      AdvancedFunctionsPopup, PlayerMeetingLeinwandView, EmergencyPopup, UIButton, ConfirmPopup},
     data() {
         return {
           errorText: "",
@@ -245,7 +251,9 @@ export default {
           advancedShow: false,
           sabotageMode: 0,
           isBundeslade: false,
-          bundesladePiece: 0
+          bundesladePiece: 0,
+          isHiding: false,
+          hideTime: 0
         };
     },
 
@@ -284,12 +292,20 @@ export default {
 
       });
 
-      this.socket.addEventListener('message', (event) => {
+      this.socket.addEventListener('message', async (event) => {
         const message = JSON.parse(event.data)
         console.log(message)
         if(message.func === "error"){
 
           console.error(message.text)
+
+          if(message.show){
+            this.errorText = message.text
+            this.clearTO()
+            this.timeout = setTimeout(() => {
+              this.errorText = ""
+            },3000)
+          }
 
         }else if(message.func === "playerData"){
           this.setPlayerData(message)
@@ -332,6 +348,19 @@ export default {
             this.isBundeslade = false
             this.paused = false
           },5000)
+        }else if(message.func === "allowHideBundeslade"){
+          if(message.allow){
+            this.isHiding = true
+            await this.startHiding()
+          }else{
+            this.errorText = message.reason
+            this.clearTO()
+            this.timeout = setTimeout(() => {
+              this.errorText = ""
+            },5000)
+          }
+        }else if(message.func === "successHidden"){
+          this.isHiding = false
         }
 
 
@@ -346,6 +375,23 @@ export default {
 
 
     methods: {
+
+      async startHiding(){
+        for(let i = 20; i > 0; i--){
+          this.hideTime = i
+          await this.delay(1000)
+        }
+        this.isHiding = false
+      },
+
+      successHideBundeslade(){
+        this.isHiding = false
+        let dat = {
+          type: "engine",
+          func: "successHideBundeslade"
+        }
+        this.send(dat)
+      },
 
       setPlayerData(data){
         this.killed = data.defeat
@@ -416,15 +462,26 @@ export default {
       onQR(message){
         if(message.func === "openMeeting"){
           this.onMeeting()
+        }else if(message.func === "hideBundeslade"){
+          this.onHideBundeslade()
         }else if(message.func === "onTask"){
-          let dat = {
-            type: "engine",
-            func: "checkTask",
-            g: message.g,
-            t: message.t,
-            player: this.getCookies("username")
-          }
-          this.send(dat)
+          if(this.isHiding){
+            let dat = {
+              type: "engine",
+              func: "successHideBundeslade",
+              g: message.g,
+              t: message.t,
+            }
+            this.send(dat)
+          }else{
+            let dat = {
+              type: "engine",
+              func: "checkTask",
+              g: message.g,
+              t: message.t,
+              player: this.getCookies("username")
+            }
+            this.send(dat)          }
         }else if(message.func === "killed"){
           let player = message.deadPlayer
           let dat = {
@@ -451,10 +508,30 @@ export default {
         }
       },
 
+      onHideBundeslade(){
+        if(this.imposter){
+          let dat = {
+            type: "engine",
+            func: "checkHideBundeslade"
+          }
+          this.send(dat)
+        }else{
+          this.errorText = "Nur ein Philister kann diesen QR-Code einscannen."
+          this.clearTO()
+          this.timeout = setTimeout(() => {
+            this.errorText = ""
+          },5000)
+        }
+      },
+
       clearTO(){
         if(this.timeout !== null){
           clearTimeout(this.timeout)
         }
+      },
+
+      delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
       },
 
       onMeeting(){

@@ -38,17 +38,17 @@
   <div>
     <div class="relative">
       <img src="../assets/karte/g0.png" class="karte-leinwand absolute"/>
-      <img v-if="currentG0 !== 'none'" :src="'https://jasonserver.de/karte/g0_tasks/' + currentG0 + '.png'" class="karte-leinwand absolute"/>
+      <img v-if="currentG0 !== 'none'" :src="'../../src/assets/karte/g0_tasks/' + currentG0 + '.png'" class="karte-leinwand absolute"/>
     </div>
 
     <div class="relative center-horizontal">
       <img src="../assets/karte/g1.png" class="karte-leinwand absolute"/>
-      <img v-if="currentG1 !== 'none'" :src="'https://jasonserver.de/karte/g1_tasks/' + currentG1 + '.png'" class="karte-leinwand absolute"/>
+      <img v-if="currentG1 !== 'none'" :src="'../../src/assets/karte/g1_tasks/' + currentG1 + '.png'" class="karte-leinwand absolute"/>
     </div>
 
     <div class="relative right">
       <img src="../assets/karte/g2.png" class="karte-leinwand absolute"/>
-      <img v-if="currentG2 !== 'none'" :src="'https://jasonserver.de/karte/g2_tasks/' + currentG2 + '.png'" class="karte-leinwand absolute"/>
+      <img v-if="currentG2 !== 'none'" :src="'../../src/assets/karte/g2_tasks/' + currentG2 + '.png'" class="karte-leinwand absolute"/>
     </div>
   </div>
 
