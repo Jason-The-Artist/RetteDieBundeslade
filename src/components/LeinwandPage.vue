@@ -5,6 +5,16 @@
   font-size: 60px
 }
 
+.info-box{
+  width: 100%;
+  height: 80px;
+}
+
+.bundeslade{
+  margin-right: 10px;
+  height: 90%;
+}
+
 </style>
 
 <template>
@@ -21,6 +31,10 @@
       <div :style="'width: ' + this.multiplier * 100 + 'px; background: #282828'">
         <div :style="'height: 50px; background: #42b983; width: ' + current + 'px'"></div>
       </div>
+    </div>
+
+    <div class="info-box center-vertical">
+      <img src="../assets/bundeslade.png" class="round-corner bundeslade" v-for="dat in bundesladeCount">
     </div>
 
 
@@ -174,7 +188,8 @@ export default {
           names: [],
           votedPlayer: "",
           role: "",
-          currentSabotage: "null"
+          currentSabotage: "null",
+          bundesladeCount: 0
         };
     },
 
@@ -422,6 +437,10 @@ export default {
             this.currentSabotage = "password"
           }else if(message.func === "sabotageLight"){
             this.currentSabotage = "light"
+          }else if(message.func === "addBundeslade"){
+            this.bundesladeCount = this.bundesladeCount + 1
+          }else if(message.func === "subtractBundeslade"){
+            this.bundesladeCount = this.bundesladeCount - 1
           }
         });
 

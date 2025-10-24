@@ -57,7 +57,7 @@
     <transition name="bundeslade">
       <div class="absolute full-size center" style="top: 0; z-index: 999" v-if="isBundeslade">
         <div>
-          <h2 class="text-center">Teil {{bundesladePiece}} der Bundeslade gefunden</h2>
+          <h2 class="text-center">Teil {{bundesladePiece + 1}} der Bundeslade gefunden</h2>
           <div class="relative center">
             <img src="../assets/glow.png" class="rotate">
             <img src="../assets/bundeslade.png" class="b-image absolute">
@@ -105,10 +105,13 @@
     </div>
 
     <div class="center-horizontal">
-      <h3 class="red" style="margin: 0px">{{errorText}}</h3>
+      <h3 class="red text-center" style="margin: 0px">{{errorText}}</h3>
     </div>
     <div class="center-horizontal" v-if="isHiding">
-      <h3 style="margin: 0px">Verstecke innerhalb von {{hideTime}} sec.</h3>
+      <h3 style="margin: 0px" class="text-center">Verstecke innerhalb von {{hideTime}} sec.</h3>
+    </div>
+    <div class="center-horizontal" v-if="inFoundingState">
+      <h3 style="margin: 0px" class="text-center">Bringe das Teil zurück</h3>
     </div>
 
     <div class="center-horizontal" v-if="sabotageMode === 1">
@@ -253,7 +256,9 @@ export default {
           isBundeslade: false,
           bundesladePiece: 0,
           isHiding: false,
-          hideTime: 0
+          hideTime: 0,
+          inFoundingState: true,
+          bundesladePosition: 0
         };
     },
 
@@ -341,6 +346,7 @@ export default {
         }else if(message.func === "unexpectedError"){
           this.$router.push("/")
         }else if(message.func === "bundesladeFound"){
+          this.inFoundingState = true
           this.paused = true
           this.bundesladePiece = message.piece
           this.isBundeslade = true;
@@ -361,7 +367,10 @@ export default {
           }
         }else if(message.func === "successHidden"){
           this.isHiding = false
+        }else if(message.func === "successFounding"){
+          this.inFoundingState = false
         }
+
 
 
 
@@ -402,6 +411,8 @@ export default {
         this.tasks = data.tasks
         this.sabotageMode = data.sabotageMode
         this.toggleTorch(data.torchEnabled)
+        this.inFoundingState = data.foundingState
+        this.bundesladePosition = data.bundesladePosition
 
         if(this.mode === -2){
           this.$router.push("/meeting")
@@ -463,7 +474,11 @@ export default {
         if(message.func === "openMeeting"){
           this.onMeeting()
         }else if(message.func === "hideBundeslade"){
-          this.onHideBundeslade()
+          if(this.imposter){
+            this.onHideBundeslade()
+          }else{
+            this.bringBackBundeslade()
+          }
         }else if(message.func === "onTask"){
           if(this.isHiding){
             let dat = {
@@ -509,19 +524,21 @@ export default {
       },
 
       onHideBundeslade(){
-        if(this.imposter){
-          let dat = {
-            type: "engine",
-            func: "checkHideBundeslade"
-          }
-          this.send(dat)
-        }else{
-          this.errorText = "Nur ein Philister kann diesen QR-Code einscannen."
-          this.clearTO()
-          this.timeout = setTimeout(() => {
-            this.errorText = ""
-          },5000)
+        let dat = {
+          type: "engine",
+          func: "checkHideBundeslade"
         }
+        this.send(dat)
+      },
+
+      bringBackBundeslade(){
+        let dat = {
+          type: "engine",
+          func: "bringBackBundeslade",
+          position: this.bundesladePiece,
+          player: this.getCookies("username"),
+        }
+        this.send(dat)
       },
 
       clearTO(){
@@ -556,6 +573,7 @@ export default {
       },
 
       send(data){
+        data.player = this.getCookies("username")
         this.socket.send(JSON.stringify(data))
       },
 
