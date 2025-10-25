@@ -21,6 +21,10 @@
 
   <div v-if="mode === 0">
 
+    <div class="absolute full-width center-horizontal" style="z-index: 9999" v-if="noConnection">
+      <h2 class="red">Kein Internet</h2>
+    </div>
+
     <div class="center-horizontal">
       <h1 style="margin: 0px" class="emergency-color huge-font" v-if="currentSabotage === 'fire'">Ein Feuer wurde gelegt!</h1>
       <h1 style="margin: 0px" class="emergency-color huge-font" v-else-if="currentSabotage === 'password'">Die Philister haben das Password geändert!</h1>
@@ -189,7 +193,8 @@ export default {
           votedPlayer: "",
           role: "",
           currentSabotage: "null",
-          bundesladeCount: 0
+          bundesladeCount: 0,
+          noConnection: false
         };
     },
 
@@ -302,6 +307,10 @@ export default {
 
 
         this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+      this.socket.addEventListener('error', (event) => {
+        this.noConnection = true
+      });
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")

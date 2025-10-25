@@ -41,6 +41,10 @@
 </style>
 
 <template>
+  <div class="absolute full-width center-horizontal" style="z-index: 9999" v-if="noConnection">
+    <h2 class="red">Kein Internet</h2>
+  </div>
+
   <ConfirmPopup :show="confirmShow" @yes="yesSelected" @no="noSelected" text="Möchtest du wirklich ein Meeting starten?"/>
   <ConfirmPopup :show="confirmKilledShow" @yes="yesSelectedKill" @no="noSelected" text="Bist du wirklich gefangen worden?"/>
   <AdvancedFunctionsPopup :show="advancedShow" :imposter="imposter" @onCancel="onAdvancedCancel" @onKilled="onKilled" @onSabotageFire="onSabotageFire" @onSabotageLight="onSabotageLight" @onSabotagePassword="onSabotagePassword"/>
@@ -258,7 +262,8 @@ export default {
           isHiding: false,
           hideTime: 0,
           inFoundingState: true,
-          bundesladePosition: 0
+          bundesladePosition: 0,
+          noConnection: false
         };
     },
 
@@ -277,6 +282,10 @@ export default {
       this.killedQRText = JSON.stringify(killedDat)
 
       this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+      this.socket.addEventListener('error', (event) => {
+        this.noConnection = true
+      });
 
       this.socket.addEventListener('open', (event) => {
         console.log("socket connected")
