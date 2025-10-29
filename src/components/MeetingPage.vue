@@ -105,7 +105,24 @@ export default {
         window.addEventListener('beforeunload', this.eventClose);
 
 
+        this.createSocket();
+
+    },
+
+    beforeUnmount() {
+      window.removeEventListener('beforeunload', this.eventClose);
+    },
+
+
+    methods: {
+
+      createSocket() {
         this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+        this.socket.addEventListener('close', (event) => {
+          console.log("close")
+          this.createSocket()
+        });
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
@@ -164,15 +181,7 @@ export default {
             this.mode = 4
           }
         });
-
-    },
-
-    beforeUnmount() {
-      window.removeEventListener('beforeunload', this.eventClose);
-    },
-
-
-    methods: {
+      },
 
       send(data){
         this.socket.send(JSON.stringify(data))

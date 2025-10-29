@@ -111,20 +111,33 @@ export default {
 
       window.addEventListener('beforeunload', this.eventClose);
 
-      this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+      this.createSocket()
 
-      this.socket.addEventListener('open', (event) => {
 
-        let dat = {
-          type: "register",
-          func: "registerPC"
-        }
-        this.socket.send(JSON.stringify(dat));
+    },
 
-      });
+    methods: {
 
-      this.socket.addEventListener('error', (event) => {
-      });
+      createSocket() {
+        this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+        this.socket.addEventListener('open', (event) => {
+
+          let dat = {
+            type: "register",
+            func: "registerPC"
+          }
+          this.socket.send(JSON.stringify(dat));
+
+        });
+
+        this.socket.addEventListener('error', (event) => {
+        });
+
+        this.socket.addEventListener('close', (event) => {
+          console.log("close")
+          this.createSocket()
+        });
 
 
         this.socket.addEventListener('message', (event) => {
@@ -141,11 +154,7 @@ export default {
             this.mode = 0
           }
         });
-
-
-    },
-
-    methods: {
+      },
 
       calculateQRCodeSize() {
         const scaleFactor = 0.9;

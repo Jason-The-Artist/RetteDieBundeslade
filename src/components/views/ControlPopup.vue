@@ -1,4 +1,20 @@
+<style scoped>
 
+.switch-line{
+  width: 200px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: white;
+}
+
+.switch-line-selected{
+  background: #166708;
+}
+
+
+</style>
 
 <template>
   <Transition name="modal">
@@ -45,13 +61,17 @@
 
                 <div v-if="mode >= 1">
 
-                  <div class="center-horizontal" v-if="mode >= 3">
-                    <h2 class="white">Everyone</h2>
-                    <div style="width: 20px"></div>
-                    <input type="checkbox" v-model="everyone" checked style="width: 25px">
+                  <div class="center-horizontal">
+                    <div>
+                      <div class="switch-line" :class="switcher === 'everyone' ? 'switch-line-selected' : ''" @click="switcher = 'everyone'">Everyone</div>
+                      <div class="switch-line" :class="switcher === 'player' ? 'switch-line-selected' : ''" @click="switcher = 'player'">Player</div>
+                      <div class="switch-line" :class="switcher === 'leinwand' ? 'switch-line-selected' : ''" @click="switcher = 'leinwand'">Leinwand</div>
+                      <div class="switch-line" :class="switcher === 'pc' ? 'switch-line-selected' : ''" @click="switcher = 'pc'">PC</div>
+                      <div class="switch-line" :class="switcher === 'cam' ? 'switch-line-selected' : ''" @click="switcher = 'cam'">Cam</div>
+                    </div>
                   </div>
 
-                  <div v-if="!everyone">
+                  <div v-if="switcher === 'player'">
                     <input class="standart-input text-color" v-model="customPlayer" placeholder="Player name">
                   </div>
 
@@ -90,7 +110,7 @@ export default {
     return{
       mode: 0,
       socket: null,
-      everyone: true,
+      switcher: "everyone",
       customPlayer: "",
 
       data: {
@@ -373,8 +393,14 @@ export default {
 
       console.log(dat)
 
-      if(this.everyone){
+      if(this.switcher === "everyone"){
         dat.type = "passAll"
+      }else if(this.switcher === "leinwand"){
+        dat.type = "passLeinwand"
+      }else if(this.switcher === "pc"){
+        dat.type = "passLeinwand"
+      }else if(this.switcher === "cam"){
+        dat.type = "passLeinwand"
       }else{
         dat.player = this.customPlayer
       }

@@ -48,31 +48,40 @@ export default {
     },
     mounted() {
 
-      this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
-
-      this.socket.addEventListener('open', (event) => {
-
-        let dat = {
-          type: "register",
-          func: "registerCam"
-        }
-        this.socket.send(JSON.stringify(dat));
-
-      });
-
-      this.socket.addEventListener('message', (event) => {
-        const message = JSON.parse(event.data)
-        console.log(message)
-        if(message.func === "camIsSabotage"){
-          this.sabotage = true
-        }else if(message.func === "camIsRepaired"){
-          this.sabotage = false
-        }
-      });
+      this.createSocket();
 
     },
 
     methods: {
+
+      createSocket() {
+        this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+        this.socket.addEventListener('open', (event) => {
+
+          let dat = {
+            type: "register",
+            func: "registerCam"
+          }
+          this.socket.send(JSON.stringify(dat));
+
+        });
+
+        this.socket.addEventListener('close', (event) => {
+          console.log("close")
+          this.createSocket()
+        });
+
+        this.socket.addEventListener('message', (event) => {
+          const message = JSON.parse(event.data)
+          console.log(message)
+          if(message.func === "camIsSabotage"){
+            this.sabotage = true
+          }else if(message.func === "camIsRepaired"){
+            this.sabotage = false
+          }
+        });
+      },
 
       send(data){
         this.socket.send(JSON.stringify(data))

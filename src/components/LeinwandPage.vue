@@ -19,11 +19,11 @@
 
 <template>
 
-  <div v-if="mode === 0">
+  <div class="absolute full-width center-horizontal" style="z-index: 9999" v-if="noConnection">
+    <h2 class="red">Kein Internet</h2>
+  </div>
 
-    <div class="absolute full-width center-horizontal" style="z-index: 9999" v-if="noConnection">
-      <h2 class="red">Kein Internet</h2>
-    </div>
+  <div v-if="mode === 0">
 
     <div class="center-horizontal">
       <h1 style="margin: 0px" class="emergency-color huge-font" v-if="currentSabotage === 'fire'">Ein Feuer wurde gelegt!</h1>
@@ -180,6 +180,7 @@ import PlayerMeetingRevealView from "@/components/views/PlayerMeetingRevealView.
 export default {
     name: "LeinwandPage",
   components: {PlayerMeetingRevealView, PlayerMeetingView},
+
     data() {
         return {
           multiplier: 15,
@@ -303,14 +304,34 @@ export default {
       this.tasksG2.push("t13")
       this.tasksG2.push("s1")
 */
+      this.createSocket()
+
+    },
+
+    beforeUnmount() {
+      window.removeEventListener('beforeunload', this.eventClose);
+    },
+  unmounted() {
+      this.eventClose()
+  },
+
+
+  methods: {
+
+      createSocket() {
         window.addEventListener('beforeunload', this.eventClose);
 
 
         this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
-      this.socket.addEventListener('error', (event) => {
-        this.noConnection = true
-      });
+        this.socket.addEventListener('error', (event) => {
+          this.noConnection = true
+        });
+
+        this.socket.addEventListener('close', (event) => {
+          console.log("close")
+          this.createSocket()
+        });
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
@@ -371,8 +392,14 @@ export default {
 
           }else if(message.func === "impostersWon"){
             this.mode = 5
+            this.current = 0
+            this.currentSabotage = "null"
+            this.bundesladeCount = 0
           }else if(message.func === "crewmatesWon"){
             this.mode = 6
+            this.current = 0
+            this.currentSabotage = "null"
+            this.bundesladeCount = 0
           }else if(message.func === "gotKicked"){
             this.$router.push("/")
           }else if(message.func === "revealVotes"){
@@ -452,18 +479,7 @@ export default {
             this.bundesladeCount = this.bundesladeCount - 1
           }
         });
-
-    },
-
-    beforeUnmount() {
-      window.removeEventListener('beforeunload', this.eventClose);
-    },
-  unmounted() {
-      this.eventClose()
-  },
-
-
-  methods: {
+      },
 
       eventClose(){
         let dat = {
